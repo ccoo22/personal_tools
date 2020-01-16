@@ -1,0 +1,2 @@
+样本	indexID（i7）	index（i7）	项目	备注1
+Ctrl13-Th-5w	G-2	CCGTGTCC	19B0318B-ATAC	ATAC

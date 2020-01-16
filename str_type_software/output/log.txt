@@ -1,0 +1,73 @@
+output : ./test/1.str.reads.raw.txt
+output : ./test/2.str.freq.raw.txt
+output : ./test/3.str.slip.ratio.txt
+output : ./test/4.str.reads.correct.txt
+output : ./test/5.str.freq.correct.txt
+output : ./test/6.str.amplification.ratio.txt
+output : ./test/7.str.typing.relative.txt
+output : ./test/8.str.typing.absolute.txt
+output : ./test/9.str.genotype.txt
+output : ./test/10.str.allele.txt
+output ./test/STR_type.xlsx
+output process : 
+    1 - raw reads
+    2 - raw freq
+    3 - slip ratio
+    4 - correct reads
+    5 - correct freq
+    6 - amplification ratio
+    7 - typing relative
+    8 - typing absolute
+    9 - genotype
+    10 - allele
+    11 - readme
+    *Finished* 
+output : ./test/1.str.reads.raw.txt
+output : ./test/2.str.freq.raw.txt
+output : ./test/3.str.slip.ratio.txt
+output : ./test/4.str.reads.correct.txt
+output : ./test/5.str.freq.correct.txt
+output : ./test/6.str.amplification.ratio.txt
+output : ./test/7.str.typing.relative.txt
+output : ./test/8.str.typing.absolute.txt
+output : ./test/9.str.genotype.txt
+output : ./test/10.str.allele.txt
+output ./test/STR_type.xlsx
+output ./test/STR_type_complete.xlsx
+output process : 
+    1 - raw reads
+    2 - raw freq
+    3 - slip ratio
+    4 - correct reads
+    5 - correct freq
+    6 - amplification ratio
+    7 - typing relative
+    8 - typing absolute
+    9 - genotype
+    10 - allele
+    11 - readme
+    *Finished* 
+output : ./test/1.str.reads.raw.txt
+output : ./test/2.str.freq.raw.txt
+output : ./test/3.str.slip.ratio.txt
+output : ./test/4.str.reads.correct.txt
+output : ./test/5.str.freq.correct.txt
+output : ./test/6.str.amplification.ratio.txt
+output : ./test/7.str.typing.relative.txt
+output : ./test/8.str.typing.absolute.txt
+output : ./test/9.str.genotype.txt
+output : ./test/10.str.allele.txt
+output ./test/STR_type_complete.xlsx
+output process : 
+    1 - raw reads
+    2 - raw freq
+    3 - slip ratio
+    4 - correct reads
+    5 - correct freq
+    6 - amplification ratio
+    7 - typing relative
+    8 - typing absolute
+    9 - genotype
+    10 - allele
+    11 - readme
+    *Finished* 

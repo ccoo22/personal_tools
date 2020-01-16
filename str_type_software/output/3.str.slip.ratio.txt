@@ -1,0 +1,60 @@
+target	str	SlipRatio	Type	SampleCount	SlipRatio_median	SlipRatio_sd	SlipRatio_min	SlipRatio_max	Detail
+CtC105_	TCCA(3)	0.0264152715	unitary_quadratic_equation						
+CtC105_	TCCA(4)	0.03603668	unitary_quadratic_equation						
+CtC105_	TCCA(5)	0.0460944975	unitary_quadratic_equation						
+CtC105_	TCCA(6)	0.056588724	unitary_quadratic_equation						
+CtC105_	TCCA(7)	0.0675193595	unitary_quadratic_equation						
+CtC105_	TCCA(8)	0.078886404	unitary_quadratic_equation						
+CtC105_	TCCA(9)	0.0906898575	unitary_quadratic_equation						
+CtC105_	TCCA(10)	0.10292972	unitary_quadratic_equation						
+CtC105_	TCCA(11)	0.1156059915	unitary_quadratic_equation						
+CtC105_	TCCA(12)	0.128718672	unitary_quadratic_equation						
+CtC105_	TCCA(13)	0.1422677615	unitary_quadratic_equation						
+CtC105_	TCCA(14)	0.16465	SampleGenerate	1	0.16465	0	0.16465	0.16465	A02=0.16465
+CtC105_	TCCA(15)	0.1706751675	unitary_quadratic_equation						
+CtC105_	TCCA(16)	0.185533484	unitary_quadratic_equation						
+CtC105_	TCCA(17)	0.17672	SampleGenerate	1	0.17672	0	0.17672	0.17672	A04=0.17672
+CtC105_	TCCA(18)	0.216559344	unitary_quadratic_equation						
+CtC105_	TCCA(19)	0.23664	SampleGenerate	5	0.23977	0.0357612800386116	0.19398	0.28272	A01=0.23977;A06=0.25725;A03=0.20948;A05=0.19398;A09=0.28272
+CtC105_	TCCA(20)	0.28272	SampleGenerate	1	0.28272	0	0.28272	0.28272	A02=0.28272
+CtC105_	TCCA(21)	0.24495	SampleGenerate	1	0.24495	0	0.24495	0.24495	A07=0.24495
+CtC105_	TCCA(22)	0.283847972	unitary_quadratic_equation						
+CtC105_	TCCA(23)	0.3017611515	unitary_quadratic_equation						
+CtC105_	TCCA(24)	0.32011074	unitary_quadratic_equation						
+CtC105_	TCCA(25)	0.3388967375	unitary_quadratic_equation						
+CtC105_	TCCA(26)	0.358119144	unitary_quadratic_equation						
+CtC105_	TCCA(27)	0.3777779595	unitary_quadratic_equation						
+M4-6-1_	AATC(1)	0.0048789986	unitary_quadratic_equation						
+M4-6-1_	AATC(2)	0.0094390993	unitary_quadratic_equation						
+M4-6-1_	AATC(3)	0.0142081898	unitary_quadratic_equation						
+M4-6-1_	AATC(4)	0.0210866666666667	SampleGenerate	6	0.021365	0.00450250448824503	0.01561	0.02684	A01=0.02684;A03=0.02236;A09=0.02037;A04=0.01644;A07=0.02490;A08=0.01561
+M4-6-1_	AATC(5)	0.0243733402	unitary_quadratic_equation						
+M4-6-1_	AATC(6)	0.0297694001	unitary_quadratic_equation						
+M4-6-1_	AATC(7)	0.0353744498	unitary_quadratic_equation						
+M4-6-1_	AATC(8)	0.0364375	SampleGenerate	4	0.034855	0.00591070427275803	0.03154	0.04450	A06=0.03253;A04=0.03154;A07=0.04450;A08=0.03718
+M4-6-1_	AATC(9)	0.05059	SampleGenerate	1	0.05059	0	0.05059	0.05059	A01=0.05059
+M4-6-1_	AATC(10)	0.0534435377	unitary_quadratic_equation						
+M4-6-1_	AATC(11)	0.0598845466	unitary_quadratic_equation						
+M4-6-7_	GTGA(1)	0.0135348005	unitary_quadratic_equation						
+M4-6-7_	GTGA(2)	0.0269195047	unitary_quadratic_equation						
+M4-6-7_	GTGA(3)	0.0405121317	unitary_quadratic_equation						
+M4-6-7_	GTGA(4)	0.0543126815	unitary_quadratic_equation						
+M4-6-7_	GTGA(5)	0.0683211541	unitary_quadratic_equation						
+M4-6-7_	GTGA(6)	0.0825375495	unitary_quadratic_equation						
+M4-6-7_	GTGA(7)	0.0969618677	unitary_quadratic_equation						
+M4-6-7_	GTGA(8)	0.1115941087	unitary_quadratic_equation						
+M4-6-7_	GTGA(9)	0.1264342725	unitary_quadratic_equation						
+M4-6-7_	GTGA(10)	0.1414823591	unitary_quadratic_equation						
+M4-6-7_	GTGA(11)	0.1567383685	unitary_quadratic_equation						
+M4-6-7_	GTGA(12)	0.1722023007	unitary_quadratic_equation						
+M4-6-7_	GTGA(13)	0.19535	SampleGenerate	1	0.19535	0	0.19535	0.19535	A04=0.19535
+M4-6-7_	GTGA(14)	0.202056666666667	SampleGenerate	3	0.20107	0.0370098653514618	0.16555	0.23955	A03=0.16555;A05=0.23955;A09=0.20107
+M4-6-7_	GTGA(15)	0.2198416341	unitary_quadratic_equation						
+M4-6-7_	GTGA(16)	0.22634	SampleGenerate	3	0.23158	0.0302918421361263	0.19377	0.25367	A06=0.19377;A09=0.23158;A07=0.25367
+M4-6-7_	GTGA(17)	0.24809	SampleGenerate	2	0.24809	0.0288216724011638	0.22771	0.26847	A01=0.26847;A08=0.22771
+M4-6-7_	GTGA(18)	0.27828	SampleGenerate	1	0.27828	0	0.27828	0.27828	A02=0.27828
+M4-6-7_	GTGA(19)	0.2862716645	unitary_quadratic_equation						
+M4-6-7_	GTGA(20)	0.3033989791	unitary_quadratic_equation						
+M4-6-7_	GTGA(21)	0.3207342165	unitary_quadratic_equation						
+M4-6-7_	GTGA(22)	0.3382773767	unitary_quadratic_equation						
+M4-6-7_	GTGA(23)	0.3560284597	unitary_quadratic_equation						

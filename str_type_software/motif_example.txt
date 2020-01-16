@@ -1,0 +1,4 @@
+target	motif	ploid	homology	noise_cutoff	type_cutoff
+CtC105_	TCCA	2	1	0.15	0.25
+M4-6-1_	AATC	2	1	0.15	0.25
+M4-6-7_	GTGA	2	1	0.15	0.25
