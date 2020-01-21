@@ -1,6 +1,6 @@
 #!/home/genesky/software/r/3.5.1/bin/Rscript
 library(docopt)
-"Usage: survival.r  -i <file> -o <dir> [ --model <string> --Rlib <dir>]
+"Usage: survival.r  -i <file> -o <dir> [ --model <string> --Rlib <dir> --width <int>]
 Options:
    -i, --input <file>                    输入文件，第一列样本名，第二列生存时间，第三列是否截尾（0截尾,1去世），第四列及之后的数据为要分析的表型
                                          注意：列名尽可能不要出现‘-’减号字符，会报错
@@ -16,13 +16,14 @@ Options:
 
                                          COX  : Cox proportional hazards regression to describe the effect of variables on survival（用Cox风险比例模型来分析变量对生存的影响，可以两个及两个以上的因素，很常用）
                                                 该分析对第四列及之后的表型汇总建模
-
+   --width <int>                         pdf图像宽度 [default: 7]
    --Rlib <dir>                          R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
 
 opts              <- docopt(doc, version = '生存分析软件 \n')
 input             <- opts$input
 output_dir        <- opts$output_dir
 model             <- opts$model
+width             <- as.integer(opts$width)
 Rlib              <- opts$Rlib
 .libPaths(Rlib)
 
@@ -66,7 +67,7 @@ if(model == 'KM')
     write.table(surv_info, paste0(output_dir, '/survival.KM.surv_info.txt'), row.names = F, quote = F, sep = '\t')
 
     # 生存曲线绘图
-    pdf(paste0(output_dir, '/survival.KM.surv.pdf'))
+    pdf(paste0(output_dir, '/survival.KM.surv.pdf'), width = width)
     P <- ggsurvplot(fit, data =input_data,
        conf.int = TRUE,
        risk.table = TRUE, # Add risk table
@@ -89,7 +90,7 @@ if(model == 'log-rank')
     status <- input_data$status
 
     # 对每一个分层表型进行计算
-    pdf(paste0(output_dir, '/survival.LogRank.surv.pdf'))
+    pdf(paste0(output_dir, '/survival.LogRank.surv.pdf'), width = width)
     pvalue_data = matrix(0,ncol(input_data) - 2, 2)
     colnames(pvalue_data) = c('Pheno', 'Pvalue')
     
@@ -100,11 +101,9 @@ if(model == 'log-rank')
         count = count + 1
         # 创建分析数据
         new_data <- data.frame(time = time, status = status, variable = input_data[[pheno_name]])
-        print(dim(new_data))
         # colnames(new_data)[3] = pheno_name 
         new_data <- new_data[complete.cases(new_data), ]
         new_data <- new_data[apply(new_data, 1, function(x){sum(x=='')}) == 0, ]
-        print(dim(new_data))
         # 只有一组数据，无法分析
         if(length(unique(new_data[, 3])) == 1 )
         {
