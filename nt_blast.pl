@@ -12,13 +12,13 @@ use constant SCRIPTDIR => (File::Spec->splitpath(File::Spec->rel2abs($0)))[1];
 use constant PWD => $ENV{"PWD"};
 
 # 定义 -> 核心变量
-my $blastn      = "/home/ganb/soft/ncbi-blast-2.7.1+/bin/blastn";
+my $blastn      = "/home/genesky/software/blast+/2.9.0/bin/blastn";
 my $lineages    = "/home/genesky/database/ncbi/nt_20191128/lineages-2019-02-20.csv";
 my $nt_db       = "/home/genesky/database/ncbi/nt/blast_idx/nt";
 my $table2excel = "perl /home/pub/bin/NGS/chip/GATK4/tools/personal/table2excel.pl";
 
 # 检测 -> 脚本输入
-my ($fastq_dir, $output_dir, $sample_list, $reads_count, $thread, $word_size, $evalue, $perc_identity, $max_target_seqs, $if_help);
+my ($fastq_dir, $output_dir, $sample_list, $reads_count, $thread, $word_size, $evalue, $perc_identity, $max_target_seqs, $seqidlist, $if_help);
 GetOptions(
     "fastq_dir|i=s"     => \$fastq_dir,
     "output_dir|o=s"    => \$output_dir,
@@ -28,19 +28,21 @@ GetOptions(
     "word_size|w:i"     => \$word_size,
     "evalue|e:i"        => \$evalue,
     "perc_identity|p:i" => \$perc_identity,
-    "max_target_seqs|p:i" => \$max_target_seqs,
+    "max_target_seqs|m:i" => \$max_target_seqs,
+    "seqidlist=s"       => \$seqidlist,
     "help|h"            => \$if_help,
 );
 die help() if(defined $if_help or (not defined $fastq_dir or not defined $output_dir));
 ###################################################################### 主程序
-$sample_list   = ""    if(not defined $sample_list);
-$reads_count   = 10000 if(not defined $reads_count);
-$thread        = 3     if(not defined $thread);
-$word_size     = (not defined $word_size)     ? ""                  : "-word_size $word_size";
-$evalue        = (not defined $evalue)        ? "-evalue 1e-5"      : "-evalue $evalue";
-$perc_identity = (not defined $perc_identity) ? "-perc_identity 97" : "-perc_identity $perc_identity";
+$sample_list     = ""    if(not defined $sample_list);
+$reads_count     = 10000 if(not defined $reads_count);
+$thread          = 3     if(not defined $thread);
+$word_size       = (not defined $word_size)       ? ""                   : "-word_size $word_size";
+$evalue          = (not defined $evalue)          ? "-evalue 1e-5"       : "-evalue $evalue";
+$perc_identity   = (not defined $perc_identity)   ? "-perc_identity 97"  : "-perc_identity $perc_identity";
 $max_target_seqs = (not defined $max_target_seqs) ? "-max_target_seqs 5" : "-max_target_seqs $max_target_seqs";
- 
+$seqidlist       = (not defined $seqidlist)       ? ""                   : "-seqidlist $seqidlist";
+
 #########
 # (1) 结果目录创建
 #########
@@ -79,7 +81,7 @@ my $tmp_dir = "$output_dir/tmp";
 make_dir($tmp_dir);
 
 # 样本并行
-my %hashTax2Species = read_lineage($lineages, 7); # 读取物种注释
+my %hashTax2Species = read_lineage($lineages, 1, 2, 3, 4, 5, 6, 7, 12); # 读取物种注释 
 my $pm = Parallel::ForkManager->new($thread);
    $pm->run_on_start(sub{my ($pid, $sample) = @_; process_bar_array($sample, \@samples)});# 进度条
 foreach my $sample(@samples)
@@ -91,7 +93,7 @@ foreach my $sample(@samples)
     my $summary    = "$tmp_dir/$sample.summary.txt";
 
     fastq_to_fasta($fastq_r1, $fasta, $reads_count); # 提取指定数量的fastq序列
-    system("$blastn -query $fasta -db $nt_db -out $blast -outfmt '7 qacc sseqid staxids pident qcovs length qstart qend sstart send evalue salltitles' $evalue $perc_identity $word_size $max_target_seqs -num_threads 20    -dust no"); # 比对  
+    system("$blastn -query $fasta -db $nt_db -out $blast -outfmt '7 qacc sseqid staxids pident qcovs length qstart qend sstart send evalue salltitles' $evalue $perc_identity $word_size $max_target_seqs -num_threads 20 $seqidlist   -dust no"); # 比对  
     summary($blast, $fasta, $summary, \%hashTax2Species, $reads_count); # 注释species并汇总
 
     $pm->finish;    
@@ -133,6 +135,8 @@ sub summary{
     my $hashTax2Species = shift @_; # tax -> species 映射
     my $reads_count     = shift @_; # 项目分析总reads数量
     
+    my @need_annos = split /,/, "superkingdom,kingdom,phylum,class,order,family,genus";
+
     # (1) 注释汇总
     my %hashCount;
     my %hashBlastReads;
@@ -143,28 +147,47 @@ sub summary{
     {
         next if($_=~/^#/);
         $_=~s/[\r\n]//g;
-        my ($reads_name, $gi, $tax_id, $tmp) = split /\t/, $_, 4;
-        my $species = (exists $hashTax2Species{$tax_id}{'species'} and $hashTax2Species{$tax_id}{'species'} =~ /\w/) ? $hashTax2Species{$tax_id}{'species'} : "NO_RANK";
-        
+        my ($reads_name, $gi_info, $tax_id, $tmp) = split /\t/, $_, 4;
+        my ($gi, $gi_id, $gb, $gb_id) = split /[|]/, $gi_info;
         # 只看比对的第一个结果
         next if($reads_name eq $last_reads_name); 
         $last_reads_name = $reads_name;
         
         $hashBlastReads{$reads_name}++;
-        $hashCount{$species}++;
+
+        # 关键物种
+        my $species      = (exists $hashTax2Species{$tax_id}{'species'}      and $hashTax2Species{$tax_id}{'species'}      =~ /\w/) ? $hashTax2Species{$tax_id}{'species'}      : "NO_RANK";
+        $hashCount{$species}{'Count'}++;
+        $hashCount{$species}{"GB"}{$gb_id}++;  # 记录物种GB信息
+
+        # 物种其他注释
+        foreach my $level(@need_annos)
+        {
+            my $anno_info = (exists $hashTax2Species{$tax_id}{$level} and $hashTax2Species{$tax_id}{$level} =~ /\w/) ? $hashTax2Species{$tax_id}{$level} : "NO_RANK";
+            $hashCount{$species}{$level}{$anno_info}++; # 记录当前物种在每个水平上的注释信息。
+        }
+
         $count_blast++;
     }
     close BLAST;
-    $hashCount{'NO_BLAST'} = $reads_count - $count_blast if($count_blast < $reads_count); # 部分序列没有比对上
+    $hashCount{'NO_BLAST'}{'Count'} = $reads_count - $count_blast if($count_blast < $reads_count); # 部分序列没有比对上
 
     # (2) 汇总结果输出
     open SUMMARY, ">$summary";
-    print SUMMARY "Species\tReadsCount\tPerc\n";
-    foreach my $species(sort {$hashCount{$b} <=> $hashCount{$a}} keys %hashCount)
+    print SUMMARY "Species\tReadsCount\tPerc\tGB\t" . (join "\t", @need_annos) . "\n";
+    foreach my $species(sort {$hashCount{$b}{'Count'} <=> $hashCount{$a}{'Count'}} keys %hashCount)
     {
-        my $count = $hashCount{$species};
-        my $perc  = sprintf "%0.4f", $count / $reads_count;
-        print SUMMARY "$species\t$count\t$perc\n";
+        my $count       = $hashCount{$species}{'Count'};
+        my $perc        = sprintf "%0.4f", $count / $reads_count;
+        my $gb_info     = join ",", sort {$hashCount{$species}{'GB'}{$b}     <=> $hashCount{$species}{'GB'}{$a}}     keys %{$hashCount{$species}{'GB'}}; # 物种的GB编号
+        my @datas       = ($species, $count, $perc, $gb_info);
+
+        foreach my $level(@need_annos)
+        {
+            my $anno_info = join ",", sort {$hashCount{$species}{$level}{$b}     <=> $hashCount{$species}{$level}{$a}}     keys %{$hashCount{$species}{$level}}; # 按照数量顺序输出注释名称
+            push @datas, $anno_info;
+        }
+        print SUMMARY (join "\t", @datas) . "\n";
     }
     close SUMMARY;
 
@@ -292,14 +315,23 @@ Options:
         --output_dir/-o   结果输出目录，例如：/home/wangly/work/exome/18B1125B/report/nt_test 。流程会自动创建结果目录。
 
     选填：
-        --sample_list/-s   分析的样本，默认为fastq_dir下的所有样本，也可以指定分析样本，例如：A1,B1,C1
-        --reads_count/-c   分析的序列数量，默认为：10000
-        --thread/-t        并行样本数量，默认：3
-        --word_size/-w     blastn word_size 参数，>= 4
-        --evalue/-e        evalue 参数，默认：1e-5
-        --perc_identity/-p 一致性比例参数，默认：97
+        --sample_list/-s     分析的样本，默认为fastq_dir下的所有样本，也可以指定分析样本，例如：A1,B1,C1
+        --reads_count/-c     分析的序列数量，默认为：10000
+        --thread/-t          并行样本数量，默认：3
+        --word_size/-w       blastn word_size 参数，>= 4
+        --evalue/-e          evalue 参数，默认：1e-5
+        --perc_identity/-p   一致性比例参数，默认：97
         --max_target_seqs/-m 保留的比对数量，默认：5
-        --help/-h          查看帮助文档
+        --seqidlist          nt库比对到文件中指定的物种id中，如果不指定，则比对到nt库所有物种id。文件中只有一列数据，一行一个id编号，例如：U13103.1。默认：不过滤
+                             参考示例（nt库中线粒体、叶绿体物种ID）：/home/genesky/database/ncbi/nt/mitochondrion_chloroplast_id.txt
+        --help/-h            查看帮助文档
+
+    示例：
+    （1）常规用法
+    perl nt_blast.pl -i /home/project/abc -o /home/test/nt_blast
+    
+    (2) 线粒体、叶绿体细胞器组装
+    perl nt_blast.pl -i /home/project/abc -o /home/test/nt_blast -p 90 --seqidlist /home/genesky/database/ncbi/nt/mitochondrion_chloroplast_id.txt -c 100000
     \n";
     return $info;
 }
