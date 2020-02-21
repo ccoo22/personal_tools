@@ -25,7 +25,6 @@ db       <- list(
 'mmu' = 'org.Mm.eg.db',
 'rno' = 'org.Rn.eg.db',
 'eco' = 'org.EcK12.eg.db'
-
 )
 
 gene     <- read.table(input, stringsAsFactors=F, fill = T)[[1]]
