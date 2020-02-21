@@ -57,9 +57,9 @@ my @samples;
 if($sample_list eq "") # 所有样本
 {
     opendir FASTQ_DIR, $fastq_dir;
-    while(readdir FASTQ_DIR)
-    {
-        my ($sample) = $_ =~ /(.*)_R1.fastq.gz/;
+    while(my $file = readdir FASTQ_DIR)
+    { 
+        my ($sample) = $file =~ /(.*)_R1.fastq.gz/;
         push @samples, $sample if(defined $sample);
     }
     close FASTQ_DIR;
@@ -68,7 +68,7 @@ else # 自定义样本
 {
     @samples = split /,/, $sample_list;
 }
-
+ 
 print "    process sample: " . (join ",", @samples) . "\n";
 
 #########
@@ -92,8 +92,8 @@ foreach my $sample(@samples)
     my $blast      = "$tmp_dir/$sample\_R1.$reads_count.blast";
     my $summary    = "$tmp_dir/$sample.summary.txt";
 
-    fastq_to_fasta($fastq_r1, $fasta, $reads_count); # 提取指定数量的fastq序列
-    system("$blastn -query $fasta -db $nt_db -out $blast -outfmt '7 qacc sseqid staxids pident qcovs length qstart qend sstart send evalue salltitles' $evalue $perc_identity $word_size $max_target_seqs -num_threads 20 $seqidlist   -dust no"); # 比对  
+     fastq_to_fasta($fastq_r1, $fasta, $reads_count); # 提取指定数量的fastq序列
+     system("$blastn -query $fasta -db $nt_db -out $blast -outfmt '7 qacc sseqid staxids pident qcovs length qstart qend sstart send evalue salltitles' $evalue $perc_identity $word_size $max_target_seqs -num_threads 20 $seqidlist   -dust no"); # 比对  
     summary($blast, $fasta, $summary, \%hashTax2Species, $reads_count); # 注释species并汇总
 
     $pm->finish;    
@@ -140,7 +140,7 @@ sub summary{
     # (1) 注释汇总
     my %hashCount;
     my %hashBlastReads;
-    my $count_blast; # 比对成功的reads
+    my $count_blast = 0; # 比对成功的reads
     my $last_reads_name = "";
     open BLAST, $blast;
     while(<BLAST>)
@@ -157,35 +157,45 @@ sub summary{
 
         # 关键物种
         my $species      = (exists $hashTax2Species{$tax_id}{'species'}      and $hashTax2Species{$tax_id}{'species'}      =~ /\w/) ? $hashTax2Species{$tax_id}{'species'}      : "NO_RANK";
-        $hashCount{$species}{'Count'}++;
-        $hashCount{$species}{"GB"}{$gb_id}++;  # 记录物种GB信息
+        $hashCount{'Species'}{$species}{'Count'}++;
+        $hashCount{'Species'}{$species}{"GB"}{$gb_id}++;  # 记录物种GB信息
 
         # 物种其他注释
         foreach my $level(@need_annos)
         {
             my $anno_info = (exists $hashTax2Species{$tax_id}{$level} and $hashTax2Species{$tax_id}{$level} =~ /\w/) ? $hashTax2Species{$tax_id}{$level} : "NO_RANK";
-            $hashCount{$species}{$level}{$anno_info}++; # 记录当前物种在每个水平上的注释信息。
+            # $hashCount{'Species'}{$species}{$level}{$anno_info}++; 
+            $hashCount{'Species'}{$species}{$level} = $anno_info; # 记录当前物种在每个水平上的注释信息。
+            $hashCount{'Level'}{$level}{$anno_info}++; # 记录每一个水平下，每一种注释的数量  
         }
 
         $count_blast++;
     }
     close BLAST;
-    $hashCount{'NO_BLAST'}{'Count'} = $reads_count - $count_blast if($count_blast < $reads_count); # 部分序列没有比对上
+    $hashCount{'Species'}{'NO_BLAST'}{'Count'} = $reads_count - $count_blast if($count_blast < $reads_count); # 部分序列没有比对上
 
     # (2) 汇总结果输出
     open SUMMARY, ">$summary";
     print SUMMARY "Species\tReadsCount\tPerc\tGB\t" . (join "\t", @need_annos) . "\n";
-    foreach my $species(sort {$hashCount{$b}{'Count'} <=> $hashCount{$a}{'Count'}} keys %hashCount)
+    foreach my $species(sort {$hashCount{'Species'}{$b}{'Count'} <=> $hashCount{'Species'}{$a}{'Count'}} keys %{$hashCount{'Species'}})
     {
-        my $count       = $hashCount{$species}{'Count'};
+        my $count       = $hashCount{'Species'}{$species}{'Count'};
         my $perc        = sprintf "%0.4f", $count / $reads_count;
-        my $gb_info     = join ",", sort {$hashCount{$species}{'GB'}{$b}     <=> $hashCount{$species}{'GB'}{$a}}     keys %{$hashCount{$species}{'GB'}}; # 物种的GB编号
+        my $gb_info     = join ",", sort {$hashCount{'Species'}{$species}{'GB'}{$b}     <=> $hashCount{'Species'}{$species}{'GB'}{$a}}     keys %{$hashCount{'Species'}{$species}{'GB'}}; # 物种的GB编号
         my @datas       = ($species, $count, $perc, $gb_info);
 
         foreach my $level(@need_annos)
-        {
-            my $anno_info = join ",", sort {$hashCount{$species}{$level}{$b}     <=> $hashCount{$species}{$level}{$a}}     keys %{$hashCount{$species}{$level}}; # 按照数量顺序输出注释名称
-            push @datas, $anno_info;
+        {   
+            if($species eq "NO_BLAST")
+            {
+                push @datas, "";
+            }else
+            {
+                my $anno_info = $hashCount{'Species'}{$species}{$level};
+                my $count     = $hashCount{'Level'}{$level}{$anno_info};
+                push @datas, "$anno_info($count)";
+            }
+
         }
         print SUMMARY (join "\t", @datas) . "\n";
     }
