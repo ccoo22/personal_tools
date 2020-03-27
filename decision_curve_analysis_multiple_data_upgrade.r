@@ -2,14 +2,15 @@
 
 library(docopt)
 
-"Usage: decision_curve_analysis_multiple_data.r -p <prefix> -f <file> -n <string> [--xmin <numeric>  --xmax <numeric> --pdf_width <numeric> --pdf_height <numeric>   --rlib <dir> ]
+"Usage: decision_curve_analysis_multiple_data.r -p <prefix> -f <file> -n <string> [--xmin <numeric>  --xmax <numeric>  --ymax <numeric> --pdf_width <numeric> --pdf_height <numeric>   --rlib <dir> ]
 
 Options:
-    -f, --files <file>            分析的数据文件列表。包含表头，第一列样本名，第二列分组信息（只能有1、0）,第三列往后是用于数据分析的所有自变量。多个文件时，用“逗号”分隔。
+    -f, --files <file>            分析的数据文件列表。包含表头，第一列样本名，第二列分组信息（只能有1、0）,第三列往后是用于数据分析的所有自变量。多个文件时，用“逗号”分隔。注：文件的列名字不能有空格、‘-’、‘+’等特殊符号
     -n, --names <string>          与files中的文件一一对应，用于图像展示的命名。
     -p, --output_prefix <prefix>  结果输出前缀，示例：./abc
     --xmin <numeric>              DCA绘图中，x轴最小值 [default: 0]
     --xmax <numeric>              DCA绘图中，x轴最大值 [default: 1]
+    --ymax <numeric>              DCA绘图中，y轴最大值 [default: None]
     --pdf_width <numeric>         DCA图的PDF宽度 [default: 12]
     --pdf_height <numeric>        DCA图的PDF宽度 [default: 9]
     --rlib <dir>                  R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
@@ -20,6 +21,7 @@ names             <- opts$names
 output_prefix     <- opts$output_prefix
 xmin              <- as.numeric(opts$xmin) 
 xmax              <- as.numeric(opts$xmax) 
+ymax              <- opts$ymax
 pdf_width         <- as.numeric(opts$pdf_width) 
 pdf_height        <- as.numeric(opts$pdf_height)
 rlib              <- opts$rlib
@@ -84,14 +86,32 @@ color_list = c('red', 'blue', 'green', mycol)
 dca_pdf_file = paste(output_prefix, ".pdf", sep = "", collapse = NULL)
 pdf(dca_pdf_file, width = pdf_width, height = pdf_height)
 message('plot: ', dca_pdf_file, "\n")
-plot_decision_curve(fit_list, 
+
+# ymax是否定义？
+if(ymax == 'None')
+{
+    plot_decision_curve(fit_list, 
            curve.names = names(fit_list),
            cost.benefit.axis = FALSE,
            col = color_list[1:length(fit_list)],
            confidence.intervals = FALSE,
            standardize = FALSE,
-           xlim = c(xmin, xmax)
+           xlim = c(xmin, xmax),
            )
+}else {
+    ymax = as.numeric(ymax)
+    plot_decision_curve(fit_list, 
+           curve.names = names(fit_list),
+           cost.benefit.axis = FALSE,
+           col = color_list[1:length(fit_list)],
+           confidence.intervals = FALSE,
+           standardize = FALSE,
+           xlim = c(xmin, xmax),
+           ylim = c(-0.05, ymax),
+  
+           )
+}
+
 dev.off()
 
 
