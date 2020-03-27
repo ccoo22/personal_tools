@@ -18,7 +18,7 @@ my $nt_db       = "/home/genesky/database/ncbi/nt/blast_idx/nt";
 my $table2excel = "perl /home/pub/bin/NGS/chip/GATK4/tools/personal/table2excel.pl";
 
 # 检测 -> 脚本输入
-my ($fastq_dir, $output_dir, $sample_list, $reads_count, $thread, $word_size, $evalue, $perc_identity, $max_target_seqs, $seqidlist, $if_help);
+my ($fastq_dir, $output_dir, $sample_list, $reads_count, $thread, $word_size, $evalue, $perc_identity, $max_target_seqs, $max_hsps, $seqidlist, $if_help);
 GetOptions(
     "fastq_dir|i=s"     => \$fastq_dir,
     "output_dir|o=s"    => \$output_dir,
@@ -29,6 +29,7 @@ GetOptions(
     "evalue|e:i"        => \$evalue,
     "perc_identity|p:i" => \$perc_identity,
     "max_target_seqs|m:i" => \$max_target_seqs,
+    "max_hsps:i"          => \$max_hsps,
     "seqidlist=s"       => \$seqidlist,
     "help|h"            => \$if_help,
 );
@@ -37,11 +38,14 @@ die help() if(defined $if_help or (not defined $fastq_dir or not defined $output
 $sample_list     = ""    if(not defined $sample_list);
 $reads_count     = 10000 if(not defined $reads_count);
 $thread          = 3     if(not defined $thread);
-$word_size       = (not defined $word_size)       ? ""                   : "-word_size $word_size";
-$evalue          = (not defined $evalue)          ? "-evalue 1e-5"       : "-evalue $evalue";
-$perc_identity   = (not defined $perc_identity)   ? "-perc_identity 97"  : "-perc_identity $perc_identity";
-$max_target_seqs = (not defined $max_target_seqs) ? "-max_target_seqs 5" : "-max_target_seqs $max_target_seqs";
-$seqidlist       = (not defined $seqidlist)       ? ""                   : "-seqidlist $seqidlist";
+$word_size       = (not defined $word_size)       ? ""                     : "-word_size $word_size";
+$evalue          = (not defined $evalue)          ? "-evalue 1e-5"         : "-evalue $evalue";
+$perc_identity   = (not defined $perc_identity)   ? "-perc_identity 97"    : "-perc_identity $perc_identity";
+$max_target_seqs = (not defined $max_target_seqs) ? "-max_target_seqs 200" : "-max_target_seqs $max_target_seqs";
+$max_hsps        = (not defined $max_hsps)        ? "-max_hsps 1"          : "-max_hsps $max_hsps";
+$seqidlist       = (not defined $seqidlist)       ? ""                     : "-seqidlist $seqidlist";
+
+# 这个软件的功能是做物种筛查，故应该尽可能的提高物种序列数量，减少同一个物种的多次输出
 
 #########
 # (1) 结果目录创建
@@ -91,9 +95,9 @@ foreach my $sample(@samples)
     my $fasta      = "$tmp_dir/$sample\_R1.$reads_count.fa";
     my $blast      = "$tmp_dir/$sample\_R1.$reads_count.blast";
     my $summary    = "$tmp_dir/$sample.summary.txt";
-
-     fastq_to_fasta($fastq_r1, $fasta, $reads_count); # 提取指定数量的fastq序列
-     system("$blastn -query $fasta -db $nt_db -out $blast -outfmt '7 qacc sseqid staxids pident qcovs length qstart qend sstart send evalue salltitles' $evalue $perc_identity $word_size $max_target_seqs -num_threads 20 $seqidlist   -dust no"); # 比对  
+    
+    fastq_to_fasta($fastq_r1, $fasta, $reads_count); # 提取指定数量的fastq序列
+    system("$blastn -query $fasta -db $nt_db -out $blast -outfmt '7 qacc sseqid staxids pident qcovs length' $evalue $perc_identity $word_size $max_target_seqs $max_hsps -num_threads 20 $seqidlist   -dust no"); # 比对  qacc sseqid staxids pident qcovs length qstart qend sstart send evalue salltitles
     summary($blast, $fasta, $summary, \%hashTax2Species, $reads_count); # 注释species并汇总
 
     $pm->finish;    
@@ -105,23 +109,37 @@ $pm->wait_all_children;
 #########
 print "5: summary to excel\n";
 
-my $excel_summary        = "$output_dir/NT_Blast_Summary.xlsx";
-my $excel_unmapped       = "$output_dir/NT_Blast_unmapped.xlsx";
-my $summary_list  = "";
-my $unmapped_list = "";
-my $sample_list2  = "";
+my $excel_summary        = "$output_dir/NT_Blast_Summary.xlsx";        # 每一条序列只取最优的一条比对结果
+my $excel_sum_all        = "$output_dir/NT_Blast_Summary_SumAll.xlsx"; # 取所有比对结果，看每一个物种的比对情况。如果想充分利用这个结果，最好解除max_target_seqs参数限制。
+my $excel_sum_decrease   = "$output_dir/NT_Blast_Summary_SumDecrease.xlsx"; # 在SumAll的基础上，依次挑选丰度最高物种，输出统计，并删除该物种包含的reads记录，剩下的reads再重新挑选丰度最高的物种...
+my $excel_unmapped       = "$output_dir/NT_Blast_unmapped.xlsx";       # 比对失败的结果
+my $summary_list       = "";
+my $sum_all_list       = "";
+my $sum_decrease_list  = "";
+my $unmapped_list      = "";
+my $sample_list2       = "";
 foreach my $sample(@samples)
 {
-    my $summary    = "$tmp_dir/$sample.summary.txt";
-    my $unmapped   = "$summary.unmapped.txt";
-    $summary_list  .= "$summary,";
-    $unmapped_list .= "$unmapped,";
-    $sample_list2  .= "$sample,";
+    my $summary         = "$tmp_dir/$sample.summary.txt";
+    my $sum_all         = "$summary.sum.all.txt";
+    my $sum_decrease    = "$summary.sum.decrease.txt";
+    my $unmapped        = "$summary.unmapped.txt";
+    
+    $summary_list       .= "$summary,";
+    $sum_all_list       .= "$sum_all,";
+    $sum_decrease_list  .= "$sum_decrease,";
+    $unmapped_list      .= "$unmapped,";
+    $sample_list2       .= "$sample,";
 
 }
-system("$table2excel -i $summary_list  -s $sample_list2 -o $excel_summary");
-system("$table2excel -i $unmapped_list -s $sample_list2 -o $excel_unmapped");
-print "final: $excel_summary\n";
+system("$table2excel -i $summary_list       -s $sample_list2 -o $excel_summary");
+system("$table2excel -i $sum_all_list       -s $sample_list2 -o $excel_sum_all");
+system("$table2excel -i $sum_decrease_list  -s $sample_list2 -o $excel_sum_decrease");
+system("$table2excel -i $unmapped_list      -s $sample_list2 -o $excel_unmapped");
+print "final:           $excel_summary  \n";
+print "accumlate stats: $excel_sum_all  \n";
+print "decrease  stats: $excel_sum_decrease\n";
+print "unmapped:        $excel_unmapped \n";
 
 
 
@@ -137,11 +155,15 @@ sub summary{
     
     my @need_annos = split /,/, "superkingdom,kingdom,phylum,class,order,family,genus";
 
+    #####################
     # (1) 注释汇总
-    my %hashCount;
-    my %hashBlastReads;
-    my $count_blast = 0; # 比对成功的reads
-    my $last_reads_name = "";
+    #####################
+    my %hashSUMALL;  # 记录一条序列的所有比对结果，汇总统计模式
+    my %hashCount;  # 记录最优比对结果统计
+    my %hashBlastReads;  # 记录比对成功的reads名称,物种
+    my %hashAnno;  # 记录每一个物种的注释信息
+    my $count_blast = 0; # 比对成功的reads数量
+    my $last_reads  = "";  # 上一条reads的名称
     open BLAST, $blast;
     while(<BLAST>)
     {
@@ -149,14 +171,27 @@ sub summary{
         $_=~s/[\r\n]//g;
         my ($reads_name, $gi_info, $tax_id, $tmp) = split /\t/, $_, 4;
         my ($gi, $gi_id, $gb, $gb_id) = split /[|]/, $gi_info;
-        # 只看比对的第一个结果
-        next if($reads_name eq $last_reads_name); 
-        $last_reads_name = $reads_name;
-        
-        $hashBlastReads{$reads_name}++;
 
         # 关键物种
         my $species      = (exists $hashTax2Species{$tax_id}{'species'}      and $hashTax2Species{$tax_id}{'species'}      =~ /\w/) ? $hashTax2Species{$tax_id}{'species'}      : "NO_RANK";
+
+        # 每一个物种的比对reads数量
+        $hashBlastReads{$reads_name}{$species}++;
+        $hashSUMALL{$species}{$reads_name}++;
+        $hashSUMALL{$species}{'UniqueCount'}++ if($hashSUMALL{$species}{$reads_name} == 1);
+        foreach my $level(@need_annos)
+        {
+            my $anno_info = (exists $hashTax2Species{$tax_id}{$level} and $hashTax2Species{$tax_id}{$level} =~ /\w/) ? $hashTax2Species{$tax_id}{$level} : "NO_RANK";
+            $hashAnno{$species}{$level} = $anno_info;
+        }
+
+
+        # 只看比对的第一个结果
+        next if($reads_name eq $last_reads);  # 后面的物种注释，仅读取第一个比对结果
+        $last_reads = $reads_name;
+        
+
+        # 种水平的注释记录
         $hashCount{'Species'}{$species}{'Count'}++;
         $hashCount{'Species'}{$species}{"GB"}{$gb_id}++;  # 记录物种GB信息
 
@@ -174,7 +209,9 @@ sub summary{
     close BLAST;
     $hashCount{'Species'}{'NO_BLAST'}{'Count'} = $reads_count - $count_blast if($count_blast < $reads_count); # 部分序列没有比对上
 
+    #####################
     # (2) 汇总结果输出
+    #####################
     open SUMMARY, ">$summary";
     print SUMMARY "Species\tReadsCount\tPerc\tGB\t" . (join "\t", @need_annos) . "\n";
     foreach my $species(sort {$hashCount{'Species'}{$b}{'Count'} <=> $hashCount{'Species'}{$a}{'Count'}} keys %{$hashCount{'Species'}})
@@ -201,7 +238,9 @@ sub summary{
     }
     close SUMMARY;
 
+    #####################
     # (3) 比对失败序列汇总
+    #####################
     open UNMAPPED, ">$summary.unmapped.txt";
     print UNMAPPED "ReadsName\tSeq\n";
 
@@ -214,6 +253,79 @@ sub summary{
         print UNMAPPED "$id\t$seq\n";
     }
     close UNMAPPED;
+
+    #####################
+    # (4) SUMALL汇总模式
+    #####################
+    open SUMALL, ">$summary.sum.all.txt";
+    print SUMALL "Species\tReadsCount\tPerc\t" . (join "\t", @need_annos) . "\n";
+    foreach my $species( sort {$hashSUMALL{$b}{'UniqueCount'} <=> $hashSUMALL{$a}{'UniqueCount'}} keys %hashSUMALL)
+    {   
+        my $count  = $hashSUMALL{$species}{'UniqueCount'};
+        my $perc   = sprintf "%0.4f", $count / $reads_count;
+
+        my @datas  = ($species, $count, $perc);
+        foreach my $level(@need_annos)
+        {   
+            my $anno_info = exists $hashAnno{$species}{$level} ? $hashAnno{$species}{$level} : "";
+            push @datas, $anno_info;
+        }
+
+        print SUMALL (join "\t", @datas) . "\n";
+    }
+    close SUMALL;
+
+    #####################
+    # (5) SUM Decrease汇总模式
+    #####################
+    open SUMDECREASE, ">$summary.sum.decrease.txt";
+    print SUMDECREASE "Species\tReadsCount\tPerc\t" . (join "\t", @need_annos) . "\n";
+    my $max_circle = 20;  # 最多显示前n个物种
+    my $now_circle = 0;
+    while(1)
+    {   
+        $now_circle++;
+
+
+        # 记录当前的reads下，物种包含的reads名称与数量
+        my @reads_all = keys %hashBlastReads;
+        last if(scalar(@reads_all) == 0);  #  所有reads已分配完毕，跳出循环
+
+        my %hashSpecies;
+        foreach my $reads(@reads_all)
+        {
+            foreach my $species(keys %{$hashBlastReads{$reads}})
+            {   
+                $hashSpecies{$species}{$reads} = 1;  
+                $hashSpecies{$species}{'UniqueCount'}++;
+            }
+        }
+        
+        # 获取数量最多的物种
+        my ($max_species, @other_species) = sort {$hashSpecies{$b}{'UniqueCount'} <=> $hashSpecies{$a}{'UniqueCount'}} keys %hashSpecies;
+        my $count  = $hashSpecies{$max_species}{'UniqueCount'};
+        my $perc   = sprintf "%0.4f", $count / $reads_count;
+        
+        my @datas  = ($max_species, $count, $perc);
+        foreach my $level(@need_annos)
+        {   
+            my $anno_info = exists $hashAnno{$max_species}{$level} ? $hashAnno{$max_species}{$level} : "";
+            push @datas, $anno_info;
+        }
+        print SUMDECREASE (join "\t", @datas) . "\n";
+ 
+        # 从数据库里删除已统计过的reads
+        foreach my $reads(keys %{$hashSpecies{$max_species}})
+        {   
+            next if($reads eq "UniqueCount");
+            delete $hashBlastReads{$reads};
+        }
+        
+        # 
+        last if($now_circle == $max_circle);
+    }
+    close SUMDECREASE;
+
 }
 
 
@@ -331,10 +443,17 @@ Options:
         --word_size/-w       blastn word_size 参数，>= 4
         --evalue/-e          evalue 参数，默认：1e-5
         --perc_identity/-p   一致性比例参数，默认：97
-        --max_target_seqs/-m 保留的比对数量，默认：5
+        --max_target_seqs/-m 保留的数据库序列比对数量，如果一个数据库序列有多个同源序列，可能会生成n个这条序列的同源比对结果。值越大，生成的文件越大，运行时间也越长。默认：200
+        --max_hsps           设置同一个query和同一个subject的匹配结果最多可以在结果文件中保留多少个。理论上，保留的是最佳比对结果。值越大，生成的文件越大，运行时间也越长。 默认：1
         --seqidlist          nt库比对到文件中指定的物种id中，如果不指定，则比对到nt库所有物种id。文件中只有一列数据，一行一个id编号，例如：U13103.1。默认：不过滤
                              参考示例（nt库中线粒体、叶绿体物种ID）：/home/genesky/database/ncbi/nt/mitochondrion_chloroplast_id.txt
         --help/-h            查看帮助文档
+
+    # 输出文件简介
+    NT_Blast_Summary.xlsx  仅统计reads的第一个比对结果，汇总物种注释
+    NT_Blast_Summary_SumAll.xlsx  统计reads的所有比对结果，汇总注释。即：一条reads同时统计到多个物种上
+    NT_Blast_Summary_SumDecrease.xlsx  累计减法统计reads的所有比对结果，汇总注释。过程：记录每一条reads的所有比对物种，统计丰度最高的物种并输出，然后删除所有比对到这个物种的reads记录（等同于这条reads没有参与比对过程），然后再次统计丰度最高的物种并输出，依次循环。
+    NT_Blast_unmapped.xlsx  比对失败的reads序列
 
     示例：
     （1）常规用法
@@ -346,3 +465,7 @@ Options:
     return $info;
 }
 
+# my $excel_summary        = "$output_dir/NT_Blast_Summary.xlsx";        # 每一条序列只取最优的一条比对结果
+# my $excel_sum_all        = "$output_dir/NT_Blast_Summary_SumAll.xlsx"; # 取所有比对结果，看每一个物种的比对情况。如果想充分利用这个结果，最好解除max_target_seqs参数限制。
+# my $excel_sum_decrease   = "$output_dir/NT_Blast_Summary_SumDecrease.xlsx"; # 在SumAll的基础上，依次挑选丰度最高物种，输出统计，并删除该物种包含的reads记录，剩下的reads再重新挑选丰度最高的物种...
+# my $excel_unmapped       = "$output_dir/NT_Blast_unmapped.xlsx";       # 比对失败的结果
