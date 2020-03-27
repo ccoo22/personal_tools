@@ -10,8 +10,8 @@ use constant SCRIPTDIR => (File::Spec->splitpath(File::Spec->rel2abs($0)))[1];
 use constant PWD => $ENV{"PWD"};
 
 # 定义 -> 核心变量
-my $sra_prefetch   = "/home/genesky/software/sra_tools/2.9.6-1/bin/prefetch";
-my $sra_fastq_dump = "/home/genesky/software/sra_tools/2.9.6-1/bin/fastq-dump";
+my $sra_prefetch   = "/home/genesky/software/sra_tools/2.10.4/bin/prefetch";
+my $sra_fastq_dump = "/home/genesky/software/sra_tools/2.10.4/bin/fastq-dump";
 my $ascp           = "/home/xudl/.aspera/connect/bin/ascp|/home/xudl/.aspera/connect/etc/asperaweb_id_dsa.openssh";
 
 # 检测 -> 脚本输入
@@ -28,7 +28,7 @@ die help() if(defined $if_help or (not defined $input_sra_code or not defined $o
 # (1) 下载
 print "Download sra file \n";
 mkdir $output_dir if(not -e $output_dir);
-system("$sra_prefetch --option-file $input_sra_code -t fasp --ascp-path '$ascp' -O $output_dir --max-size 300G");
+system("$sra_prefetch --option-file $input_sra_code   -O $output_dir --max-size 2000000000");
 
 # (2) 转换fastq
 exit if(not defined $convert_fastq);
@@ -55,7 +55,7 @@ my $pm = Parallel::ForkManager->new(10);
 foreach my $sra_code(@sra_codes)
 {   
     $pm->start($sra_code) and next;
-    system("$sra_fastq_dump  $output_dir/$sra_code.sra -O $fastq_dir/ --split-3 --gzip --defline-qual '+' --defline-seq '\@\$ac-\$si/\$ri' ");
+    system("$sra_fastq_dump  $output_dir/$sra_code.sra -O $fastq_dir/ --split-files --gzip --defline-qual '+' --defline-seq '\@\$ac-\$si/\$ri' ");
     $pm->finish;          
 }
 $pm->wait_all_children;
