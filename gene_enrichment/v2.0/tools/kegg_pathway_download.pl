@@ -338,6 +338,7 @@ sub read_color_file{
     while(<COLOR>)
     {
         $_=~s/[\r\n]//g;
+        next if($_!~/\w/);
         my ($gene, $regular) = split /\t/, $_;
 		my $color = (defined $regular and $regular ne '') ? $regular : "up";
         $hashColor{$gene} = lc($color);
