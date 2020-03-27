@@ -150,11 +150,11 @@ y1 = par("usr")[3]
 y2 = par("usr")[4]
 
 par(mar = c(5,0, 1, 0))
-p = GO$pvalue * -1
+p = log10(GO$pvalue)
 p_bar = barplot(p,horiz=T,col="PaleGreen3",border = NA, xaxt= "n")
 max = format(max(GO$pvalue),scientific=TRUE,digit=2)
-axis(side = 1, line = -1, at = c(0,min(p)), labels = F)
-title(xlab = "P value",line = 0.91, cex.lab = 1.2)
+axis(side = 1, line = -1, at = c(0, unique(c(0,ceiling(min(p))))), labels = T)
+title(xlab = "log10(pvalue)",line = 0.91, cex.lab = 1)
 
 par(mar = c(5,3, 1, 1))
 a = plot(1:5,ylim = c(y1,y2),type = "n", xaxs = "i", yaxs = "i", axes=F, xlab="",ylab="")
