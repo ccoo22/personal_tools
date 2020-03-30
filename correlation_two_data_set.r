@@ -9,8 +9,8 @@ Options:
    --compare <file>        两列特征名称数据，表示需要做相关性分析的特征配对。没有表头，第一列是data1中的特征名字，第二列是data2中的特征名字。
    --sample <string>       样本列表，逗号分隔
    --output <file>         输出文件
-   --keep1_name <string>   数据表1中的指定列输出到结果中, 多个列名用逗号分隔， 默认仅保留特征名称
-   --keep2_name <string>   数据表2中的指定列输出到结果中, 多个列名用逗号分隔， 默认仅保留特征名称
+   --keep1_name <string>   数据表1中的指定列输出到结果中, 多个列名用逗号分隔， 默认仅保留特征名称。强烈建议第一个表头是特征名称
+   --keep2_name <string>   数据表2中的指定列输出到结果中, 多个列名用逗号分隔， 默认仅保留特征名称。强烈建议第一个表头是特征名称
    --method <string>       分析方法，仅支持 pearson/spearman [default: pearson]" -> doc
 
 opts                <- docopt(doc, version = 'Program : correlation_two_data_set v1.0 \n          甘斌 129\n')
