@@ -98,7 +98,7 @@ fdr = p.adjust(result[,1], method = "BH")
 means = sapply(Groups, function(g) apply(DataForDEA[,as.character(SampleInfo[as.character(SampleInfo$Group) %in% g, 1])], 1, mean))
 colnames(means) = paste("Mean.In.", Groups, sep = "")
 	
-result  = data.frame(Gene = rownames(DataForDEA), DataForDEA, means, result[,1], FDR = fdr , Type = "Not DEG", result[, 2:ncol(result)], check.names = F)
+result  = data.frame(Gene = rownames(DataForDEA), DataForDEA, means, Pvalue=result[,1], FDR = fdr , Type = "Not DEG", result[, 2:ncol(result)], check.names = F, stringsAsFactors =F)
 result  = result[order(result$Pvalue),]
 result$Type[result$Pvalue < 0.05] = "DEG"
 
