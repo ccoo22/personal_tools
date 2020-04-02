@@ -1,5 +1,4 @@
-#!/usr/bin/env Rscript
-.libPaths("/home/genesky/software/r/3.5.1/lib64/R/library/")
+#!/home/genesky/software/r/3.5.1/bin/Rscript
 library(docopt)
 "Usage: pca_tree.r -t <file> -g <file> -o <file> [--text_size <num>]
 Options:
@@ -20,7 +19,7 @@ text_size                <- opts$text_size
 # group_file               <- '/home/ganb/work/tmp/17B1116A_18B0511B/17B1116A/group.txt'
 # output                   <- './test.pdf'
  
- 
+options(warn=-1)
 library(ggplot2)
 library(ggtree)
 library(ape)
