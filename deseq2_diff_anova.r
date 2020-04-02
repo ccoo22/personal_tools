@@ -110,7 +110,7 @@ write.table(result, anova_file, row.names = F, quote = F,sep = "\t")
 # heatmap
 
 myheatcol    = colorpanel(75, 'green','black','red')
-data         = data.matrix(result[result$Type == "DEG", SampleInfo$sample])
+data         = data.matrix(result[result$Type == "DEG", rownames(SampleInfo)])
 heatmap_file = paste(output_prefix, ".heatmap.pdf", sep="")
 message("output : ", heatmap_file)
 pdf(heatmap_file , width = 12, height = 12)
@@ -131,7 +131,7 @@ heatmap.2( data,
 dev.off()
 
 #Top50
-res = result[result$Type == 'DEG', SampleInfo$sample]
+res = result[result$Type == 'DEG', rownames(SampleInfo)]
 if( nrow(res) < 50 )
 {
     data = data.matrix(res)          # 小于50,全画
