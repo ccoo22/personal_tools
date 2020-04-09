@@ -25,7 +25,9 @@ foreach my $data(sort keys %hashData)
     my $kingship       = "$dir/king.txt";
     my $kingship_clean = "$dir/king.clean.txt";
 
-    system("perl $tassel -fork1 -h $snp -KinshipPlugin  -method Normalized_IBS  -endPlugin -export $dir/king -exportType SqrMatrix 2>&1 |tee -a $log");
+    my $method = "Centered_IBS";  # 能自动填充缺失数据
+    # my $method = "Normalized_IBS";  # 不会填充缺失数据，导致king.txt有NaN产生，进而导致mlm运行失败
+    system("perl $tassel -fork1 -h $snp -KinshipPlugin  -method $method  -endPlugin -export $dir/king -exportType SqrMatrix 2>&1 |tee -a $log");
 
     # 表头特殊处理
     system("sed '1,2d' $kingship > $kingship_clean");
