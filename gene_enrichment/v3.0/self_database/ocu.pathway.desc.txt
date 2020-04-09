@@ -1,0 +1,334 @@
+pathway	pathway_desc
+ocu00010	Glycolysis / Gluconeogenesis
+ocu00020	Citrate cycle (TCA cycle)
+ocu00030	Pentose phosphate pathway
+ocu00040	Pentose and glucuronate interconversions
+ocu00051	Fructose and mannose metabolism
+ocu00052	Galactose metabolism
+ocu00053	Ascorbate and aldarate metabolism
+ocu00061	Fatty acid biosynthesis
+ocu00062	Fatty acid elongation
+ocu00071	Fatty acid degradation
+ocu00072	Synthesis and degradation of ketone bodies
+ocu00100	Steroid biosynthesis
+ocu00120	Primary bile acid biosynthesis
+ocu00130	Ubiquinone and other terpenoidquinone biosynthesis
+ocu00140	Steroid hormone biosynthesis
+ocu00190	Oxidative phosphorylation
+ocu00220	Arginine biosynthesis
+ocu00230	Purine metabolism
+ocu00232	Caffeine metabolism
+ocu00240	Pyrimidine metabolism
+ocu00250	Alanine, aspartate and glutamate metabolism
+ocu00260	Glycine, serine and threonine metabolism
+ocu00270	Cysteine and methionine metabolism
+ocu00280	Valine, leucine and isoleucine degradation
+ocu00290	Valine, leucine and isoleucine biosynthesis
+ocu00310	Lysine degradation
+ocu00330	Arginine and proline metabolism
+ocu00340	Histidine metabolism
+ocu00350	Tyrosine metabolism
+ocu00360	Phenylalanine metabolism
+ocu00380	Tryptophan metabolism
+ocu00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+ocu00410	betaAlanine metabolism
+ocu00430	Taurine and hypotaurine metabolism
+ocu00440	Phosphonate and phosphinate metabolism
+ocu00450	Selenocompound metabolism
+ocu00471	DGlutamine and Dglutamate metabolism
+ocu00472	DArginine and Dornithine metabolism
+ocu00480	Glutathione metabolism
+ocu00500	Starch and sucrose metabolism
+ocu00510	NGlycan biosynthesis
+ocu00511	Other glycan degradation
+ocu00512	Mucin type Oglycan biosynthesis
+ocu00513	Various types of Nglycan biosynthesis
+ocu00514	Other types of Oglycan biosynthesis
+ocu00515	Mannose type Oglycan biosynthesis
+ocu00520	Amino sugar and nucleotide sugar metabolism
+ocu00524	Neomycin, kanamycin and gentamicin biosynthesis
+ocu00531	Glycosaminoglycan degradation
+ocu00532	Glycosaminoglycan biosynthesis  chondroitin sulfate / dermatan sulfate
+ocu00533	Glycosaminoglycan biosynthesis  keratan sulfate
+ocu00534	Glycosaminoglycan biosynthesis  heparan sulfate / heparin
+ocu00561	Glycerolipid metabolism
+ocu00562	Inositol phosphate metabolism
+ocu00563	Glycosylphosphatidylinositol (GPI)anchor biosynthesis
+ocu00564	Glycerophospholipid metabolism
+ocu00565	Ether lipid metabolism
+ocu00590	Arachidonic acid metabolism
+ocu00591	Linoleic acid metabolism
+ocu00592	alphaLinolenic acid metabolism
+ocu00600	Sphingolipid metabolism
+ocu00601	Glycosphingolipid biosynthesis  lacto and neolacto series
+ocu00603	Glycosphingolipid biosynthesis  globo and isoglobo series
+ocu00604	Glycosphingolipid biosynthesis  ganglio series
+ocu00620	Pyruvate metabolism
+ocu00630	Glyoxylate and dicarboxylate metabolism
+ocu00640	Propanoate metabolism
+ocu00650	Butanoate metabolism
+ocu00670	One carbon pool by folate
+ocu00730	Thiamine metabolism
+ocu00740	Riboflavin metabolism
+ocu00750	Vitamin B6 metabolism
+ocu00760	Nicotinate and nicotinamide metabolism
+ocu00770	Pantothenate and CoA biosynthesis
+ocu00780	Biotin metabolism
+ocu00785	Lipoic acid metabolism
+ocu00790	Folate biosynthesis
+ocu00830	Retinol metabolism
+ocu00860	Porphyrin and chlorophyll metabolism
+ocu00900	Terpenoid backbone biosynthesis
+ocu00910	Nitrogen metabolism
+ocu00920	Sulfur metabolism
+ocu00970	AminoacyltRNA biosynthesis
+ocu00980	Metabolism of xenobiotics by cytochrome P450
+ocu00982	Drug metabolism  cytochrome P450
+ocu00983	Drug metabolism  other enzymes
+ocu01040	Biosynthesis of unsaturated fatty acids
+ocu01100	Metabolic pathways
+ocu01200	Carbon metabolism
+ocu01210	2Oxocarboxylic acid metabolism
+ocu01212	Fatty acid metabolism
+ocu01230	Biosynthesis of amino acids
+ocu01521	EGFR tyrosine kinase inhibitor resistance
+ocu01522	Endocrine resistance
+ocu01523	Antifolate resistance
+ocu01524	Platinum drug resistance
+ocu02010	ABC transporters
+ocu03008	Ribosome biogenesis in eukaryotes
+ocu03010	Ribosome
+ocu03013	RNA transport
+ocu03015	mRNA surveillance pathway
+ocu03018	RNA degradation
+ocu03020	RNA polymerase
+ocu03022	Basal transcription factors
+ocu03030	DNA replication
+ocu03040	Spliceosome
+ocu03050	Proteasome
+ocu03060	Protein export
+ocu03320	PPAR signaling pathway
+ocu03410	Base excision repair
+ocu03420	Nucleotide excision repair
+ocu03430	Mismatch repair
+ocu03440	Homologous recombination
+ocu03450	Nonhomologous endjoining
+ocu03460	Fanconi anemia pathway
+ocu04010	MAPK signaling pathway
+ocu04012	ErbB signaling pathway
+ocu04014	Ras signaling pathway
+ocu04015	Rap1 signaling pathway
+ocu04020	Calcium signaling pathway
+ocu04022	cGMPPKG signaling pathway
+ocu04024	cAMP signaling pathway
+ocu04060	Cytokinecytokine receptor interaction
+ocu04061	Viral protein interaction with cytokine and cytokine receptor
+ocu04062	Chemokine signaling pathway
+ocu04064	NFkappa B signaling pathway
+ocu04066	HIF1 signaling pathway
+ocu04068	FoxO signaling pathway
+ocu04070	Phosphatidylinositol signaling system
+ocu04071	Sphingolipid signaling pathway
+ocu04072	Phospholipase D signaling pathway
+ocu04080	Neuroactive ligandreceptor interaction
+ocu04110	Cell cycle
+ocu04114	Oocyte meiosis
+ocu04115	p53 signaling pathway
+ocu04120	Ubiquitin mediated proteolysis
+ocu04122	Sulfur relay system
+ocu04130	SNARE interactions in vesicular transport
+ocu04136	Autophagy  other
+ocu04137	Mitophagy  animal
+ocu04140	Autophagy  animal
+ocu04141	Protein processing in endoplasmic reticulum
+ocu04142	Lysosome
+ocu04144	Endocytosis
+ocu04145	Phagosome
+ocu04146	Peroxisome
+ocu04150	mTOR signaling pathway
+ocu04151	PI3KAkt signaling pathway
+ocu04152	AMPK signaling pathway
+ocu04210	Apoptosis
+ocu04211	Longevity regulating pathway
+ocu04213	Longevity regulating pathway  multiple species
+ocu04215	Apoptosis  multiple species
+ocu04216	Ferroptosis
+ocu04217	Necroptosis
+ocu04218	Cellular senescence
+ocu04260	Cardiac muscle contraction
+ocu04261	Adrenergic signaling in cardiomyocytes
+ocu04270	Vascular smooth muscle contraction
+ocu04310	Wnt signaling pathway
+ocu04330	Notch signaling pathway
+ocu04340	Hedgehog signaling pathway
+ocu04350	TGFbeta signaling pathway
+ocu04360	Axon guidance
+ocu04370	VEGF signaling pathway
+ocu04371	Apelin signaling pathway
+ocu04380	Osteoclast differentiation
+ocu04390	Hippo signaling pathway
+ocu04392	Hippo signaling pathway  multiple species
+ocu04510	Focal adhesion
+ocu04512	ECMreceptor interaction
+ocu04514	Cell adhesion molecules (CAMs)
+ocu04520	Adherens junction
+ocu04530	Tight junction
+ocu04540	Gap junction
+ocu04550	Signaling pathways regulating pluripotency of stem cells
+ocu04610	Complement and coagulation cascades
+ocu04611	Platelet activation
+ocu04612	Antigen processing and presentation
+ocu04614	Reninangiotensin system
+ocu04620	Tolllike receptor signaling pathway
+ocu04621	NODlike receptor signaling pathway
+ocu04622	RIGIlike receptor signaling pathway
+ocu04623	Cytosolic DNAsensing pathway
+ocu04625	Ctype lectin receptor signaling pathway
+ocu04630	JAKSTAT signaling pathway
+ocu04640	Hematopoietic cell lineage
+ocu04650	Natural killer cell mediated cytotoxicity
+ocu04657	IL17 signaling pathway
+ocu04658	Th1 and Th2 cell differentiation
+ocu04659	Th17 cell differentiation
+ocu04660	T cell receptor signaling pathway
+ocu04662	B cell receptor signaling pathway
+ocu04664	Fc epsilon RI signaling pathway
+ocu04666	Fc gamma Rmediated phagocytosis
+ocu04668	TNF signaling pathway
+ocu04670	Leukocyte transendothelial migration
+ocu04672	Intestinal immune network for IgA production
+ocu04710	Circadian rhythm
+ocu04713	Circadian entrainment
+ocu04714	Thermogenesis
+ocu04720	Longterm potentiation
+ocu04721	Synaptic vesicle cycle
+ocu04722	Neurotrophin signaling pathway
+ocu04723	Retrograde endocannabinoid signaling
+ocu04724	Glutamatergic synapse
+ocu04725	Cholinergic synapse
+ocu04726	Serotonergic synapse
+ocu04727	GABAergic synapse
+ocu04728	Dopaminergic synapse
+ocu04730	Longterm depression
+ocu04740	Olfactory transduction
+ocu04742	Taste transduction
+ocu04744	Phototransduction
+ocu04750	Inflammatory mediator regulation of TRP channels
+ocu04810	Regulation of actin cytoskeleton
+ocu04910	Insulin signaling pathway
+ocu04911	Insulin secretion
+ocu04912	GnRH signaling pathway
+ocu04913	Ovarian steroidogenesis
+ocu04914	Progesteronemediated oocyte maturation
+ocu04915	Estrogen signaling pathway
+ocu04916	Melanogenesis
+ocu04917	Prolactin signaling pathway
+ocu04918	Thyroid hormone synthesis
+ocu04919	Thyroid hormone signaling pathway
+ocu04920	Adipocytokine signaling pathway
+ocu04921	Oxytocin signaling pathway
+ocu04922	Glucagon signaling pathway
+ocu04923	Regulation of lipolysis in adipocytes
+ocu04924	Renin secretion
+ocu04925	Aldosterone synthesis and secretion
+ocu04926	Relaxin signaling pathway
+ocu04927	Cortisol synthesis and secretion
+ocu04928	Parathyroid hormone synthesis, secretion and action
+ocu04929	GnRH secretion
+ocu04930	Type II diabetes mellitus
+ocu04931	Insulin resistance
+ocu04932	Nonalcoholic fatty liver disease (NAFLD)
+ocu04933	AGERAGE signaling pathway in diabetic complications
+ocu04934	Cushing syndrome
+ocu04935	Growth hormone synthesis, secretion and action
+ocu04940	Type I diabetes mellitus
+ocu04950	Maturity onset diabetes of the young
+ocu04960	Aldosteroneregulated sodium reabsorption
+ocu04961	Endocrine and other factorregulated calcium reabsorption
+ocu04962	Vasopressinregulated water reabsorption
+ocu04964	Proximal tubule bicarbonate reclamation
+ocu04966	Collecting duct acid secretion
+ocu04970	Salivary secretion
+ocu04971	Gastric acid secretion
+ocu04972	Pancreatic secretion
+ocu04973	Carbohydrate digestion and absorption
+ocu04974	Protein digestion and absorption
+ocu04975	Fat digestion and absorption
+ocu04976	Bile secretion
+ocu04977	Vitamin digestion and absorption
+ocu04978	Mineral absorption
+ocu04979	Cholesterol metabolism
+ocu05010	Alzheimer disease
+ocu05012	Parkinson disease
+ocu05014	Amyotrophic lateral sclerosis (ALS)
+ocu05016	Huntington disease
+ocu05017	Spinocerebellar ataxia
+ocu05020	Prion diseases
+ocu05030	Cocaine addiction
+ocu05031	Amphetamine addiction
+ocu05032	Morphine addiction
+ocu05033	Nicotine addiction
+ocu05034	Alcoholism
+ocu05100	Bacterial invasion of epithelial cells
+ocu05132	Salmonella infection
+ocu05133	Pertussis
+ocu05134	Legionellosis
+ocu05135	Yersinia infection
+ocu05140	Leishmaniasis
+ocu05142	Chagas disease (American trypanosomiasis)
+ocu05143	African trypanosomiasis
+ocu05144	Malaria
+ocu05145	Toxoplasmosis
+ocu05146	Amoebiasis
+ocu05150	Staphylococcus aureus infection
+ocu05152	Tuberculosis
+ocu05160	Hepatitis C
+ocu05161	Hepatitis B
+ocu05162	Measles
+ocu05163	Human cytomegalovirus infection
+ocu05164	Influenza A
+ocu05165	Human papillomavirus infection
+ocu05166	Human Tcell leukemia virus 1 infection
+ocu05167	Kaposi sarcomaassociated herpesvirus infection
+ocu05168	Herpes simplex virus 1 infection
+ocu05169	EpsteinBarr virus infection
+ocu05170	Human immunodeficiency virus 1 infection
+ocu05200	Pathways in cancer
+ocu05202	Transcriptional misregulation in cancer
+ocu05203	Viral carcinogenesis
+ocu05204	Chemical carcinogenesis
+ocu05205	Proteoglycans in cancer
+ocu05206	MicroRNAs in cancer
+ocu05210	Colorectal cancer
+ocu05211	Renal cell carcinoma
+ocu05212	Pancreatic cancer
+ocu05213	Endometrial cancer
+ocu05214	Glioma
+ocu05215	Prostate cancer
+ocu05216	Thyroid cancer
+ocu05217	Basal cell carcinoma
+ocu05218	Melanoma
+ocu05219	Bladder cancer
+ocu05220	Chronic myeloid leukemia
+ocu05221	Acute myeloid leukemia
+ocu05222	Small cell lung cancer
+ocu05223	Nonsmall cell lung cancer
+ocu05224	Breast cancer
+ocu05225	Hepatocellular carcinoma
+ocu05226	Gastric cancer
+ocu05230	Central carbon metabolism in cancer
+ocu05231	Choline metabolism in cancer
+ocu05235	PDL1 expression and PD1 checkpoint pathway in cancer
+ocu05310	Asthma
+ocu05320	Autoimmune thyroid disease
+ocu05321	Inflammatory bowel disease (IBD)
+ocu05322	Systemic lupus erythematosus
+ocu05323	Rheumatoid arthritis
+ocu05330	Allograft rejection
+ocu05332	Graftversushost disease
+ocu05340	Primary immunodeficiency
+ocu05410	Hypertrophic cardiomyopathy (HCM)
+ocu05412	Arrhythmogenic right ventricular cardiomyopathy (ARVC)
+ocu05414	Dilated cardiomyopathy (DCM)
+ocu05416	Viral myocarditis
+ocu05418	Fluid shear stress and atherosclerosis
