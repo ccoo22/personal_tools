@@ -4,7 +4,7 @@
 library(docopt)
 "Usage: pca_plot.r --pca_file <file> --group_file <file> --output <pdf>  [--size <int> ] 
 Options:
-   --pca_file <file>           PCA坐标文件，第一列样本名，第二、三列分别是pc1/pc2坐标。
+   --pca_file <file>           PCA坐标文件，第一列样本名，第二、三列分别是pc1/pc2坐标。含有表头。
    --group_file <file>         分组文件，含有表头。最多三列，可以只放入两列。第一列样本名，第二列分组1，图中用颜色区分。第三列分组2，图中用形状区分。
    --size <int>                点的大小 [default: 1]
    --output <pdf>              pdf output file" -> doc
