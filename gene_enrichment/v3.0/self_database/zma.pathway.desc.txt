@@ -1,0 +1,138 @@
+pathway	pathway_desc
+zma00010	Glycolysis / Gluconeogenesis
+zma00020	Citrate cycle (TCA cycle)
+zma00030	Pentose phosphate pathway
+zma00040	Pentose and glucuronate interconversions
+zma00051	Fructose and mannose metabolism
+zma00052	Galactose metabolism
+zma00053	Ascorbate and aldarate metabolism
+zma00061	Fatty acid biosynthesis
+zma00062	Fatty acid elongation
+zma00071	Fatty acid degradation
+zma00072	Synthesis and degradation of ketone bodies
+zma00073	Cutin, suberine and wax biosynthesis
+zma00100	Steroid biosynthesis
+zma00130	Ubiquinone and other terpenoidquinone biosynthesis
+zma00190	Oxidative phosphorylation
+zma00195	Photosynthesis
+zma00196	Photosynthesis  antenna proteins
+zma00220	Arginine biosynthesis
+zma00230	Purine metabolism
+zma00232	Caffeine metabolism
+zma00240	Pyrimidine metabolism
+zma00250	Alanine, aspartate and glutamate metabolism
+zma00260	Glycine, serine and threonine metabolism
+zma00261	Monobactam biosynthesis
+zma00270	Cysteine and methionine metabolism
+zma00280	Valine, leucine and isoleucine degradation
+zma00290	Valine, leucine and isoleucine biosynthesis
+zma00300	Lysine biosynthesis
+zma00310	Lysine degradation
+zma00330	Arginine and proline metabolism
+zma00340	Histidine metabolism
+zma00350	Tyrosine metabolism
+zma00360	Phenylalanine metabolism
+zma00380	Tryptophan metabolism
+zma00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+zma00402	Benzoxazinoid biosynthesis
+zma00410	betaAlanine metabolism
+zma00430	Taurine and hypotaurine metabolism
+zma00440	Phosphonate and phosphinate metabolism
+zma00450	Selenocompound metabolism
+zma00460	Cyanoamino acid metabolism
+zma00480	Glutathione metabolism
+zma00500	Starch and sucrose metabolism
+zma00510	NGlycan biosynthesis
+zma00511	Other glycan degradation
+zma00513	Various types of Nglycan biosynthesis
+zma00514	Other types of Oglycan biosynthesis
+zma00520	Amino sugar and nucleotide sugar metabolism
+zma00531	Glycosaminoglycan degradation
+zma00561	Glycerolipid metabolism
+zma00562	Inositol phosphate metabolism
+zma00563	Glycosylphosphatidylinositol (GPI)anchor biosynthesis
+zma00564	Glycerophospholipid metabolism
+zma00565	Ether lipid metabolism
+zma00590	Arachidonic acid metabolism
+zma00591	Linoleic acid metabolism
+zma00592	alphaLinolenic acid metabolism
+zma00600	Sphingolipid metabolism
+zma00601	Glycosphingolipid biosynthesis  lacto and neolacto series
+zma00603	Glycosphingolipid biosynthesis  globo and isoglobo series
+zma00604	Glycosphingolipid biosynthesis  ganglio series
+zma00620	Pyruvate metabolism
+zma00630	Glyoxylate and dicarboxylate metabolism
+zma00640	Propanoate metabolism
+zma00650	Butanoate metabolism
+zma00660	C5Branched dibasic acid metabolism
+zma00670	One carbon pool by folate
+zma00710	Carbon fixation in photosynthetic organisms
+zma00730	Thiamine metabolism
+zma00740	Riboflavin metabolism
+zma00750	Vitamin B6 metabolism
+zma00760	Nicotinate and nicotinamide metabolism
+zma00770	Pantothenate and CoA biosynthesis
+zma00780	Biotin metabolism
+zma00785	Lipoic acid metabolism
+zma00790	Folate biosynthesis
+zma00860	Porphyrin and chlorophyll metabolism
+zma00900	Terpenoid backbone biosynthesis
+zma00902	Monoterpenoid biosynthesis
+zma00903	Limonene and pinene degradation
+zma00904	Diterpenoid biosynthesis
+zma00905	Brassinosteroid biosynthesis
+zma00906	Carotenoid biosynthesis
+zma00908	Zeatin biosynthesis
+zma00909	Sesquiterpenoid and triterpenoid biosynthesis
+zma00910	Nitrogen metabolism
+zma00920	Sulfur metabolism
+zma00940	Phenylpropanoid biosynthesis
+zma00941	Flavonoid biosynthesis
+zma00942	Anthocyanin biosynthesis
+zma00944	Flavone and flavonol biosynthesis
+zma00945	Stilbenoid, diarylheptanoid and gingerol biosynthesis
+zma00950	Isoquinoline alkaloid biosynthesis
+zma00960	Tropane, piperidine and pyridine alkaloid biosynthesis
+zma00965	Betalain biosynthesis
+zma00966	Glucosinolate biosynthesis
+zma00970	AminoacyltRNA biosynthesis
+zma00998	Biosynthesis of various secondary metabolites  part 2
+zma01040	Biosynthesis of unsaturated fatty acids
+zma01100	Metabolic pathways
+zma01110	Biosynthesis of secondary metabolites
+zma01200	Carbon metabolism
+zma01210	2Oxocarboxylic acid metabolism
+zma01212	Fatty acid metabolism
+zma01230	Biosynthesis of amino acids
+zma01502	Vancomycin resistance
+zma02010	ABC transporters
+zma03008	Ribosome biogenesis in eukaryotes
+zma03010	Ribosome
+zma03013	RNA transport
+zma03015	mRNA surveillance pathway
+zma03018	RNA degradation
+zma03020	RNA polymerase
+zma03022	Basal transcription factors
+zma03030	DNA replication
+zma03040	Spliceosome
+zma03050	Proteasome
+zma03060	Protein export
+zma03410	Base excision repair
+zma03420	Nucleotide excision repair
+zma03430	Mismatch repair
+zma03440	Homologous recombination
+zma03450	Nonhomologous endjoining
+zma04016	MAPK signaling pathway  plant
+zma04070	Phosphatidylinositol signaling system
+zma04075	Plant hormone signal transduction
+zma04120	Ubiquitin mediated proteolysis
+zma04122	Sulfur relay system
+zma04130	SNARE interactions in vesicular transport
+zma04136	Autophagy  other
+zma04141	Protein processing in endoplasmic reticulum
+zma04144	Endocytosis
+zma04145	Phagosome
+zma04146	Peroxisome
+zma04626	Plantpathogen interaction
+zma04712	Circadian rhythm  plant
+zma04933	AGERAGE signaling pathway in diabetic complications
