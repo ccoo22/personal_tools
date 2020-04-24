@@ -1,0 +1,121 @@
+pathway	pathway_desc
+ctp00010	Glycolysis / Gluconeogenesis
+ctp00020	Citrate cycle (TCA cycle)
+ctp00030	Pentose phosphate pathway
+ctp00040	Pentose and glucuronate interconversions
+ctp00051	Fructose and mannose metabolism
+ctp00052	Galactose metabolism
+ctp00053	Ascorbate and aldarate metabolism
+ctp00061	Fatty acid biosynthesis
+ctp00062	Fatty acid elongation
+ctp00071	Fatty acid degradation
+ctp00072	Synthesis and degradation of ketone bodies
+ctp00100	Steroid biosynthesis
+ctp00130	Ubiquinone and other terpenoidquinone biosynthesis
+ctp00190	Oxidative phosphorylation
+ctp00220	Arginine biosynthesis
+ctp00230	Purine metabolism
+ctp00240	Pyrimidine metabolism
+ctp00250	Alanine, aspartate and glutamate metabolism
+ctp00260	Glycine, serine and threonine metabolism
+ctp00261	Monobactam biosynthesis
+ctp00270	Cysteine and methionine metabolism
+ctp00280	Valine, leucine and isoleucine degradation
+ctp00290	Valine, leucine and isoleucine biosynthesis
+ctp00300	Lysine biosynthesis
+ctp00310	Lysine degradation
+ctp00330	Arginine and proline metabolism
+ctp00332	Carbapenem biosynthesis
+ctp00340	Histidine metabolism
+ctp00350	Tyrosine metabolism
+ctp00360	Phenylalanine metabolism
+ctp00380	Tryptophan metabolism
+ctp00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+ctp00410	betaAlanine metabolism
+ctp00430	Taurine and hypotaurine metabolism
+ctp00440	Phosphonate and phosphinate metabolism
+ctp00450	Selenocompound metabolism
+ctp00460	Cyanoamino acid metabolism
+ctp00472	DArginine and Dornithine metabolism
+ctp00480	Glutathione metabolism
+ctp00500	Starch and sucrose metabolism
+ctp00510	NGlycan biosynthesis
+ctp00511	Other glycan degradation
+ctp00513	Various types of Nglycan biosynthesis
+ctp00514	Other types of Oglycan biosynthesis
+ctp00515	Mannose type Oglycan biosynthesis
+ctp00520	Amino sugar and nucleotide sugar metabolism
+ctp00531	Glycosaminoglycan degradation
+ctp00561	Glycerolipid metabolism
+ctp00562	Inositol phosphate metabolism
+ctp00563	Glycosylphosphatidylinositol (GPI)anchor biosynthesis
+ctp00564	Glycerophospholipid metabolism
+ctp00565	Ether lipid metabolism
+ctp00590	Arachidonic acid metabolism
+ctp00592	alphaLinolenic acid metabolism
+ctp00600	Sphingolipid metabolism
+ctp00604	Glycosphingolipid biosynthesis  ganglio series
+ctp00620	Pyruvate metabolism
+ctp00630	Glyoxylate and dicarboxylate metabolism
+ctp00640	Propanoate metabolism
+ctp00650	Butanoate metabolism
+ctp00660	C5Branched dibasic acid metabolism
+ctp00670	One carbon pool by folate
+ctp00680	Methane metabolism
+ctp00730	Thiamine metabolism
+ctp00740	Riboflavin metabolism
+ctp00750	Vitamin B6 metabolism
+ctp00760	Nicotinate and nicotinamide metabolism
+ctp00770	Pantothenate and CoA biosynthesis
+ctp00780	Biotin metabolism
+ctp00785	Lipoic acid metabolism
+ctp00790	Folate biosynthesis
+ctp00791	Atrazine degradation
+ctp00860	Porphyrin and chlorophyll metabolism
+ctp00900	Terpenoid backbone biosynthesis
+ctp00909	Sesquiterpenoid and triterpenoid biosynthesis
+ctp00910	Nitrogen metabolism
+ctp00920	Sulfur metabolism
+ctp00970	AminoacyltRNA biosynthesis
+ctp01040	Biosynthesis of unsaturated fatty acids
+ctp01100	Metabolic pathways
+ctp01110	Biosynthesis of secondary metabolites
+ctp01200	Carbon metabolism
+ctp01210	2Oxocarboxylic acid metabolism
+ctp01212	Fatty acid metabolism
+ctp01230	Biosynthesis of amino acids
+ctp01501	betaLactam resistance
+ctp02010	ABC transporters
+ctp03008	Ribosome biogenesis in eukaryotes
+ctp03010	Ribosome
+ctp03013	RNA transport
+ctp03015	mRNA surveillance pathway
+ctp03018	RNA degradation
+ctp03020	RNA polymerase
+ctp03022	Basal transcription factors
+ctp03030	DNA replication
+ctp03040	Spliceosome
+ctp03050	Proteasome
+ctp03060	Protein export
+ctp03410	Base excision repair
+ctp03420	Nucleotide excision repair
+ctp03430	Mismatch repair
+ctp03440	Homologous recombination
+ctp03450	Nonhomologous endjoining
+ctp04011	MAPK signaling pathway  yeast
+ctp04070	Phosphatidylinositol signaling system
+ctp04111	Cell cycle  yeast
+ctp04113	Meiosis  yeast
+ctp04120	Ubiquitin mediated proteolysis
+ctp04122	Sulfur relay system
+ctp04130	SNARE interactions in vesicular transport
+ctp04136	Autophagy  other
+ctp04138	Autophagy  yeast
+ctp04139	Mitophagy  yeast
+ctp04141	Protein processing in endoplasmic reticulum
+ctp04144	Endocytosis
+ctp04145	Phagosome
+ctp04146	Peroxisome
+ctp04213	Longevity regulating pathway  multiple species
+ctp04392	Hippo signaling pathway  multiple species
+ctp04933	AGERAGE signaling pathway in diabetic complications
