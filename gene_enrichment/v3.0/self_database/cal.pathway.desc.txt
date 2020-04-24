@@ -1,0 +1,120 @@
+pathway	pathway_desc
+cal00010	Glycolysis / Gluconeogenesis
+cal00020	Citrate cycle (TCA cycle)
+cal00030	Pentose phosphate pathway
+cal00040	Pentose and glucuronate interconversions
+cal00051	Fructose and mannose metabolism
+cal00052	Galactose metabolism
+cal00053	Ascorbate and aldarate metabolism
+cal00061	Fatty acid biosynthesis
+cal00062	Fatty acid elongation
+cal00071	Fatty acid degradation
+cal00072	Synthesis and degradation of ketone bodies
+cal00100	Steroid biosynthesis
+cal00130	Ubiquinone and other terpenoidquinone biosynthesis
+cal00190	Oxidative phosphorylation
+cal00220	Arginine biosynthesis
+cal00230	Purine metabolism
+cal00240	Pyrimidine metabolism
+cal00250	Alanine, aspartate and glutamate metabolism
+cal00260	Glycine, serine and threonine metabolism
+cal00261	Monobactam biosynthesis
+cal00270	Cysteine and methionine metabolism
+cal00280	Valine, leucine and isoleucine degradation
+cal00290	Valine, leucine and isoleucine biosynthesis
+cal00300	Lysine biosynthesis
+cal00310	Lysine degradation
+cal00330	Arginine and proline metabolism
+cal00332	Carbapenem biosynthesis
+cal00340	Histidine metabolism
+cal00350	Tyrosine metabolism
+cal00360	Phenylalanine metabolism
+cal00380	Tryptophan metabolism
+cal00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+cal00410	betaAlanine metabolism
+cal00430	Taurine and hypotaurine metabolism
+cal00440	Phosphonate and phosphinate metabolism
+cal00450	Selenocompound metabolism
+cal00460	Cyanoamino acid metabolism
+cal00472	DArginine and Dornithine metabolism
+cal00480	Glutathione metabolism
+cal00500	Starch and sucrose metabolism
+cal00510	NGlycan biosynthesis
+cal00511	Other glycan degradation
+cal00513	Various types of Nglycan biosynthesis
+cal00514	Other types of Oglycan biosynthesis
+cal00515	Mannose type Oglycan biosynthesis
+cal00520	Amino sugar and nucleotide sugar metabolism
+cal00531	Glycosaminoglycan degradation
+cal00561	Glycerolipid metabolism
+cal00562	Inositol phosphate metabolism
+cal00563	Glycosylphosphatidylinositol (GPI)anchor biosynthesis
+cal00564	Glycerophospholipid metabolism
+cal00565	Ether lipid metabolism
+cal00590	Arachidonic acid metabolism
+cal00592	alphaLinolenic acid metabolism
+cal00600	Sphingolipid metabolism
+cal00620	Pyruvate metabolism
+cal00630	Glyoxylate and dicarboxylate metabolism
+cal00640	Propanoate metabolism
+cal00650	Butanoate metabolism
+cal00660	C5Branched dibasic acid metabolism
+cal00670	One carbon pool by folate
+cal00680	Methane metabolism
+cal00730	Thiamine metabolism
+cal00740	Riboflavin metabolism
+cal00750	Vitamin B6 metabolism
+cal00760	Nicotinate and nicotinamide metabolism
+cal00770	Pantothenate and CoA biosynthesis
+cal00780	Biotin metabolism
+cal00785	Lipoic acid metabolism
+cal00790	Folate biosynthesis
+cal00791	Atrazine degradation
+cal00860	Porphyrin and chlorophyll metabolism
+cal00900	Terpenoid backbone biosynthesis
+cal00909	Sesquiterpenoid and triterpenoid biosynthesis
+cal00910	Nitrogen metabolism
+cal00920	Sulfur metabolism
+cal00970	AminoacyltRNA biosynthesis
+cal01040	Biosynthesis of unsaturated fatty acids
+cal01100	Metabolic pathways
+cal01110	Biosynthesis of secondary metabolites
+cal01200	Carbon metabolism
+cal01210	2Oxocarboxylic acid metabolism
+cal01212	Fatty acid metabolism
+cal01230	Biosynthesis of amino acids
+cal01501	betaLactam resistance
+cal02010	ABC transporters
+cal03008	Ribosome biogenesis in eukaryotes
+cal03010	Ribosome
+cal03013	RNA transport
+cal03015	mRNA surveillance pathway
+cal03018	RNA degradation
+cal03020	RNA polymerase
+cal03022	Basal transcription factors
+cal03030	DNA replication
+cal03040	Spliceosome
+cal03050	Proteasome
+cal03060	Protein export
+cal03410	Base excision repair
+cal03420	Nucleotide excision repair
+cal03430	Mismatch repair
+cal03440	Homologous recombination
+cal03450	Nonhomologous endjoining
+cal04011	MAPK signaling pathway  yeast
+cal04070	Phosphatidylinositol signaling system
+cal04111	Cell cycle  yeast
+cal04113	Meiosis  yeast
+cal04120	Ubiquitin mediated proteolysis
+cal04122	Sulfur relay system
+cal04130	SNARE interactions in vesicular transport
+cal04136	Autophagy  other
+cal04138	Autophagy  yeast
+cal04139	Mitophagy  yeast
+cal04141	Protein processing in endoplasmic reticulum
+cal04144	Endocytosis
+cal04145	Phagosome
+cal04146	Peroxisome
+cal04213	Longevity regulating pathway  multiple species
+cal04392	Hippo signaling pathway  multiple species
+cal04933	AGERAGE signaling pathway in diabetic complications
