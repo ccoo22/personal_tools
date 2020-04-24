@@ -146,6 +146,10 @@ sub get_enrichment_db{
     $hashPahtwayDB{"rabbit"}{'pathway_geneid_map'}             = "$self_database_dir/ocu.pathway.geneid.map.txt";
     $hashPahtwayDB{"rabbit"}{'geneid_symbol_map'}              = "$self_database_dir/ocu.geneid.symbol.map.txt";
 
+    $hashPahtwayDB{"zea_mays"}{'OrgDb'}                          = "zma";
+    $hashPahtwayDB{"zea_mays"}{'pathway_desc'}                   = "$self_database_dir/zma.pathway.desc.txt";
+    $hashPahtwayDB{"zea_mays"}{'pathway_geneid_map'}             = "$self_database_dir/zma.pathway.geneid.map.txt";
+    $hashPahtwayDB{"zea_mays"}{'geneid_symbol_map'}              = "$self_database_dir/zma.geneid.symbol.map.txt";
     return %hashPahtwayDB;
 }
 
