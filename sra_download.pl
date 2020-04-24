@@ -28,7 +28,7 @@ die help() if(defined $if_help or (not defined $input_sra_code or not defined $o
 # (1) 下载
 print "Download sra file \n";
 mkdir $output_dir if(not -e $output_dir);
-system("$sra_prefetch --option-file $input_sra_code   -O $output_dir --max-size 2000000000");
+system("$sra_prefetch --option-file $input_sra_code   -O $output_dir --max_size 2000000000");
 
 # (2) 转换fastq
 exit if(not defined $convert_fastq);
@@ -55,7 +55,7 @@ my $pm = Parallel::ForkManager->new(10);
 foreach my $sra_code(@sra_codes)
 {   
     $pm->start($sra_code) and next;
-    system("$sra_fastq_dump  $output_dir/$sra_code.sra -O $fastq_dir/ --split-files --gzip --defline-qual '+' --defline-seq '\@\$ac-\$si/\$ri' ");
+    system("$sra_fastq_dump  $output_dir/$sra_code/$sra_code.sra -O $fastq_dir/ --split-files --gzip --defline-qual '+' --defline-seq '\@\$ac-\$si/\$ri' ");
     $pm->finish;          
 }
 $pm->wait_all_children;
