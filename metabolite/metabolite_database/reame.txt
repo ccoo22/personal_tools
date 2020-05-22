@@ -1,0 +1,7 @@
+我们有两个数据库来源
+（1）metaboanalyst官方下载的
+download.metaboanalyst.2018.sh
+问题：数据库掌握在别人手中，而且版本较老
+
+（2）根据官方的数据结构，我自己整理的建库脚本
+update_kegg_metabolite.pl
