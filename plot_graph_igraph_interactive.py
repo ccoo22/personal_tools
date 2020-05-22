@@ -135,7 +135,7 @@ if __name__ == '__main__':
                                 ),
                   text=labels,
                   hoverinfo='text',
-                  opacity=0.8，
+                  opacity=0.8,
                   showlegend=None
                   ))
     # 输出
