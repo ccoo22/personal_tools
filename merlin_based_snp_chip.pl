@@ -300,7 +300,7 @@ print "[merlin 无参分析]\n";
 system("$SOFT_MERLIN/merlin -d $final.dat -p $final.ped -m $final.map --steps $step --npl --markerNames --pdf --tabulate --prefix $merlin_result.noparametric");
 
 print "[merlin 有参分析]\n";
-system("$SOFT_MERLIN/merlin -d $final.dat -p $final.ped -m $final.map --model $model --steps $step  --markerNames --pdf  --tabulate --bits 26  --prefix $merlin_result.parametric");
+system("$SOFT_MERLIN/merlin -d $final.dat -p $final.ped -m $final.map --model $model --steps $step  --markerNames --pdf  --tabulate --bits 50  --prefix $merlin_result.parametric");
 
 ###################################################################### 子程序
 sub update_pedigree{
