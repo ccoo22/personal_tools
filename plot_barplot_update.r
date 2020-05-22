@@ -2,7 +2,7 @@
 
 library(docopt)
 
-"Usage: plot_volcano.r  -i <file> -o <pdf file> [--plot_name <string> --color_name <string> --x_lab <string> --y_lab <string> --title <string> --rlib <dir> --horizontal --sort_value <string> --width <int> --height <int> --label_size <int>]
+"Usage: plot_volcano.r  -i <file> -o <pdf file> [--position <string> --plot_name <string> --color_name <string> --x_lab <string> --y_lab <string> --title <string> --rlib <dir> --horizontal --sort_value <string> --width <int> --height <int> --label_size <int>]
 
 Options:
     -i, --input <file>        输入文件，第一列为数据名称,第二列及后面的列为要绘制的数据，默认使用第一二列数据绘制，包含表头
@@ -15,6 +15,7 @@ Options:
     --width <int>             pdf宽度    [default:  7]
     --height <int>            pdf高度    [default:  7]
     --label_size <int>        文字大小   [default:  12]
+    --position <string>       当指定color_name是，x轴会遇到柱子叠加显示的问题， 支持 stack/split 两种模式 [default: split]
     --horizontal              水平绘图
     --sort_value <string>     绘图数据排序, 默认不排序，None/Ascend/Descend [default: None]
     --rlib <dir>              R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
@@ -29,6 +30,7 @@ y_lab             <- opts$y_lab
 title             <- opts$title
 horizontal        <- opts$horizontal
 sort_value        <- opts$sort_value
+position          <- opts$position
 width             <- as.integer(opts$width)
 height            <- as.integer(opts$height)
 label_size        <- as.integer(opts$label_size)
@@ -62,7 +64,7 @@ colnames(data_plot)[2] = 'value'
 if(sort_value == 'Ascend')   data_plot <- data_plot[sort(data_plot$value, decreasing = FALSE, index.return = T)$ix, ]   # 升序
 if(sort_value == 'Descend')  data_plot <- data_plot[sort(data_plot$value, decreasing = TRUE, index.return = T)$ix, ]    # 降序
 
-data_plot$plot_feature = factor(data_plot$plot_feature, levels = data_plot$plot_feature)
+data_plot$plot_feature = factor(data_plot$plot_feature, levels = unique(data_plot$plot_feature))
  
 # 开始绘图
 message('开始绘图：', plot_name)
@@ -73,9 +75,18 @@ message('开始绘图：', plot_name)
 # if (direction == 'horizontal') height = feature_width
 
 pdf(output, width = width, height = height)
-p <- ggbarplot(data_plot, x = "plot_feature", y = 'value',
- fill = fill_color, color = "white", orientation = direction, xlab = x_lab, ylab = y_lab
- ) + theme_pubr(base_size = label_size)
+
+if(position == 'split')
+{
+    p <- ggbarplot(data_plot, x = "plot_feature", y = 'value',
+        fill = fill_color, color = "white", orientation = direction, xlab = x_lab, ylab = y_lab, position = position_dodge(0.9)
+    ) + theme_pubr(base_size = label_size)
+}else {
+    p <- ggbarplot(data_plot, x = "plot_feature", y = 'value',
+        fill = fill_color, color = "white", orientation = direction, xlab = x_lab, ylab = y_lab
+    ) + theme_pubr(base_size = label_size)
+}
+
 
 print(p)
 dev.off()
