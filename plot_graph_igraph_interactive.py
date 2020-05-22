@@ -14,10 +14,10 @@ def set_and_parse_args():
     parser.add_argument('--output', '-o', type = str, required=True, help = "绘图输出文件，例如： ./graph.html")
     parser.add_argument('--layout', type = str, default='kamada_kawai', help = "网络图布局设计， 默认： kamada_kawai ", choices=["circle", "drl", "fruchterman_reingold", "fruchterman_reingold_3d", "grid_fruchterman_reingold", "kamada_kawai", "kamada_kawai_3d", "lgl", "random", "random_3d", "reingold_tilford", "reingold_tilford_circular", "sphere"])
     parser.add_argument('--vertex_color', type = str, default=None, help = "顶点颜色列名，node文件，该列数据只能是 red/blue/yellow等标准颜色名称，或者是16进制 #0088ff 类型的数据")
-    parser.add_argument('--vertex_size', type = str, default=None, help = "顶点大小列名，node文件， 该列数据只能是数字类型")
+    parser.add_argument('--vertex_size', type = str, default=None, help = "顶点大小列名，node文件， 该列数据只能是数字类型。 数值 5-10基本够用")
     parser.add_argument('--vertex_shape', type = str, default=None, help = "顶点形状列名，node文件， 该列数据只能是： circle, square, diamond, cross, triangle-up, triangle-down, pentagon, hexagon, star, asterisk ......")
-    parser.add_argument('--edge_color', type = str, default=None, help = "边的颜色列名，edge文件， 该列数据只能是：red/blue/yellow等标准颜色名称，或者是16进制 #0088ff 类型的数据")
-    parser.add_argument('--edge_width', type = str, default=None, help = "边的宽度列名，edge文件， 单位是像素")
+    parser.add_argument('--edge_color', type = str, default='black', help = "边的颜色，默认：black, 只能是：red/blue/yellow等标准颜色名称，或者是16进制 #0088ff 类型的数据")
+    parser.add_argument('--edge_width', type = int, default=1, help = "边的宽度，默认：1 ")
     
     args = parser.parse_args()
 
@@ -94,19 +94,19 @@ if __name__ == '__main__':
     fig = go.Figure()
 
     # 添加线条
-    edge_color = None
-    if args.edge_color != None:
-        edge_color = edge_data.loc[:, args.edge_color]
+    # edge_color = None
+    # if args.edge_color != None:
+    #     edge_color = edge_data.loc[:, args.edge_color]
 
-    edge_width = None
-    if args.edge_width != None:
-        edge_width = edge_data.loc[:, args.edge_width]
+    # edge_width = None
+    # if args.edge_width != None:
+    #     edge_width = edge_data.loc[:, args.edge_width]
 
     fig.add_trace(go.Scatter(x=Xe,
                    y=Ye,
                    mode='lines',
                    name='lines',
-                   line=dict(color=edge_color, width=edge_width),
+                   line=dict(color=args.edge_color, width=args.edge_width),
                    hoverinfo='none',
                    showlegend=None
                    ))
@@ -136,7 +136,7 @@ if __name__ == '__main__':
                   text=labels,
                   hoverinfo='text',
                   opacity=0.8,
-                  showlegend=None
+                  showlegend=True
                   ))
     # 输出
     fig.write_html(args.output)
