@@ -19,10 +19,10 @@ def set_and_parse_args():
     parser.add_argument('--show_label', action = 'store_true', help = "显示顶点名称")
     parser.add_argument('--label_size', type = int, default=5, help = "设置名称大小， 默认： 5")
     parser.add_argument('--vertex_color', type = str, default=None, help = "顶点颜色列名，node文件，该列数据只能是 red/blue等标准颜色名称，或者是16进制 #0088ff 类型的数据")
-    parser.add_argument('--vertex_size', type = str, default=None, help = "顶点大小列名，node文件， 该列数据只能是数字类型")
+    parser.add_argument('--vertex_size', type = str, default=None, help = "顶点大小列名，node文件， 该列数据只能是数字类型。 数值 5-10基本够用")
     parser.add_argument('--vertex_shape', type = str, default=None, help = "顶点形状列名，node文件， 该列数据只能是： rectangle, circle, hidden, triangle-up, triangle-down")
     parser.add_argument('--edge_color', type = str, default=None, help = "边的颜色列名，edge文件， 该列数据只能是：red/blue等标准颜色名称，或者是16进制 #0088ff 类型的数据")
-    parser.add_argument('--edge_width', type = str, default=None, help = "边的宽度列名，edge文件， 单位是像素")
+    parser.add_argument('--edge_width', type = str, default=None, help = "边的宽度列名，edge文件， 单位是像素, 数值宽度 1 基本够用")
     
     args = parser.parse_args()
 
