@@ -52,6 +52,7 @@ foreach my $sample( @samples )
     {
         $_=~s/[\r\n]//g;
         next if($_!~/\w/);
+        next if($_=~/^__/);  # 去掉特殊记录 __no_feature __ambiguous __too_low_aQual __not_aligned __alignment_not_unique
         my ($gene, $value) = split /\t/, $_;
         $hashExpression{$gene}{$sample} = $value;
     }
