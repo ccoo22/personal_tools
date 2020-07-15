@@ -5,7 +5,7 @@ Options:
    -i, --input <file>                    输入文件，第一列样本名，第二列生存时间，第三列是否截尾（0截尾,1去世），第四列及之后的数据为要分析的表型
                                          注意：列名尽可能不要出现‘-’减号字符，会报错
    -o, --output_dir <dir>                结果输出目录,需要提前建立
-   --model <string>                      分析方式, KM/log-rank/COX  [default: KM]
+   --model <string>                      分析方式, KM/log-rank/COX/My.stepwise.coxph  [default: KM]
    
                                          KM : Kaplan-Meier plots to visualize survival curves（根据生存时间分布，估计生存率以及中位生存时间，以生存曲线方式展示，从而分析生存特征，一般用Kaplan-Meier法，还有寿命法）
                                               该分析只需要数据前3列
@@ -16,6 +16,9 @@ Options:
 
                                          COX  : Cox proportional hazards regression to describe the effect of variables on survival（用Cox风险比例模型来分析变量对生存的影响，可以两个及两个以上的因素，很常用）
                                                 该分析对第四列及之后的表型汇总建模
+
+                                         My.stepwise.coxph : 选择一组与生存相关性较强的一组变量，构成COX模型。注：最终只会在桌面打印一组变量名称，能够较好的构成COX模型。
+                                         
    --width <int>                         pdf图像宽度 [default: 7]
    --Rlib <dir>                          R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
 
@@ -37,6 +40,7 @@ Rlib              <- opts$Rlib
 
 library("survival")
 library("survminer")
+library("My.stepwise")
 if(model != 'KM' & model != 'log-rank' & model != 'COX')
 {
     message("无法识别'model'字符，请确认输入是否正确")
@@ -174,4 +178,22 @@ if(model == 'COX')
     result <- cbind(row.names(result), result)
     colnames(result)[1] = 'Pheno'
     write.table(result, paste0(output_dir, '/survival.cox.txt' ) , row.names = F, quote = F, sep = '\t')
+}
+
+##################
+# （4）My.stepwise.coxph分析
+##################
+if(model == 'My.stepwise.coxph')
+{   
+    cat('Model : My.stepwise.coxph \n')
+    new_data <- input_data[complete.cases(input_data), ]
+    new_data <- new_data[apply(new_data, 1, function(x){sum(x=='')}) == 0, ]
+
+    time_var <- colnames(input_data)[1]
+    event_var <- colnames(input_data)[2]
+    pheno_names <- colnames(input_data)[3:ncol(input_data)]
+
+    # 分析
+    My.stepwise.coxph(Time = time_var, Status = event_var, variable.list = pheno_names, data = new_data)
+    message("最后一行输出的变量名称就是最优组合结果")
 }
