@@ -89,6 +89,7 @@ for( col in 1:length(genes))
     prob <- predict(glm_fit, newdata = data_tmp, type = "response")
     pred <- prediction(prob, data_tmp$y)
     perf = performance(pred, "tpr", "fpr")
+    par(family="Times")  # times new roman 字体
     plot(perf@x.values[[1]], perf@y.values[[1]], lwd = 3, col = "#2171B5", type = "l", bty = "n", axes = FALSE, ann = FALSE)
     abline(a = 0, b = 1, lty = 5, lwd = 3, col = "#D94801" )
     par(tck = 0.03, col.axis = "#084594",lwd = 1, font.axis = 2, cex.axis = 1 )
