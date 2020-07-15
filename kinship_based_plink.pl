@@ -15,7 +15,7 @@ use constant PWD => $ENV{"PWD"};
 
 # 变量
 my $DEFAULT_SOFT_PLINK    = "/home/genesky/software/plink/1.07/plink";
-my $DEFAULT_SOFT_KING     = "/home/ganb/soft/king";
+my $DEFAULT_SOFT_KING     = "/home/genesky/software/king/2.2.5/king";
 my $DEFAULT_SOFT_RSCRIPT  = "/home/genesky/software/r/3.5.1/bin/Rscript";
 my $DEFAULT_SOFT_RLIB     = "/home/genesky/software/r/3.5.1/lib64/R/library";
 
@@ -91,7 +91,7 @@ system("$SOFT_PLINK --file $clean_plink --make-bed --out $clean_plink_b --noweb"
 # (3) 亲缘关系计算
 print "(3) 亲缘关系计算\n";
 my $relation = "$output_dir/$prefix.relationship";
-system("$SOFT_KING -b $clean_plink_b.bed  --homo --prefix $relation");# 关系计算 
+system("$SOFT_KING -b $clean_plink_b.bed  --kinship --prefix $relation");# 关系计算 
 
 # (4) 结果汇总、绘图
 print "(4) 结果汇总、绘图\n";
