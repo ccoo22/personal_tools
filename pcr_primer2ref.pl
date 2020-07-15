@@ -115,8 +115,10 @@ sub read_primer{
         my @datas = split /\t/, $_;
         my $title = $datas[0];
         foreach my $col(0..$#heads)
-        {
-            $hashPrimer{$title}{$heads[$col]} = $datas[$col];
+        {   
+            my $value = $datas[$col];
+            $value = "chr$value"  if($heads[$col] eq 'chr' and $genome=~/hg38_modify.fa$/ and $value!~/^chr/);  # hg38 添加chr符号
+            $hashPrimer{$title}{$heads[$col]} = $value;
         }
     }
     close PRIMER;
@@ -163,8 +165,12 @@ Usage:   perl ".(File::Spec->splitpath(File::Spec->rel2abs($0)))[2]." [options]
 Options:
 
          --primer/-p               [必填] 引物文件
-         --genome/-ge              [必填] 样本物种对应的genome的绝对路径  示例：/home/genesky/database/ucsc/hg19_modify/genome/hg19_modify.fa
-         --genome_dict/-gt         [必填] 样本物种对应的genome_dict的绝对路径  示例：/home/genesky/database/ucsc/hg19_modify/genome/hg19_modify.dict
+         --genome/-ge              [必填] 样本物种对应的genome的绝对路径  
+                                          示例：/home/genesky/database/ucsc/hg19_modify/genome/hg19_modify.fa 
+                                               /home/genesky/database_new/self_build_database/ucsc/hg38_rm_alt_genome/hg38_modify.fa
+         --genome_dict/-gt         [必填] 样本物种对应的genome_dict的绝对路径  
+                                          示例：/home/genesky/database/ucsc/hg19_modify/genome/hg19_modify.dict  
+                                               /home/genesky/database_new/self_build_database/ucsc/hg38_rm_alt_genome/hg38_modify.dict
          --outdir/-o               [必填] 输出目录  
          --seq_with_primer/-a      [选填] 参考序列是否添加引物
          --help/-h                  查看帮助文档。
