@@ -15,7 +15,7 @@ my ($output_dir, $kegg_org, $keep_tmp, $if_help);
 GetOptions(
     "output_dir|o=s" => \$output_dir,
     "kegg_org=s"     => \$kegg_org,
-    "keep_tmp|k=s"   => \$keep_tmp,
+    "keep_tmp|k"   => \$keep_tmp,
     "help|h"         => \$if_help,
 );
 

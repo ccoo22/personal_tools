@@ -1,0 +1,139 @@
+pathway	pathway_desc
+ame00010	Glycolysis / Gluconeogenesis
+ame00020	Citrate cycle (TCA cycle)
+ame00030	Pentose phosphate pathway
+ame00040	Pentose and glucuronate interconversions
+ame00051	Fructose and mannose metabolism
+ame00052	Galactose metabolism
+ame00053	Ascorbate and aldarate metabolism
+ame00061	Fatty acid biosynthesis
+ame00062	Fatty acid elongation
+ame00071	Fatty acid degradation
+ame00072	Synthesis and degradation of ketone bodies
+ame00100	Steroid biosynthesis
+ame00130	Ubiquinone and other terpenoidquinone biosynthesis
+ame00190	Oxidative phosphorylation
+ame00220	Arginine biosynthesis
+ame00230	Purine metabolism
+ame00232	Caffeine metabolism
+ame00240	Pyrimidine metabolism
+ame00250	Alanine, aspartate and glutamate metabolism
+ame00260	Glycine, serine and threonine metabolism
+ame00270	Cysteine and methionine metabolism
+ame00280	Valine, leucine and isoleucine degradation
+ame00290	Valine, leucine and isoleucine biosynthesis
+ame00310	Lysine degradation
+ame00330	Arginine and proline metabolism
+ame00340	Histidine metabolism
+ame00350	Tyrosine metabolism
+ame00360	Phenylalanine metabolism
+ame00380	Tryptophan metabolism
+ame00400	Phenylalanine, tyrosine and tryptophan biosynthesis
+ame00410	betaAlanine metabolism
+ame00430	Taurine and hypotaurine metabolism
+ame00440	Phosphonate and phosphinate metabolism
+ame00450	Selenocompound metabolism
+ame00471	DGlutamine and Dglutamate metabolism
+ame00480	Glutathione metabolism
+ame00500	Starch and sucrose metabolism
+ame00510	NGlycan biosynthesis
+ame00511	Other glycan degradation
+ame00512	Mucin type Oglycan biosynthesis
+ame00513	Various types of Nglycan biosynthesis
+ame00514	Other types of Oglycan biosynthesis
+ame00515	Mannose type Oglycan biosynthesis
+ame00520	Amino sugar and nucleotide sugar metabolism
+ame00531	Glycosaminoglycan degradation
+ame00532	Glycosaminoglycan biosynthesis  chondroitin sulfate / dermatan sulfate
+ame00533	Glycosaminoglycan biosynthesis  keratan sulfate
+ame00534	Glycosaminoglycan biosynthesis  heparan sulfate / heparin
+ame00561	Glycerolipid metabolism
+ame00562	Inositol phosphate metabolism
+ame00563	Glycosylphosphatidylinositol (GPI)anchor biosynthesis
+ame00564	Glycerophospholipid metabolism
+ame00565	Ether lipid metabolism
+ame00590	Arachidonic acid metabolism
+ame00591	Linoleic acid metabolism
+ame00592	alphaLinolenic acid metabolism
+ame00600	Sphingolipid metabolism
+ame00601	Glycosphingolipid biosynthesis  lacto and neolacto series
+ame00603	Glycosphingolipid biosynthesis  globo and isoglobo series
+ame00604	Glycosphingolipid biosynthesis  ganglio series
+ame00620	Pyruvate metabolism
+ame00630	Glyoxylate and dicarboxylate metabolism
+ame00640	Propanoate metabolism
+ame00650	Butanoate metabolism
+ame00670	One carbon pool by folate
+ame00730	Thiamine metabolism
+ame00740	Riboflavin metabolism
+ame00750	Vitamin B6 metabolism
+ame00760	Nicotinate and nicotinamide metabolism
+ame00770	Pantothenate and CoA biosynthesis
+ame00780	Biotin metabolism
+ame00785	Lipoic acid metabolism
+ame00790	Folate biosynthesis
+ame00830	Retinol metabolism
+ame00860	Porphyrin and chlorophyll metabolism
+ame00900	Terpenoid backbone biosynthesis
+ame00910	Nitrogen metabolism
+ame00920	Sulfur metabolism
+ame00970	AminoacyltRNA biosynthesis
+ame00980	Metabolism of xenobiotics by cytochrome P450
+ame00981	Insect hormone biosynthesis
+ame00982	Drug metabolism  cytochrome P450
+ame00983	Drug metabolism  other enzymes
+ame01040	Biosynthesis of unsaturated fatty acids
+ame01100	Metabolic pathways
+ame01200	Carbon metabolism
+ame01210	2Oxocarboxylic acid metabolism
+ame01212	Fatty acid metabolism
+ame01230	Biosynthesis of amino acids
+ame02010	ABC transporters
+ame03008	Ribosome biogenesis in eukaryotes
+ame03010	Ribosome
+ame03013	RNA transport
+ame03015	mRNA surveillance pathway
+ame03018	RNA degradation
+ame03020	RNA polymerase
+ame03022	Basal transcription factors
+ame03030	DNA replication
+ame03040	Spliceosome
+ame03050	Proteasome
+ame03060	Protein export
+ame03410	Base excision repair
+ame03420	Nucleotide excision repair
+ame03430	Mismatch repair
+ame03440	Homologous recombination
+ame03450	Nonhomologous endjoining
+ame03460	Fanconi anemia pathway
+ame04013	MAPK signaling pathway  fly
+ame04068	FoxO signaling pathway
+ame04070	Phosphatidylinositol signaling system
+ame04080	Neuroactive ligandreceptor interaction
+ame04120	Ubiquitin mediated proteolysis
+ame04122	Sulfur relay system
+ame04130	SNARE interactions in vesicular transport
+ame04136	Autophagy  other
+ame04137	Mitophagy  animal
+ame04140	Autophagy  animal
+ame04141	Protein processing in endoplasmic reticulum
+ame04142	Lysosome
+ame04144	Endocytosis
+ame04145	Phagosome
+ame04146	Peroxisome
+ame04150	mTOR signaling pathway
+ame04213	Longevity regulating pathway  multiple species
+ame04214	Apoptosis  fly
+ame04215	Apoptosis  multiple species
+ame04310	Wnt signaling pathway
+ame04320	Dorsoventral axis formation
+ame04330	Notch signaling pathway
+ame04341	Hedgehog signaling pathway  fly
+ame04350	TGFbeta signaling pathway
+ame04391	Hippo signaling pathway  fly
+ame04392	Hippo signaling pathway  multiple species
+ame04512	ECMreceptor interaction
+ame04624	Toll and Imd signaling pathway
+ame04711	Circadian rhythm  fly
+ame04745	Phototransduction  fly
+ame04933	AGERAGE signaling pathway in diabetic complications
