@@ -13,7 +13,7 @@ use constant PWD => $ENV{"PWD"};
 
 # 定义 -> 核心变量
 my $blastn      = "/home/genesky/software/blast+/2.9.0/bin/blastn";
-my $lineages    = "/home/genesky/database/ncbi/nt_20191128/lineages-2019-02-20.csv";
+my $lineages    = "/home/genesky/database/ncbi/nt_20191128/ncbi_lineages_2020-05-29.csv";
 my $nt_db       = "/home/genesky/database/ncbi/nt/blast_idx/nt";
 my $table2excel = "perl /home/pub/bin/NGS/chip/GATK4/tools/personal/table2excel.pl";
 
