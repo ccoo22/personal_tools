@@ -23,7 +23,7 @@ library(ROCR)
 library(pROC)
 set.seed(91)
 
-table = read.table(input, head = T, row.names = 1, check.names = F)
+table = read.table(input, head = T, row.names = 1, check.names = F, sep = "\t")
 table = data.matrix(table)
 
 y = table[, 1]
