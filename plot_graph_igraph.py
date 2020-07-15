@@ -53,6 +53,12 @@ if __name__ == '__main__':
     edge_data = pd.read_table(args.edge, sep='\t', header = 0, index_col = None)
     node_data = pd.read_table(args.node, sep='\t', header = 0, index_col = None)
 
+    # 检查node数据是否重复
+    if node_data.iloc[:,0].duplicated().sum() > 0:
+        print("[warning] node文件存在重复node id, 脚本做去重处理，优先保留行id靠前的node id")
+        dup = node_data.iloc[:,0].duplicated()
+        node_data = node_data.loc[dup == False,:].copy()
+
     node_count = node_data.shape[0]
 
     # 检查是edge/node 异常
