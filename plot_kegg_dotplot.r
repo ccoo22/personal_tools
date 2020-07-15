@@ -31,6 +31,14 @@ data = data[order(data$GeneRatio), ]  # 从小到大排序
 data$Description = factor(data$Description, data$Description)  # 转换成factor格式，从而确保绘图顺序
 
 pdf(output, width = 10)
-p <- ggplot(data, aes(x=Description, y=GeneRatio)) + geom_point(aes(col=p.adjust, size=Count)) + scale_color_continuous(low="red", high="blue", name = 'p.adjust', guide=guide_colorbar(reverse=TRUE)) + xlab(NULL) + scale_size(range=c(3, 8)) + coord_flip()
+p <- ggplot(data, aes(x=Description, y=GeneRatio)) + 
+     geom_point(aes(size=Count, color=p.adjust)) + 
+     scale_color_continuous(low="red", high="blue", name = 'p.adjust', guide=guide_colorbar(reverse=TRUE)) + 
+     xlab(NULL) + scale_size(range=c(3, 8)) + 
+     guides(color = guide_colourbar(order=1, reverse=TRUE), size = guide_legend(order=2)) +  # 固定legend显示顺序
+     coord_flip()
 print(p)
+
 dev.off()
+
+ 
