@@ -1,0 +1,5 @@
+1、首先筛选出3_Methylation_Difference/case.VS.control/Different_Methylation.xlsx的
+“DMP”工作表中pvalue < 0.05的甲基化位点；
+2、再筛选mRNA差异分析Differential_Expression_Genes_Summary.xlsx中
+pvalue < 0.05的基因及对应样本的归一化表达量(diff_gene.xls)；
+3、使用utils中get_rna_ref.pl得到correlation_analysis.pl需要的rna文件输入格式（gene.xls）
