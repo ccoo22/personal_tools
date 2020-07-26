@@ -173,6 +173,7 @@ message("start KEGG analysis")
 kegg_enrichment <- paste(output_dir, "kegg_enrichment.xls", sep="/")
 kk <- enrichKEGG(gene         = gene,
                  organism     = org,
+                 keyType = 'ncbi-geneid',
                  pvalueCutoff = 1,
 		         qvalueCutoff = 1)
 kk_enrich <- as.data.frame(kk)
