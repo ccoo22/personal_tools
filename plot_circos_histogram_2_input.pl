@@ -53,6 +53,7 @@ print CONFIG "\tlabel_parallel    = yes   \n";# 设定 label 的字体方向，y
 print CONFIG "\tshow_bands        = yes   \n"; # 显示条带
 print CONFIG "\tfill_bands        = yes   \n"; # 填充条带
 print CONFIG "\tband_transparency = 0     \n"; # 条带透明度，0-100
+print CONFIG "\tfill              = no    \n"; # 是否用 karyotype中标记的染色体颜色填充
 print CONFIG "</ideogram>   \n"; 
 
 # 设置染色体tick
