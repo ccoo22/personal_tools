@@ -19,7 +19,7 @@ my $table2excel   = "$scriptdir/utils/table2excel.pl";
 my $plot_r		  = "$scriptdir/utils/plot.r";
 my $plot_linear   = "$scriptdir/utils/plot_linear.r";
 
-my ($rna, $meth, $sample, $output_dir, $up_extend, $down_extend, $plot_linear_top, $thread, $help);
+my ($rna, $meth, $sample, $output_dir, $up_extend, $down_extend, $plot_linear_top, $thread, $pvalue_cutoff, $help);
 
 GetOptions(
 	'rna|r=s'               => \$rna,
@@ -30,6 +30,7 @@ GetOptions(
 	'up_extend|up=s'		=> \$up_extend,
 	'down_extend|down=s'	=> \$down_extend,
 	'plot_linear_top=s'	    => \$plot_linear_top,
+	'pvalue_cutoff=s'	    => \$pvalue_cutoff,
 	'thread|T=s'            => \$thread,
 	'help|h!' 		        => \$help,
 );
@@ -39,6 +40,7 @@ $thread   = 10 if(not defined $thread);
 $up_extend   = 500000 if (not defined $up_extend );
 $down_extend = 500000 if (not defined $down_extend );
 $plot_linear_top = 300    if (not defined $plot_linear_top );
+$pvalue_cutoff = 0.05    if (not defined $pvalue_cutoff );
 
 ###################################################################### 主程序
 
@@ -107,11 +109,14 @@ $pm->wait_all_children;
 # (5) 将拆分计算的结果合并
 ##########
 print "(5) 结果汇总\n";
-my $result_file = "$output_dir/filter.correlation.result.txt";
+my $result_all    = "$output_dir/filter.correlation.result.txt";
+my $result_pvalue = "$output_dir/filter.correlation.result.pvalue$pvalue_cutoff.txt";
 # 表头
-open OUTPUT,">$result_file";
+open OUTPUT_ALL,">$result_all";
+open OUTPUT_PVALUE,">$result_pvalue";
 my @heads = ('RNA_ID', 'RNA_chr', 'RNA_start', 'RNA_Strand', 'METH_ID', 'METH_chr', 'METH_Position', 'NMISS', 'Pvalue', 'Estimate', 'METH_RNA_dist');
-print OUTPUT (join "\t", @heads) . "\n";
+print OUTPUT_ALL (join "\t", @heads) . "\n";
+print OUTPUT_PVALUE (join "\t", @heads) . "\n";
 
 # 目录句柄
 opendir RESULT_FILE, "$split_dir/";
@@ -124,27 +129,30 @@ foreach my $file(readdir RESULT_FILE)
     {
         $_ =~ s/[\r\n]//g;
         my ($rna_id, $rna_chr, $rna_start, $rna_strand, $meth_id, $meth_chr, $meth_position, $nmiss, $pvalue, $estiamte) = split /\t/, $_;
-		next if($estiamte !~ /\d/ or $estiamte >= 0);
+		next if($estiamte !~ /\d/ or $estiamte >= 0); # 只要负相关的
+
 		my $METH_RNA_dist = $meth_position - $rna_start;
-        print OUTPUT "$_\t$METH_RNA_dist\n";      
+        print OUTPUT_ALL "$_\t$METH_RNA_dist\n";      
+        print OUTPUT_PVALUE "$_\t$METH_RNA_dist\n" if($pvalue < $pvalue_cutoff);      
     }
     close FILE;
 }
 closedir RESULT_FILE;
-close OUTPUT;
+close OUTPUT_ALL;
+close OUTPUT_PVALUE;
 
 #输出excel
-my $excel = "$output_dir/$method.correlation.xlsx";
+my $excel = "$output_dir/$method.correlation.pvalue$pvalue_cutoff.xlsx";
 print "final : $excel\n";
-system("perl $table2excel -i $result_file -o $excel -s $method");
+system("perl $table2excel -i $result_pvalue -o $excel -s $method");
 
 #绘图（散点图、曼哈顿图、QQ图）
 print "(6) 绘图\n";
-system("$r_script $plot_r -i $result_file -o $output_dir");
+system("$r_script $plot_r -i $result_all -o $output_dir");
 
 # top 个结果绘制线性图
 my $pdf = "$output_dir/linear_plot.top$plot_linear_top.pdf";
-system("$r_script $plot_linear -i $result_file -o $pdf --top $plot_linear_top --rna $rna --meth $meth --sample $sample");
+system("$r_script $plot_linear -i $result_pvalue -o $pdf --top $plot_linear_top --rna $rna --meth $meth --sample $sample");
 
 ###################################################################### 子函数
 
@@ -250,6 +258,7 @@ Options:
         --down_extend/-down  RNA的起始位置下调范围，默认：500000
         --corrlation-method/-c   相关分析算法，pearson/spearman, 默认： pearson
         --plot_linear_top        对差异显著的top 个rna/meth 结果， 绘制线性拟合曲线， 默认： 300
+        --pvalue_cutoff      结果按照pvalue做过滤, 默认： 0.05
         --thread/-t          并行线程数，默认：10
         --help/-h            查看帮助文档
     \n";

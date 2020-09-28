@@ -1,6 +1,6 @@
 #!/home/genesky/software/r/3.5.1/bin/Rscript
 library(docopt)
-"Usage: survival.r  -i <file> -o <dir> [ --model <string> --Rlib <dir> --width <int>]
+"Usage: survival.r  -i <file> -o <dir> [ --model <string> --Rlib <dir> --width <int> --survivalroc_time <numeric> --survivalroc_method <string> ]
 Options:
    -i, --input <file>                    输入文件，第一列样本名，第二列生存时间，第三列是否截尾（0截尾,1去世），第四列及之后的数据为要分析的表型
                                          注意：列名尽可能不要出现‘-’减号字符，会报错
@@ -18,17 +18,25 @@ Options:
                                                 该分析对第四列及之后的表型汇总建模
 
                                          My.stepwise.coxph : 选择一组与生存相关性较强的一组变量，构成COX模型。注：最终只会在桌面打印一组变量名称，能够较好的构成COX模型。
+
+                                         survivalROC : 生存资料的ROC曲线分析。预测第四列及之后的数据与样本的生存状态的ROC曲线。第四列及之后的数据应该是连续性变量。
+
+    --survivalroc_time <numeric>         ntime生存期的ROC曲线， 如果是survivalROC分析的话，必须填写该内容。
+    --survivalroc_method <string>        survivalROC分析方法 NNE/KM [default: NNE]
                                          
    --width <int>                         pdf图像宽度 [default: 7]
    --Rlib <dir>                          R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
 
-opts              <- docopt(doc, version = '生存分析软件 \n')
-input             <- opts$input
-output_dir        <- opts$output_dir
-model             <- opts$model
-width             <- as.integer(opts$width)
-Rlib              <- opts$Rlib
+opts               <- docopt(doc, version = '生存分析软件 \n')
+input              <- opts$input
+output_dir         <- opts$output_dir
+model              <- opts$model
+survivalroc_method <- opts$survivalroc_method
+survivalroc_time   <- as.numeric(opts$survivalroc_time)
+width              <- as.integer(opts$width)
+Rlib               <- opts$Rlib
 .libPaths(Rlib)
+
 
 # input = 'data2.txt'
 # output_dir = "./"
@@ -41,6 +49,7 @@ Rlib              <- opts$Rlib
 library("survival")
 library("survminer")
 library("My.stepwise")
+library("survivalROC")
 if(model != 'KM' & model != 'log-rank' & model != 'COX')
 {
     message("无法识别'model'字符，请确认输入是否正确")
@@ -196,4 +205,60 @@ if(model == 'My.stepwise.coxph')
     # 分析
     My.stepwise.coxph(Time = time_var, Status = event_var, variable.list = pheno_names, data = new_data)
     message("最后一行输出的变量名称就是最优组合结果")
+}
+
+
+##################
+# （5）survivalROC分析
+##################
+if(model == 'survivalROC')
+{   
+    cat('Model : survivalROC \n')
+    if(is.null(time_survivalroc))
+    {
+        message("survivalROC模型下，必须填写 time_survivalroc")
+        q()
+    }
+
+    time <- input_data$time
+    status <- input_data$status
+
+    # 对每一个分层表型进行计算
+    pdf(paste0(output_dir, '/survival.survivalROC.pdf'), width = width)
+    
+    count = 0
+    for(pheno_name in colnames(input_data)[3:ncol(input_data)])
+    {   
+        message("[process survivalROC] ", pheno_name)
+        count = count + 1
+        # 创建分析数据
+        new_data <- data.frame(time = time, status = status, variable = input_data[[pheno_name]])
+        # colnames(new_data)[3] = pheno_name 
+        new_data <- new_data[complete.cases(new_data), ]
+        new_data <- new_data[apply(new_data, 1, function(x){sum(x=='')}) == 0, ]
+        # 只有一组数据，无法分析
+        if(length(unique(new_data[, 3])) == 1 )
+        {
+            pvalue_data[count, ] = c(pheno_name, 'NA')
+            next
+        }
+
+        my_surv = survivalROC(new_data$time, new_data$status, new_data$variable, entry = NULL, predict.time = survivalroc_time, cut.values = NULL, method = survivalroc_method, lambda = NULL, span = NULL, window = "symmetric")
+        ## NNE法
+        plot(my_surv$FP, my_surv$TP, ## x=FP,y=TP
+            type="l",col="#BC3C29FF", ##线条设置
+            xlim=c(0,1), ylim=c(0,1),   
+            xlab="FP",  
+            ylab="TP",
+            main=paste0("Time dependent ROC :", pheno_name))## \n换行符
+        abline(0,1,col="gray",lty=2)##线条颜色
+        info = paste0("AUC of ", survivalroc_method, " = ", round(my_surv$AUC,3))
+        legend(0.6, info,
+                 x.intersp=1, y.intersp=0.8,
+                 lty= 1 ,lwd= 2,col=c("#BC3C29FF"),
+                 bty = "n",# bty框的类型
+                 seg.len=1,cex=0.8)# 
+        
+    }
+    dev.off()
 }

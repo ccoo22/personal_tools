@@ -40,6 +40,8 @@ mycol = colors()[rep(mycol,20)]
 data$plot_id <- paste(data$RNA_ID, data$METH_ID, sep="-")
 data_plot <- data[, c('plot_id', 'METH_chr', 'METH_Position', 'Pvalue')]
 colnames(data_plot) <- c('SNP', 'CHR', 'BP', 'P')
+data_plot$CHR[data_plot$CHR == 'X'] = '23'
+data_plot$CHR[data_plot$CHR == 'Y'] = '24'
 data_plot$CHR <- as.numeric(data_plot$CHR)
 manhattan_png <- paste(output, "/manhattan.png", sep="")
 png(manhattan_png, width = as.numeric(size[1]), height = as.numeric(size[2]))

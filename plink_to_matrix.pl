@@ -18,12 +18,13 @@ my $DEFAULT_SOFT_PLINK   = "/home/genesky/software/plink/1.07/plink";
 
 # 参数输入
 my $ARGV_INFO = join " ", @ARGV;
-my ($input_plink, $output, $miss_blank, $SOFT_PLINK, $if_help);
+my ($input_plink, $output, $miss_blank, $add_num_to_snp, $SOFT_PLINK, $if_help);
 GetOptions(
 	"input_plink|i=s"     => \$input_plink,
 	"output|o=s"          => \$output,
 
 	"miss_blank|m"        => \$miss_blank,
+	"add_num_to_snp"      => \$add_num_to_snp,
 
 	"plink=s"             => \$SOFT_PLINK,
 	"help|h"              => \$if_help,
@@ -37,6 +38,7 @@ Options: 必填
 
 Options: 可选
         --miss_blank/-m      把plink的缺失值 0 0 替换为空值
+        --add_num_to_snp     在原始SNP id的基础上增加顺序数字编号，应对原始plink中有重复id的情况
         --plink              更改软件 plink 版本 (default: '$DEFAULT_SOFT_PLINK')
         --help/-h            查看帮助文档
 \n" if (defined $if_help or not defined $input_plink or not defined $output);
@@ -71,8 +73,9 @@ if(is_file_ok($ped_file, $map_file) == 0)
 }
 
 # 数据提取
+my %hashAlleles;
 my %hashMap = read_map($map_file);
-my %hashGeno = read_ped($ped_file, \%hashMap);
+my %hashGeno = read_ped($ped_file, \%hashMap, \%hashAlleles);
 
 # 输出
 print "output result\n";
@@ -80,11 +83,14 @@ my @samples = sort {$hashGeno{'sample'}{$a} <=> $hashGeno{'sample'}{$b}} keys %{
 my @snvids = sort {$hashMap{$a}{'sort_row'} <=> $hashMap{$b}{'sort_row'}} keys %hashMap;
 
 open OUT, ">$output";
-print OUT "SNV\tchr\tpos\t" . (join "\t", @samples) . "\n";
+print OUT "SNV\tchr\tpos\tAllele1\tAllele2\t" . (join "\t", @samples) . "\n";
 foreach my $snvid(@snvids)
-{
+{   
+    my @alleles = sort {$hashAlleles{$snvid}{$a}<=>$hashAlleles{$snvid}{$b}} keys %{$hashAlleles{$snvid}};
+    my $allele1 = $alleles[0];
+    my $allele2 = exists $alleles[1] ? $alleles[1] : "";
     my @genos = map{ $hashGeno{'data'}{$_}{$snvid} } @samples;
-    print OUT "$snvid\t$hashMap{$snvid}{'chr'}\t$hashMap{$snvid}{'pos'}\t" . (join "\t", @genos) . "\n";
+    print OUT "$snvid\t$hashMap{$snvid}{'chr'}\t$hashMap{$snvid}{'pos'}\t$allele1\t$allele2\t" . (join "\t", @genos) . "\n";
 }
 close OUT;
 
@@ -96,6 +102,7 @@ system("rm $ped_file $map_file") if($is_binary == 1);  # 删除中间文件
 sub read_ped{
     my $ped_file = shift @_;
     my $hashMap  = shift @_;
+    my $hashAlleles = shift @_;
 
     print "read ped file\n";
 
@@ -114,6 +121,8 @@ sub read_ped{
                $geno = "" if(defined $miss_blank and $allele1 eq '0' and $allele2 eq '0');
             $hashGeno{'data'}{$iid}{$snvids[$col]} = $geno;
             $hashGeno{'sample'}{$iid} = $.;
+            $hashAlleles->{$snvids[$col]}{$allele1}++ if($allele1 ne '0');
+            $hashAlleles->{$snvids[$col]}{$allele2}++ if($allele2 ne '0');
         }
     }
     close PED;
@@ -131,6 +140,13 @@ sub read_map{
     {
         $_=~s/[\r\n]//g;
         my ($chr, $id, $tmp, $pos) = split /\s+/, $_;
+        $id = "$id.$."  if(defined $add_num_to_snp);
+
+        if(exists $hashMap{$id})
+        {
+            print "[Error] 存在重复snp id: $id\n";
+            print "建议添加 --add_num_to_snp参数\n";
+        }
         $hashMap{$id}{'chr'} = $chr;
         $hashMap{$id}{'pos'} = $pos;
         $hashMap{$id}{'sort_row'} = $.;

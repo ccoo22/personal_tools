@@ -54,7 +54,8 @@ for (series in unlist(strsplit(series_number, ',')) )
     # 提取芯片版本、表达矩阵、注释数据库
     chip_version_tmp <- gset_tmp@annotation
     data_matrix_tmp <- exprs(gset_tmp)
-
+    
+    message(series, " 芯片版本： ", chip_version_tmp)
     # 芯片版本核对
     if(chip_version != '' && chip_version != chip_version_tmp)
     {
