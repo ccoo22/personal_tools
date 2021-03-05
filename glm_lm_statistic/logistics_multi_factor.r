@@ -2,13 +2,14 @@
 
 library(docopt)
 
-"Usage: logistics_multi_factor.r  -i <file>  -p <prefix> [-g <string> -c <file> --rlib <dir>]
+"Usage: logistics_multi_factor.r  -i <file>  -p <prefix> [-g <string> -c <file> --maxit <integer>  --rlib <dir>]
 
 Options:
     -i, --input <file>      输入文件，第一列为样本名，第二列为样本分组（case=1，control=0），往后为基因列。
     -g, --gene <string>     输入要纳入多元逻辑回归分析的基因名称，多个基因用逗号分隔， 默认是所有基因
     -c, --cov <file>        协变量输入文件，用于矫正。第一列样本名，后面所有列都是协变量。样本顺序没有要求。默认不用输入。 务必保证cov中包含input的所有样本，cov文件中的所有列都用于矫正。列名不能包含空格、“-”等特殊字符
     -p, --prefix <prefix>   输出文件前缀， 生成: (1) ROC曲线图 prefix.ROC.pdf  (2) 逻辑回归模型结果 prefix.model.txt (3) 基于逻辑回归模型对输入样本做预测 prefix.predict.txt  (4) 最佳阈值结果 prefix.best.txt
+    --maxit <integer>       逻辑回归最大迭代次数, 当保警告Warning: glm.fit: algorithm did not converge时，建议增加迭代次数 [default: 25]
     --rlib <dir>            R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
 
 opts   <- docopt(doc, version='甘斌，多因素逻辑回归、ROC \n')
@@ -16,6 +17,7 @@ input         <- opts$input
 cov           <- opts$cov
 prefix        <- opts$prefix
 gene          <- opts$gene
+maxit         <- as.integer(opts$maxit)
 rlib          <- opts$rlib
 genes <- c()
 if(!is.null(gene))  genes <- unlist(strsplit(gene, ","))
@@ -88,7 +90,7 @@ if(nmiss_case == 0 | nmiss_control == 0)
 # 逻辑回归
 message("build model")
 f <- as.formula(paste('y ~', paste(vars, collapse = ' + ') ) )
-glm_fit <- glm(f, data = data_tmp, family = binomial)
+glm_fit <- glm(f, data = data_tmp, family = binomial, control=list(maxit=maxit))
 fit_summary <- summary(glm_fit)
 glm_result  <- fit_summary$coefficients
 

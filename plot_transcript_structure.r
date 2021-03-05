@@ -7,7 +7,7 @@ library(docopt)
 Options:
     -i, --input <file>              输入文件，一列数据，没有表头，转录本ID号（例如：ENST00000216129），或者基因名称（例如：TTLL12）
     -o, --output <pdf file>         输出pdf文件路径,示例：./a.pdf
-    -t, --type <string>             输入数据类型，基因/转录本，g/t [default:g]
+    -t, --type <string>             输入数据类型，基因/转录本，g/t [default: t]
     --rlib <string>                 r包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
 
 opts   <- docopt(doc, version='甘斌，绘制转录本或基因在基因组上的区域结构图\n')

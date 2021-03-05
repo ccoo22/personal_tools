@@ -2,18 +2,20 @@
 
 library(docopt)
 
-"Usage: logistics_single_factor.r  -i <file> -p <prefix> [ -c <file> --rlib <dir>]
+"Usage: logistics_single_factor.r  -i <file> -p <prefix> [ -c <file> --maxit <integer> --rlib <dir>]
 
 Options:
     -i, --input <file>      输入文件，第一列为样本名，第二列为样本分组（case=1，control=0），往后为基因列。该软件对每一个基因单独做逻辑回归分析。 列名不能包含空格、“-”等特殊字符
     -c, --cov <file>        协变量输入文件，用于矫正。第一列样本名，后面所有列都是协变量。样本顺序没有要求。默认不用输入。 务必保证cov中包含input的所有样本，cov文件中的所有列都用于矫正。列名不能包含空格、“-”等特殊字符
     -p, --prefix <prefix>   输出文件前缀， 生成: (1) ROC曲线图 prefix.ROC.pdf  (2) 逻辑回归模型结果 prefix.model.txt
+    --maxit <integer>       逻辑回归最大迭代次数, 当保警告Warning: glm.fit: algorithm did not converge时，建议增加迭代次数 [default: 25]
     --rlib <dir>            R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
 
 opts   <- docopt(doc, version='甘斌，单因素逻辑回归、ROC \n')
 input       <- opts$input
 cov         <- opts$cov
 prefix      <- opts$prefix
+maxit       <- as.integer(opts$maxit)
 rlib        <- opts$rlib
 
 if(!is.null(rlib)) .libPaths(rlib)
@@ -58,7 +60,7 @@ if(! is.null(cov))
 
 # 保留模型值
 result <- matrix(ncol = 13 + 2 * length(cov_names), nrow = length(genes))
-col_names = c('Var', 'NMISS case', 'NMISS control', "Estimate", "Pvalue", "Estimate(Intercept)", "Pvalue(Intercept)")  # 必要结果
+col_names = c('Var', 'NMISS case', 'NMISS control', "Estimate", "Pvalue", "Pvalue_FDR", "Estimate(Intercept)", "Pvalue(Intercept)")  # 必要结果
 for(cov_name in cov_names)  # 协变量结果
 {
     col_names = c(col_names, paste0(c("Estimate", "Pvalue"), "(", cov_name, ")") )
@@ -99,7 +101,7 @@ for( col in 1:length(genes))
 
     # 逻辑回归
     formula <- as.formula(paste('y ~ ', paste(vars, collapse = ' + ') ) )
-    glm_fit <- glm(formula, data = data_tmp, family = binomial)
+    glm_fit <- glm(formula, data = data_tmp, family = binomial, control=list(maxit=maxit))
     fit_summary <- summary(glm_fit)
     glm_result  <- fit_summary$coefficients
 
@@ -135,7 +137,7 @@ for( col in 1:length(genes))
     text (0.4, 0.2, c(paste("95%CI:", L95, "-", U95)), adj = 0, font = 2)
     
     # 结果记录
-    result_value = c(gene, nmiss_case, nmiss_control, glm_result[gene, 'Estimate'], glm_result[gene, 'Pr(>|z|)'], glm_result['(Intercept)', 'Estimate'], glm_result['(Intercept)', 'Pr(>|z|)'])
+    result_value = c(gene, nmiss_case, nmiss_control, glm_result[gene, 'Estimate'], glm_result[gene, 'Pr(>|z|)'], NA, glm_result['(Intercept)', 'Estimate'], glm_result['(Intercept)', 'Pr(>|z|)'])
     for(cov_name in cov_names)  # 协变量结果
     {   
         result_value = c(result_value, glm_result[cov_name, 'Estimate'], glm_result[cov_name, 'Pr(>|z|)']) 
@@ -145,6 +147,7 @@ for( col in 1:length(genes))
     result[col, ] <- result_value
 }
 dev.off()
+result[,'Pvalue_FDR'] =  p.adjust(result[,'Pvalue'], method = "fdr", n=nrow(result))
 
 
 # 结果输出

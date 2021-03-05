@@ -53,8 +53,8 @@ if(! is.null(cov))
 }
 
 # 保留模型值
-result <- matrix(ncol = 6 + 2 * length(cov_names), nrow = length(genes))
-col_names = c('Var', 'NMISS', "Estimate", "Pvalue", "Estimate(Intercept)", "Pvalue(Intercept)")  # 必要结果
+result <- matrix(ncol = 7 + 2 * length(cov_names), nrow = length(genes))
+col_names = c('Var', 'NMISS', "Estimate", "Pvalue", "Pvalue_FDR", "Estimate(Intercept)", "Pvalue(Intercept)")  # 必要结果
 for(cov_name in cov_names)  # 协变量结果
 {
     col_names = c(col_names, paste0(c("Estimate", "Pvalue"), "(", cov_name, ")") )
@@ -97,7 +97,7 @@ for( col in 1:length(genes))
     lm_result  <- fit_summary$coefficients
 
     # 结果记录
-    result_value = c(gene, nmiss, lm_result[gene, 'Estimate'], lm_result[gene, 'Pr(>|t|)'], lm_result['(Intercept)', 'Estimate'], lm_result['(Intercept)', 'Pr(>|t|)'])
+    result_value = c(gene, nmiss, lm_result[gene, 'Estimate'], lm_result[gene, 'Pr(>|t|)'], NA ,lm_result['(Intercept)', 'Estimate'], lm_result['(Intercept)', 'Pr(>|t|)'])
     for(cov_name in cov_names)  # 协变量结果
     {   
         result_value = c(result_value, lm_result[cov_name, 'Estimate'], lm_result[cov_name, 'Pr(>|t|)']) 
@@ -105,7 +105,7 @@ for( col in 1:length(genes))
     
     result[col, ] <- result_value
 }
-
+result[,'Pvalue_FDR'] =  p.adjust(result[,'Pvalue'], method = "fdr", n=nrow(result))
 # 结果输出
 write.table(result, output, quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 

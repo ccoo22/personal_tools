@@ -31,7 +31,7 @@ GetOptions(
 );
 die "
 Options: 必填
-        --input/-i                输入文件，有表头，三列数据： bam路径、样本名、输出路径
+        --input/-i                输入文件，有表头，三列数据： bam文件绝对路径、样本名、输出目录(脚本自动创建)
                                   输出文件会使用样本名进行命名
                                   生成的文件有：
                                   sample_R1.fastq.gz  
@@ -62,7 +62,8 @@ foreach my $bam(@bams)
     $pm->start($bam) and next;
     my $sample       = $hashInfo{'DATA'}{$bam}{$sample_index};
     my $output_dir   = $hashInfo{'DATA'}{$bam}{$output_dir_index};
-    
+    mkdir $output_dir if(not -e $output_dir);
+   
     print "[process] $sample 按照名字排序\n";
     my $bam_sort_name = "$output_dir/$sample.sort_name.bam";
     system("$SOFT_SAMTOOLS sort -n -o  $bam_sort_name $bam");

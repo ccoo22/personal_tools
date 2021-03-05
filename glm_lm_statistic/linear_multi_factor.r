@@ -8,7 +8,10 @@ Options:
     -i, --input <file>      输入文件，第一列为样本名，第二列为因变量，往后为基因列。
     -g, --gene <string>     输入要纳入多元线性回归分析的基因名称，多个基因用逗号分隔， 默认是所有基因
     -c, --cov <file>        协变量输入文件，用于矫正。第一列样本名，后面所有列都是协变量。样本顺序没有要求。默认不用输入。 务必保证cov中包含input的所有样本，cov文件中的所有列都用于矫正。列名不能包含空格、“-”等特殊字符
-    -o, --output <file>     输出文件。 ./output.txt
+    -o, --output <file>     输出文件前缀。 ./output
+                            给出三个结果： output.txt 拟合模型
+                                          output.pdf 因变量、拟合值散点图
+                                          output.predicted.txt 因变量、拟合值结果
     --rlib <dir>            R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
 
 opts   <- docopt(doc, version='甘斌，多因素线性回归 \n')
@@ -85,13 +88,22 @@ lm_fit <- lm(f, data = data_tmp)
 fit_summary <- summary(lm_fit)
 lm_result  <- fit_summary$coefficients
 
+# 拟合值
+fit_y = fitted(lm_fit)
+r_squared = round(fit_summary$r.squared, 2)
 
-
-# 结果输出
+# 系数结果输出
 result_model = data.frame(Var = rownames(lm_result), lm_result, check.names = F)
+write.table(result_model, paste0(output, '.txt'), quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 
-write.table(result_model, output, quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
+# 拟合值、实际值输出
+result_y = data.frame(sample=rownames(data_tmp), y = data_tmp$y, predicted_value = fit_y)
+write.table(result_y, paste0(output, '.predicted.txt'), quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 
-
-
+# 绘图
+pdf(paste0(output, '.pdf'))
+plot(x = data_tmp$y, y = fit_y , pch = 16, cex = 0.4, xaxs = "i", yaxs = "i", xlab = 'dependent variable', ylab = 'predicted value')
+abline(a = 0, b = 1) # 直线
+legend("bottomright", legend = paste("R2 = ", r_squared))
+dev.off()
 

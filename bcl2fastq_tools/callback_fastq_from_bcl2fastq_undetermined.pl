@@ -88,7 +88,11 @@ sub abstract_fastq{
         my ($index_i7, $index_i5) = split /\+/, $anno4;
 
         my $index = $index_i7;
-           $index = "$index_i7+$index_i5" if($index_count eq 'D'); # 双index识别
+        if($index_count eq 'D')# 双index识别
+        {
+            $index = "$index_i7+$index_i5";
+            die "[Error]  Undetermined数据是使用单index进行拆分的，只有 I7序列。你不能用双index模式从该文件中提取数据\n" if(not defined $index_i5);
+        }
 
         # 输出到文件
         if(exists($hashHandle->{$index}))
@@ -116,14 +120,14 @@ sub cread_file_handle{
         my ($sample_name, $index_id_i7, $index_i7, $index_id_i5, $index_i5, $project, $tmp) = split /\t/, $_, 7;
         my $index = $index_i7;
            $index = "$index_i7+$index_i5" if($index_count eq 'D'); # 双index识别
-
+ 
         $sample_count++;
         # 打开文件句柄，放入哈希
         open $hashHandle{$index}{"R1"}, "| gzip > $output_dir/$sample_name\_R1.fastq.gz";
         open $hashHandle{$index}{"R2"}, "| gzip > $output_dir/$sample_name\_R2.fastq.gz";
     }
     close INDEX;
-    print "    Process handle: $sample_count * 2\n";
+    print "    Process handle: $sample_count * 2\n"; 
     return %hashHandle;
 }
 
@@ -141,10 +145,11 @@ Options:
          --index_file/-i          输入index文件。任意表头（脚本会忽略第一行），
                                   双index格式示例（至少5列，重点看1、3、5列）：HXL_A1   G385    CATTATAC    508 GTCAGTAC    18AATH041_SZ16R0110A    18SZ0069
                                   单index格式示例（至少3列，重点看1、3列）   ：Ctrl13-Th-5w   G-2 CCGTGTCC    19B0318B-ATAC   ATAC
-                                  例如：/home/pub/bin/NGS/chip/GATK4/tools/personal/bcf2fastq_tools/bcl2fastq_ref/infoI7.txt
+                                  例如：/home/pub/bin/NGS/chip/GATK4/tools/personal/bcl2fastq_tools/bcl2fastq_ref/infoI7.txt
          --output_dir/-o          输出目录
          --undetermined_dir/-u    Undetermined文件所在目录，例如：/home/lch/work/20190520_Hiseq_SH19GSL083_087-090/Raw_data
          --index_count/-c         index识别数目，S/D。S = Single，D = Double，即根据单/双index识别样本         
+                                  注意：如果Undetermined是用单index拆分的数据，你的index_count只能是 Single模式。
          --help/-h                查看帮助文档
     \n";
     return $info;

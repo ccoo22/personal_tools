@@ -165,7 +165,16 @@ dev.off()
 ##################
 # （9）热图绘制
 ##################
+message("热图绘制，数据过滤")
+message("    仅保留差异显著的基因")
 result_diff <- result[result$type != 'Not DEG', ]
+# 去掉标准差为0的基因，否则hclust可能
+message("    去掉表达量的标准差为0的基因")
+result_diff <- result_diff[apply(result_diff[ , c(case_samples, control_samples)],1, function(x){ sd(x[!is.na(x)]) != 0}), ]  
+# na比例超过50%的去掉，有可能导致绘图报错
+message("    去掉表达量缺失样本比例超过50%的基因")
+na_perc <- apply(result_diff[ , c(case_samples, control_samples)],1,function(x){sum(is.na(x)) / length(c(case_samples, control_samples))})  
+result_diff <- result_diff[na_perc <= 0.5, ]
 
 # Top50 heatmap plot
 if( nrow(result_diff) < 50 )

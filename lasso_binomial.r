@@ -34,7 +34,7 @@ output_dir          <- opts$output_dir
 prefix              <- opts$prefix
 
 lambda              <- opts$lambda
-lambda_value        <- as.numeric(opts$lambda_value)
+lambda_value        <- opts$lambda_value
 score_data          <- opts$score_data
 rlib                <- opts$rlib
 .libPaths(rlib)
@@ -111,7 +111,7 @@ cvfit  = cv.glmnet(x_clean, y_clean, family = "binomial", type.measure = "class"
 lasso_lambda_value = ifelse(lambda == 'min', cvfit$lambda.min, cvfit$lambda.1se)
 if(!is.null(lambda_value)) 
 {
-    lasso_lambda_value = lambda_value  # 使用指定lambda值
+    lasso_lambda_value = as.numeric(lambda_value)  # 使用指定lambda值
     lambda = 'manual_defined'
 }
 

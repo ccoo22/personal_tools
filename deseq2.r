@@ -125,8 +125,8 @@ write.table(cnt_norm, norm_file, sep="\t", quote=F, col.names = T, row.names = F
 
 # 差异分析结果提取
 # (1) 补充case/control表达量均值
-cnt_norm$baseMeanA <- apply( cnt_norm[, case_samples], 1, mean )
-cnt_norm$baseMeanB <- apply( cnt_norm[, control_samples], 1, mean )
+cnt_norm$baseMeanA <- apply( cnt_norm[, case_samples, drop=F], 1, mean )
+cnt_norm$baseMeanB <- apply( cnt_norm[, control_samples, drop=F], 1, mean )
 
 # (2) 差异结果提取、标记Up/Down/Not DEG
 res <- as.data.frame(results(dds)) # baseMean log2FoldChange  lfcSE   stat    pvalue  padj 

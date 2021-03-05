@@ -1,17 +1,21 @@
 #!/home/genesky/software/r/3.5.1/bin/Rscript
 library(docopt)
-"Usage: pca_tree.r -t <file>  -o <file> [-g <file> --text_size <num>  ]
+"Usage: pca_tree.r -t <file>  -o <file> [-g <file> --text_size <num>  --xlim_max <num>]
 Options:
    -t, --tree_file <file>          tree 文件，newick格式
    -g, --group_file <file>         样本分组文件，两列，第一列样本名，第二列样本分组，必须含有表头，表头名字随意。 [default: NA]
    -o, --output <pdf>              pdf output file
-   --text_size <num>               sample name size, default: auto calculate" -> doc
+   --text_size <num>               sample name size, default: auto calculate
+   --xlim_max <num>                x轴显示区域右边界。 主要用来处理右侧显示字符被覆盖的情况。
+   
+   " -> doc
 
 opts                     <- docopt(doc, version = 'Program : plot tree v1.0 \n          甘斌 129\n')
 tree_file                <- opts$tree_file
 group_file               <- opts$group_file
 output                   <- opts$output
 text_size                <- opts$text_size
+xlim_max                 <- opts$xlim_max
 
 
 # # 测试用参数
@@ -34,7 +38,7 @@ samples = tree$tip.label
 if(group_file != 'NA')
 {
   message("load group")
-  group_data = read.table(group_file, head = T, check.names = F, stringsAsFactors=F)
+  group_data = read.table(group_file, head = T, check.names = F, stringsAsFactors=F, colClasses = 'character')
   colnames(group_data)[1:2] = c('Sample', 'Group')
   rownames(group_data) = group_data$Sample
 
@@ -76,9 +80,14 @@ if(group_file != 'NA')
 }else {
   pic[[1]] = ggtree(tree, layout="circular", branch.length="none" ) + geom_tiplab2(size=resizeTXT, aes(angle = angle) ) + geom_text2(aes(label=as.numeric(label)*100,subset=!isTip), hjust=-.3,size = resizeTXT * 0.6) + theme(legend.position = "right") + ggtitle("(Phylogram) circular layout and no branch.length")      
   pic[[2]] = ggtree(tree, layout="circular" )                        + geom_tiplab2(size=resizeTXT, aes(angle = angle))  + geom_text2(aes(label=as.numeric(label)*100,subset=!isTip), hjust=-.3,size = resizeTXT * 0.6) + theme(legend.position = "right") + ggtitle("(Phylogram) circular layout")                           
-  pic[[3]] = ggtree(tree)                                            + geom_tiplab(size=resizeTXT)                       + geom_text2(aes(label=as.numeric(label)*100,subset=!isTip), hjust=-.3,size = resizeTXT * 0.6) + theme(legend.position = "right") + ggtitle("(Phylogram) rectangular layout")                        
-  pic[[4]] = ggtree(tree, branch.length="none")                      + geom_tiplab(size=resizeTXT)                       + geom_text2(aes(label=as.numeric(label)*100,subset=!isTip), hjust=-.3,size = resizeTXT * 0.6) + theme(legend.position = "right") + ggtitle("(Phylogram) rectangular layout and no branch.length")   
+  pic[[3]] = ggtree(tree)                                            + geom_tiplab(size=resizeTXT)                       + geom_text2(aes(label=as.numeric(label)*100,subset=!isTip), hjust=-.3,size = resizeTXT * 0.6) + theme(legend.position = "right") + ggtitle("(Phylogram) rectangular layout")                      
+  pic[[4]] = ggtree(tree, branch.length="none")                      + geom_tiplab(size=resizeTXT)                       + geom_text2(aes(label=as.numeric(label)*100,subset=!isTip), hjust=-.3,size = resizeTXT * 0.6) + theme(legend.position = "right") + ggtitle("(Phylogram) rectangular layout and no branch.length") 
+}
 
+# X轴限制, 处理文字覆盖问题
+if(!is.null(xlim_max))
+{  
+    pic[[3]] = pic[[3]] +  xlim(NA, as.numeric(xlim_max))
 }
 
 print(pic[[1]]) 

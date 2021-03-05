@@ -13,7 +13,7 @@ my $gsea                = "/home/genesky/software/gsea/4.1.0/gsea-cli.sh";
 my %hashDB              = database_list(); # 数据库。GSEA官网只支持human。其他物种可以在http://ge-lab.org/gskb/下载
 
 # 检测 -> 脚本输入
-my ($input_matrix, $sample_group, $gene_col_name, $database, $database_list, $min_gene_count, $gmt_file, $output_dir, $if_help);
+my ($input_matrix, $sample_group, $gene_col_name, $database, $database_list, $min_gene_count, $plot_top, $gmt_file, $output_dir, $if_help);
 GetOptions(
     "input_matrix|i=s"   => \$input_matrix,
     "sample_group|s=s"   => \$sample_group,
@@ -22,6 +22,7 @@ GetOptions(
     "gmt_file=s"         => \$gmt_file,
     "database_list|l!"   => \$database_list,
     "min_gene_count|m=i" => \$min_gene_count,
+    "plot_top|t=i"       => \$plot_top,
     "output_dir|o=s"     => \$output_dir,
     "help|h"             => \$if_help,
 );
@@ -31,10 +32,11 @@ die help() if(defined $if_help or (not defined $input_matrix or not defined $sam
 $database       = "" if(not defined $database);
 $gene_col_name  = "" if(not defined $gene_col_name);
 $min_gene_count = 15 if(not defined $min_gene_count);
+$plot_top       = 40 if(not defined $plot_top);
 
 die "not find database\n" if($database ne "" and (not exists $hashDB{$database} or not -e $hashDB{$database})); # 数据库不存在
 
-my $gmt_input = ($database ne "") ? $hashDB{$database} : $gmt_file;
+my $gmt_input = (defined $gmt_file) ?  $gmt_file : $hashDB{$database};
 
 ###################################################################### 主程序
  
@@ -85,7 +87,7 @@ foreach my $gene(@genes)
 close GCT;
 
 # (3) GSEA 分析
-system(" $gsea GSEA -gmx $gmt_input -collapse false -res $gct_file  -cls $cls_file -set_min  $min_gene_count -metric $metric_para  -out $output_dir -rpt_label GSEA -plot_top_x 40 -rnd_seed 1234567890");
+system(" $gsea GSEA -gmx $gmt_input -collapse false -res $gct_file  -cls $cls_file -set_min  $min_gene_count -metric $metric_para  -out $output_dir -rpt_label GSEA -plot_top_x $plot_top -rnd_seed 1234567890");
 
 
 
@@ -189,7 +191,7 @@ sub read_expression_data{
 
 sub help{
     my $info = "
-Program: GSEA， GSEA分析, 基于GSEA 4.0.2版本
+Program: GSEA， GSEA分析, 基于GSEA 4.1.0版本
 Version: 2019-10-21
 Contact: 129 甘斌
 
@@ -210,6 +212,7 @@ Options:
 
          --gene_col_name/-g   指定基因列名。如果输入矩阵第一列不是基因，可以在这里指定基因列名，例如：-g gene_name
          --min_gene_count/-m  数据库中的一条通路里，最低基因数量，低于阈值，则不分析。默认：15
+         --plot_top/-t        对最显著的前n个通路绘图， 默认： 40
          --database_list/-l   列出支持的数据库
          --help/-h            查看帮助文档
     \n";

@@ -2,8 +2,8 @@
 library(docopt)
 "Usage: survival_cox.r --surv <file> --exp <file> -o <file> -p <pdf> [--exp_format <string> -m <string> --pdf_width <numeric> --pdf_height <numeric> --sort_by_hazard_ratio]
 Options:
-    -s, --surv <file>               lasso生存信息矩阵，第一列样本名，第二列time, 第三列 status（0 alive, 1 dead）， 有表头
-    --exp <file>                    lasso分析表达量文件矩阵，每一行对应一个特征，每一列对应一个样本，第一行是样本名，第一列是特征名称。不允许缺失。如果有缺失，会自动排除包含缺失的样本。
+    -s, --surv <file>               生存信息矩阵，第一列样本名，第二列time, 第三列 status（0 alive, 1 dead）， 有表头
+    --exp <file>                    分析表达量文件矩阵，每一行对应一个特征，每一列对应一个样本，第一行是样本名，第一列是特征名称。不允许缺失。如果有缺失，会自动排除包含缺失的样本。
                                     注意1：流程只会分析--surv文件中包含的样本
                                     注意2：另外，输入的文件也可以是每一行对应一个样本，每一列对应一个特征。数据格式请通过exp_format参数进行声明
     --exp_format <string>           exp文件格式 col/row。col表示exp文件每一列对应一个样本；row表示exp文件每一行对应一个样本 [default: col]

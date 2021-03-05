@@ -158,7 +158,7 @@ dds <- DESeq2::nbinomWaldTest(dds)
 message("deseq2 diff output")
 # 提取矫正后的表达量
 cnt_norm <- as.data.frame(DESeq2::counts(dds, normalized=TRUE))
-cnt_norm = data.frame(ID=rownames(cnt_norm), cnt_norm, stringsAsFactors=F)
+cnt_norm = data.frame(ID=rownames(cnt_norm), cnt_norm, stringsAsFactors=F, check.names=F)
 
 # norm 结果输出
 norm_file <- paste0(output_dir, "/diff_norm.txt")
@@ -166,8 +166,8 @@ write.table(cnt_norm, norm_file, sep="\t", quote=F, col.names = T, row.names = F
 
 # 差异分析结果提取
 # (1) 补充case/control表达量均值
-cnt_norm$baseMeanA <- apply( cnt_norm[, case_samples], 1, mean )
-cnt_norm$baseMeanB <- apply( cnt_norm[, control_samples], 1, mean )
+cnt_norm$baseMeanA <- apply( cnt_norm[, case_samples, drop=F], 1, mean )
+cnt_norm$baseMeanB <- apply( cnt_norm[, control_samples, drop=F], 1, mean )
 
 # (2) 差异结果提取、标记Up/Down/Not DEG
 res <- as.data.frame(DESeq2::results(dds)) # baseMean log2FoldChange  lfcSE   stat    pvalue  padj 

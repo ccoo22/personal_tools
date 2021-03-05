@@ -91,6 +91,7 @@ system("perl $kegg_pathway_download -k $kegg_raw -c $gene_list --add_address_to_
 system("mv $output_dir/png $output_dir/KEGG_Pathway_Illustrations") if(not defined $no_download_png); # 通路图
 system("mv $output_dir/GO_barplot.pdf $output_dir/go.bp.pdf  $output_dir/go.cc.pdf $output_dir/go.mf.pdf $custom_figure_dir");
 system("mv $output_dir/kegg_dotplot.pdf $custom_figure_dir");
+system("mv $output_dir/do_dotplot.pdf $custom_figure_dir") if($species eq "Homo_sapiens");
 
 # kegg热图
 system(" perl $enrich_xls_to_heatmap $kegg_raw > $output_dir/data.kegg.heatmap.txt ");

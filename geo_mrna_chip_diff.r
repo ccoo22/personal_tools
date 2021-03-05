@@ -2,7 +2,7 @@
 
 .libPaths("/home/genesky/software/r/3.5.1/lib64/R/library/")
 library(docopt)
-"Usage: geo_mrna_chip_diff.r --series_number <string> --case_sample <string> --control_sample <string> --output_prefix <file>  [--pvalue_cutoff <numeric> --case_group_name <string>  --control_group_name <string> ] 
+"Usage: geo_mrna_chip_diff.r --series_number <string> --case_sample <string> --control_sample <string> --output_prefix <file>  [--platform <string> --pvalue_cutoff <numeric> --case_group_name <string>  --control_group_name <string> ] 
 Options:
    --series_number <string>        GEO 编号列表，包含了case_sample/control_sample 样本的芯片数据。多个GEO编号用逗号分隔。支持不同GEO中的样本进行对比，前提是芯片一致。例如： 'GSE82107'
    --case_sample <string>          case组样本编号，样本之间用逗号分隔 例如： 'GSM2183539,GSM2183540,GSM2183541,GSM2183542,GSM2183543,GSM2183544,GSM2183545,GSM2183546,GSM2183547,GSM2183548'
@@ -10,15 +10,18 @@ Options:
    --case_group_name <string>      case组名 [default: case]
    --control_group_name <string>   control组名 [default: control]
    --output_prefix <file>          输出文件的前缀，例如： ./result  。 最终生成的结果为 result.diff.xls。
-   --pvalue_cutoff <numeric>       pvalue 阈值，仅输出小于该阈值的结果 [default: 1]" -> doc
+   --pvalue_cutoff <numeric>       pvalue 阈值，仅输出小于该阈值的结果 [default: 1]
+
+   --platform <string>             测序平台编号，例如 GPL96, GPL97 等，因为有的GEO下包含了多个测序平台的数据，不同平台之间是不能合并混用的。默认随机选择第一个平台，如果只有一个平台，可以忽略这个参数
+                                   注意：脚本内部使用pvalue 0.05, log2fc 1 进行显著差异判定" -> doc
 
 opts                   <- docopt(doc, version = 'Program : geo_mrna_chip_diff v1.0 \n          甘斌 129\n')
 series_number          <- opts$series_number
+platform               <- opts$platform
 case_sample_list       <- opts$case_sample
 control_sample_list    <- opts$control_sample
 output_prefix          <- opts$output_prefix
 pvalue_cutoff          <- as.numeric(opts$pvalue_cutoff)
-output_expr            <- opts$output_expr
 case_group_name        <- opts$case_group_name
 control_group_name     <- opts$control_group_name
 
@@ -48,14 +51,28 @@ for (series in unlist(strsplit(series_number, ',')) )
 {   
     series_count <- series_count + 1
     message("loading series : ", series)
-    gset_tmp <- getGEO(series, GSEMatrix =TRUE, AnnotGPL=TRUE)
-    gset_tmp <- gset_tmp[[1]]
+    gset_tmp <- getGEO(series, GSEMatrix =TRUE, AnnotGPL=FALSE)
+
+    # 测序平台选择，默认选择第一个
+    if(is.null(platform))
+    {
+        gset_tmp <- gset_tmp[[1]]
+    }else{
+        idx <- grep(platform, attr(gset_tmp, "names"))
+        if(length(idx) == 0)
+        {
+            message("[ERROR] 测序平台没有找到， 请仔细确认编号 ", platform)
+            q()
+        }
+        gset_tmp <- gset_tmp[[idx]]
+    }
+    
 
     # 提取芯片版本、表达矩阵、注释数据库
     chip_version_tmp <- gset_tmp@annotation
     data_matrix_tmp <- exprs(gset_tmp)
     
-    message(series, " 芯片版本： ", chip_version_tmp)
+    message(series, " 选择芯片版本： ", chip_version_tmp)
     # 芯片版本核对
     if(chip_version != '' && chip_version != chip_version_tmp)
     {
@@ -147,8 +164,7 @@ result <- data.frame(probe = rownames(tT),
                  log2FC = tT$logFC,
                  pvalue = tT$P.Value,
                  fdr = tT$adj.P.Val,
-                 geneSymbol = probe_annotation[rownames(tT), 'Gene symbol'],
-                 geneTitle = probe_annotation[rownames(tT), 'Gene title']
+                 probe_annotation[rownames(tT), ]
                  )
 result$type <- "Not DEG"
 result$type[result$pvalue < 0.05 & result$log2FC >= 1 ] <- "Up"
@@ -159,11 +175,6 @@ file_diff = paste0(output_prefix, ".diff.xls")
 message("output diff file : ", file_diff)
 write.table(result, file=file_diff, row.names=F, sep="\t", quote = FALSE)
 
-# 差异基因列表
-file_diff_gene = paste0(output_prefix, ".diff.gene.xls")
-diff_gene <- sort(unique(unlist(strsplit(as.character(result[result$type != 'Not DEG', 'geneSymbol']), "///"))))
-diff_gene = data.frame(gene=diff_gene)
-write.table(diff_gene, file=file_diff_gene, row.names=F, col.names=F, sep="\t", quote = FALSE)
 
 ##################
 # （6）PCA  暂时不绘制，数据做过log2处理，存在极限值
@@ -217,7 +228,7 @@ dev.off()
 volcano_file <- paste(output_prefix, ".volcano.pdf", sep="")
 message("plot volcano : ", volcano_file)
 pdf(volcano_file)
-volcano_title = paste0("genes: ", case_group_name, control_group_name)
+volcano_title = paste0("genes: ", case_group_name, '/', control_group_name)
 ggplot(result, aes(x = log2FC, y = -log10(result$pvalue), color =type)) + 
   geom_point() +
   theme_bw() +
@@ -229,7 +240,17 @@ dev.off()
 ##################
 # （9）热图绘制
 ##################
+message("热图绘制，数据过滤")
+message("    仅保留差异显著的基因")
 result_diff <- result[result$type != 'Not DEG', ]
+# 去掉标准差为0的基因，否则hclust可能
+message("    去掉表达量的标准差为0的基因")
+result_diff <- result_diff[apply(result_diff[ , c(case_samples, control_samples)],1, function(x){ sd(x[!is.na(x)]) != 0}), ]  
+# na比例超过50%的去掉，有可能导致绘图报错
+message("    去掉表达量缺失样本比例超过50%的基因")
+na_perc <- apply(result_diff[ , c(case_samples, control_samples)],1,function(x){sum(is.na(x)) / length(c(case_samples, control_samples))})  
+result_diff <- result_diff[na_perc <= 0.5, ]
+
 
 # Top50 heatmap plot
 if( nrow(result_diff) < 50 ){

@@ -56,7 +56,7 @@ foreach my $sample(@samples)
         my $size = get_file_size($file, 'GB');
 
         # R1
-        if($file_name =~ /(.*)$surffix_r1$/)
+        if($file_name =~ /(.*)($surffix_r1)$/)
         {   
             $r1_file .= "$file,";
             $r1_size .= "$size,";
@@ -64,7 +64,7 @@ foreach my $sample(@samples)
             $sum_size += $size;
         }
         # R2
-        if($file_name =~ /(.*)$surffix_r2$/)
+        if($file_name =~ /(.*)($surffix_r2)$/)
         {
             $r2_file .= "$file,";
             $r2_size .= "$size,";
@@ -87,8 +87,8 @@ foreach my $sample(@samples)
         {
             my $file1 = $r1_files[$col];
             my $file2 = $r2_files[$col];
-            $file1 =~ s/$surffix_r1$//;
-            $file2 =~ s/$surffix_r2$//;
+            $file1 =~ s/($surffix_r1)$//;
+            $file2 =~ s/($surffix_r2)$//;
             $condition = 'Not match' if($file1 ne $file2);
         }
     }
