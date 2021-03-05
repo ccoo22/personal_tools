@@ -1,0 +1,25 @@
+CCL14	up
+CCL19	
+CCL2	
+CCL3	down
+CCL3L1	down
+CCL3L3	down
+CCR1	down
+CD14	down
+COL1A1	down
+COL3A1	down
+CXCL9	down
+EGR1	down
+EPO	down
+ICAM1	down
+IL18R1	
+IL1B	
+IL1RL1	
+IL3	
+IL7R	
+JUNB	
+NGFR	
+PRL	
+SELE	
+TNFRSF10D	
+VEGFC	
