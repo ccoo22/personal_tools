@@ -1,0 +1,43 @@
+################################ 环境 1
+::CLEAR	# 清除环境设置
+::R		/home/genesky/software/r/3.5.1/bin/Rscript
+::LIB	/home/genesky/software/r/3.5.1/lib64/R/library
+###
+# 参数处理
+###
+docopt
+
+###
+# anova分析
+#	metabolite_anova.r
+###
+tidyr
+fBasics
+
+###
+# 富集分析
+#	metabolite_clusterProfiler_metaboanalyst.r
+###
+plotly
+ggplot2
+pathview
+
+###
+# 热图
+#	metabolite_heatmap.r
+###
+pheatmap
+RColorBrewer
+ 
+###
+# plsda分析
+#	metabolite_plsda.r
+###
+mixOmics
+RColorBrewer
+
+###
+# ttest分析
+#	metabolite_ttest.r
+###
+gplots

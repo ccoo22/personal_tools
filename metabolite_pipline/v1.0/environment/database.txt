@@ -1,0 +1,15 @@
+###
+# R数据库
+# 应用该数据库的脚本 :
+#	utils/metabolite_run.pl
+###
+R_Lib	/home/genesky/software/r/3.5.1/lib64/R/library
+
+###
+# 代谢物注释、kegg通路数据库
+# 应用该数据库的脚本 :
+#	utils/metabolite_run.pl
+###
+compound_db    /home/genesky/database_new/self_build_database/metabolite_database/metaboanalyst.compound_db.rds
+syn_nms       /home/genesky/database_new/self_build_database/metabolite_database/metaboanalyst.syn_nms.rds
+kegg_db       /home/genesky/database_new/self_build_database/metabolite_database/kegg.hsa.rda

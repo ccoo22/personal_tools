@@ -1,0 +1,6 @@
+###
+# Rscript
+# 应用该软件的脚本 :
+#	utils/metabolite_run.pl
+###
+Rscript		argv= --help ;rtn=0		/home/genesky/software/r/3.5.1/bin/Rscript

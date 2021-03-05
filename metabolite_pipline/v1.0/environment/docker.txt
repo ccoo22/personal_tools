@@ -1,0 +1,13 @@
+###
+# R环境，用来画heatmap图
+# 应用该数据库的脚本 :
+#	utils/clusterprofiler/pipeline.pl	utils/gsea/pipeline.pl
+###
+R		xudl/r-3.4.4:v1.0
+
+###
+# clusterprofiler软件环境
+# 应用该数据库的脚本 :
+#	utils/clusterprofiler/pipeline.pl
+###
+clusterprofiler		xudl/clusterprofiler:v3.6

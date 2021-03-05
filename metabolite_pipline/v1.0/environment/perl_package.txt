@@ -1,0 +1,45 @@
+###
+# 基础
+###
+strict
+warnings
+File::Spec
+Exporter
+Getopt::Long
+
+###
+# 多进程
+#	cellranger.pl	utils/seurat/variable_genes.pl
+###
+Parallel::ForkManager
+
+###
+# 编码转换
+#	utils/report/cellranger.pl
+###
+Encode
+
+###
+# Excel写入模块
+#	utils/report/cellranger.pl
+###
+Excel::Writer::XLSX
+
+###
+# LncTar 软件
+#	utils/lncrna/target_rna.pl
+###
+Getopt::Std
+List::Util
+
+###
+# miRDeep2 软件
+#	utils/mirna/profile.pl
+###
+PDF::API2
+
+###
+# R 软件
+#	utils/coexpression/*.pl
+###
+Statistics::R
