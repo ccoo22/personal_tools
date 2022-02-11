@@ -1,0 +1,1 @@
+/home/ganb/work/test/19D0318A/QTL/AS_AL_CD4_vs_AC_CD4/all/result/mrna/tmp/exp.raw.txt

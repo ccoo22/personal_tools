@@ -34,7 +34,7 @@ library(Biobase)
 library(GEOquery)
 library(limma)
 library(ggplot2)
-library(gplots)
+library(pheatmap)
 
 ##################
 # （2） 加载每个series的数据
@@ -251,28 +251,22 @@ heatmap_file <- paste(output_prefix, ".heatmap.top50.png", sep="")
 message("plot heatmap top50 : ", heatmap_file)
 
 png(heatmap_file  )
+# 样本注释
+annotation_group <- data.frame(Group = factor(sml, levels = unique(sml)))
+rownames(annotation_group) <- c(case_samples, control_samples)
+ 
+myheatcol = colorRampPalette(c('green','black','red'))(100)
+pheatmap(data,
+             scale = 'row',
+             cluster_rows = T,
+             cluster_cols = T,
+             color = myheatcol,
+             show_rownames = T,
+             show_colnames = T,
+             annotation_col = annotation_group,
+    )
+dev.off()
 
-# 样本颜色
-my_plot_color <- sml
-my_plot_color[my_plot_color == 'G1'] <- 'red'
-my_plot_color[my_plot_color == 'G0'] <- 'blue'
-myheatcol     <- colorpanel(75, 'green','black','red')
-heatmap.2(
-          data,
-        dendrogram = 'both',
-      #Colv         = FALSE,
-      col          = myheatcol,
-      ColSideColors = my_plot_color,
-      scale="row",
-      margins	   = c(8,10),
-      density.info = "none",
-      trace="none",
-      key=TRUE,
-      keysize=0.6,
-	  cexRow=0.8,
-      cexCol=0.8,
-      srtCol=90
-)
 
 
 # heatmap plot
@@ -282,25 +276,13 @@ message("plot heatmap all : ", heatmap_file)
 
 png(heatmap_file )
 
-# 样本颜色
-my_plot_color <- sml
-my_plot_color[my_plot_color == 'G1'] <- 'red'
-my_plot_color[my_plot_color == 'G0'] <- 'blue'
-myheatcol     <- colorpanel(75, 'green','black','red')
-heatmap.2(
-      data,
-      dendrogram = 'row', 
-      Colv         = FALSE,
-      col          = myheatcol, 
-      ColSideColors = my_plot_color,
-      scale="row", 
-      margins      = c(8,10),
-      density.info = "none",
-      trace="none",
-      key=TRUE,
-      keysize=0.6,
-      cexRow=0.01,
-  #cexRow=0.8,
-      cexCol=0.8,
-     srtCol=90
-)
+pheatmap(data,
+             scale = 'row',
+             cluster_rows = T,
+             cluster_cols = T,
+             color = myheatcol,
+             show_rownames = F,
+             show_colnames = T,
+             annotation_col = annotation_group,
+    )
+dev.off()

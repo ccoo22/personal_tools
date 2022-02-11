@@ -26,7 +26,7 @@ GetOptions(
     "reads_count|c=s"   => \$reads_count,
     "thread|t:i"        => \$thread,
     "word_size|w:i"     => \$word_size,
-    "evalue|e:i"        => \$evalue,
+    "evalue|e:s"        => \$evalue,
     "perc_identity|p:i" => \$perc_identity,
     "max_target_seqs|m:i" => \$max_target_seqs,
     "max_hsps:i"          => \$max_hsps,

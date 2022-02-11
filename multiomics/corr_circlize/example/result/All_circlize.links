@@ -1,0 +1,393 @@
+source_class	source	target_class	target	Pvalue	Estimate	direction
+faecal	(faecal)beta-Hydroxymyristic acid	serum	(serum)α-Linolenic Acid	3.08980139854877e-08	-0.979020979020979	minus correlation
+faecal	(faecal)2-Deoxyadenosine	serum	(serum)Homogentisate	3.8809852996274e-07	0.965034965034965	plus correlation
+faecal	(faecal)8-Hydroxyquinoline	serum	(serum)DL-Stachydrine	3.8809852996274e-07	0.965034965034965	plus correlation
+faecal	(faecal)Indole	serum	(serum)2-Hydroxyhippuric acid	9.54358182683829e-07	0.958041958041958	plus correlation
+faecal	(faecal)L(+)-Ornithine	serum	(serum)α-Linolenic Acid	9.54358182683829e-07	-0.958041958041958	minus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)L-Pyroglutamic acid	9.54358182683829e-07	-0.958041958041958	minus correlation
+faecal	(faecal)Uracil	serum	(serum)Octanoyl-L-Carnitine	2.03842463246557e-06	0.951048951048951	plus correlation
+faecal	(faecal)Uracil	serum	(serum)Lauroylcarnitine	3.3893259400209e-06	0.945710732256767	plus correlation
+faecal	(faecal)5-Hydroxyindole-3-acetic acid	serum	(serum)DL-Stachydrine	3.92726108096595e-06	0.944055944055944	plus correlation
+metagenomic	Coprococcus comes	faecal	(faecal)3-Phenyllactic acid	3.92726108096595e-06	0.944055944055944	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Decanoylcarnitine	6.99316495321055e-06	-0.937062937062937	minus correlation
+faecal	(faecal)Uracil	serum	(serum)Hexanoylcarnitine	1.17022279286597e-05	0.93006993006993	plus correlation
+faecal	(faecal)α-Muricholic Acid	serum	(serum)Threonine	1.17022279286597e-05	-0.93006993006993	minus correlation
+faecal	(faecal)3-Phenyllactic acid	serum	(serum)Methyl indole-3-acetate	1.17022279286597e-05	-0.93006993006993	minus correlation
+faecal	(faecal)N-Acetyl-L-aspartic acid	serum	(serum)Palmitoleic acid	1.17022279286597e-05	0.93006993006993	plus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)N-Acetyltryptophan	1.67906990497589e-05	-0.924694938206617	minus correlation
+faecal	(faecal)Taurine	serum	(serum)L-Pyroglutamic acid	1.86219510986808e-05	0.923076923076923	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Octanoyl-L-Carnitine	1.86219510986808e-05	-0.923076923076923	minus correlation
+faecal	(faecal)Gentisic acid	serum	(serum)α-Linolenic Acid	1.86219510986808e-05	0.923076923076923	plus correlation
+faecal	(faecal)Uracil	serum	(serum)Decanoylcarnitine	1.86219510986808e-05	0.923076923076923	plus correlation
+faecal	(faecal)N-Acetyl-DL-aspartic acid	serum	(serum)N-Formyl-DL-methionine	1.86219510986808e-05	-0.923076923076923	minus correlation
+metagenomic	Blautia faecicola	serum	(serum)Methyl indole-3-acetate	1.86219510986808e-05	-0.923076923076923	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)Thymine	1.86219510986808e-05	-0.923076923076923	minus correlation
+faecal	(faecal)citramalate	serum	(serum)Ursocholanic Acid	2.84280453485473e-05	0.916083916083916	plus correlation
+faecal	(faecal)8-Hydroxyquinoline	serum	(serum)Hexanoylcarnitine	2.84280453485473e-05	0.916083916083916	plus correlation
+metagenomic	Mediterraneibacter faecis	serum	(serum)Methyl indole-3-acetate	2.84280453485473e-05	-0.916083916083916	minus correlation
+metagenomic	Blautia wexlerae	faecal	(faecal)Thymine	2.84280453485473e-05	-0.916083916083916	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)Taurine	2.84280453485473e-05	0.916083916083916	plus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)L(-)-Pipecolinic acid	2.84280453485473e-05	-0.916083916083916	minus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Gentisic acid	3.16859458552773e-05	0.914187041181542	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Hexanoylcarnitine	4.1910446530342e-05	-0.909090909090909	minus correlation
+faecal	(faecal)L-Glutamic acid	serum	(serum)Hexanoylcarnitine	4.1910446530342e-05	0.909090909090909	plus correlation
+faecal	(faecal)Thymine	serum	(serum)L-Pyroglutamic acid	4.1910446530342e-05	-0.909090909090909	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	serum	(serum)L-Pyroglutamic acid	4.1910446530342e-05	0.909090909090909	plus correlation
+faecal	(faecal)5-Hydroxyindole-3-acetic acid	serum	(serum)Lauroylcarnitine	4.63468513651628e-05	0.907181776498158	plus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)L(-)-Pipecolinic acid	4.63468513651628e-05	0.907181776498158	plus correlation
+faecal	(faecal)D-(+)-Proline	serum	(serum)L-Pyroglutamic acid	5.9978574465377e-05	-0.902097902097902	minus correlation
+faecal	(faecal)D-(+)-Proline	serum	(serum)α-Linolenic Acid	5.9978574465377e-05	-0.902097902097902	minus correlation
+faecal	(faecal)L(+)-Ornithine	serum	(serum)L-Pyroglutamic acid	5.9978574465377e-05	-0.902097902097902	minus correlation
+faecal	(faecal)Thymine	serum	(serum)Myristic Acid	5.9978574465377e-05	-0.902097902097902	minus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)L-Glutamic acid	5.9978574465377e-05	0.902097902097902	plus correlation
+faecal	(faecal)8-Hydroxyquinoline	serum	(serum)Decanoylcarnitine	5.9978574465377e-05	0.902097902097902	plus correlation
+faecal	(faecal)8-Hydroxyquinoline	serum	(serum)Octanoyl-L-Carnitine	5.9978574465377e-05	0.902097902097902	plus correlation
+metagenomic	Dorea longicatena	serum	(serum)L-Pyroglutamic acid	5.9978574465377e-05	0.902097902097902	plus correlation
+metagenomic	Coprococcus comes	serum	(serum)Methyl indole-3-acetate	5.9978574465377e-05	-0.902097902097902	minus correlation
+metagenomic	Mediterraneibacter faecis	faecal	(faecal)3-Phenyllactic acid	5.9978574465377e-05	0.902097902097902	plus correlation
+faecal	(faecal)Indole	serum	(serum)Ursocholanic Acid	8.36658642909169e-05	-0.895104895104895	minus correlation
+faecal	(faecal)L-Norleucine	serum	(serum)N-Formyl-DL-methionine	8.36658642909169e-05	0.895104895104895	plus correlation
+faecal	(faecal)Creatine	serum	(serum)Threonine	8.36658642909169e-05	-0.895104895104895	minus correlation
+faecal	(faecal)Uracil	serum	(serum)DL-Stachydrine	8.36658642909169e-05	0.895104895104895	plus correlation
+faecal	(faecal)Thymine	serum	(serum)Palmitoleic acid	8.36658642909169e-05	-0.895104895104895	minus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)α-Linolenic Acid	8.36658642909169e-05	-0.895104895104895	minus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)Ursocholanic Acid	8.36658642909169e-05	0.895104895104895	plus correlation
+faecal	(faecal)5-Hydroxyindole-3-acetic acid	serum	(serum)Octanoyl-L-Carnitine	8.36658642909169e-05	0.895104895104895	plus correlation
+metagenomic	Bacteroides finegoldii	serum	(serum)Oleic acid	8.36658642909169e-05	-0.895104895104895	minus correlation
+metagenomic	Blautia wexlerae	faecal	(faecal)Taurine	8.36658642909169e-05	0.895104895104895	plus correlation
+metagenomic	Blautia wexlerae	faecal	(faecal)L(-)-Pipecolinic acid	8.36658642909169e-05	-0.895104895104895	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)Ribose	8.36658642909169e-05	0.895104895104895	plus correlation
+metagenomic	Bacteroides sp. M10	faecal	(faecal)Biliverdin	8.36658642909169e-05	-0.895104895104895	minus correlation
+metagenomic	Blautia faecicola	faecal	(faecal)3-Phenyllactic acid	8.36658642909169e-05	0.895104895104895	plus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Gentisic acid	9.13597479321015e-05	-0.893171247131392	minus correlation
+metagenomic	Bacteroides acidifaciens	serum	(serum)Calcitriol	9.13597479321015e-05	-0.893171247131392	minus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)2-Amino-1,3,4-octadecanetriol	9.13597479321015e-05	-0.893171247131392	minus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)Cholic acid	9.13597479321015e-05	-0.893171247131392	minus correlation
+faecal	(faecal)Cholic acid	serum	(serum)PC(16:0/0:0)	0.00011413359814618	0.888111888111888	plus correlation
+faecal	(faecal)Indole	serum	(serum)PC(16:0/0:0)	0.00011413359814618	-0.888111888111888	minus correlation
+faecal	(faecal)D-(+)-Pyroglutamic Acid	serum	(serum)L-Methionine sulfoxide	0.00011413359814618	0.888111888111888	plus correlation
+faecal	(faecal)α-Linolenic Acid	serum	(serum)L-Glutamic acid	0.00011413359814618	-0.888111888111888	minus correlation
+faecal	(faecal)Uracil	serum	(serum)L-Glutamic acid	0.00011413359814618	-0.888111888111888	minus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)DL-Stachydrine	0.00011413359814618	-0.888111888111888	minus correlation
+faecal	(faecal)5-Hydroxyindole-3-acetic acid	serum	(serum)Hexanoylcarnitine	0.00011413359814618	0.888111888111888	plus correlation
+faecal	(faecal)N-Acetyl-L-aspartic acid	serum	(serum)N-Formyl-DL-methionine	0.00011413359814618	-0.888111888111888	minus correlation
+metagenomic	Dorea longicatena	serum	(serum)α-Aspartylphenylalanine	0.00011413359814618	-0.888111888111888	minus correlation
+metagenomic	[Ruminococcus] lactaris	faecal	(faecal)3-Phenyllactic acid	0.00011413359814618	0.888111888111888	plus correlation
+faecal	(faecal)Ribose	serum	(serum)Gentisic acid	0.000123988877142608	0.886165982448008	plus correlation
+faecal	(faecal)Indole	serum	(serum)Pantothenic acid	0.000134521009918631	-0.884215969336355	minus correlation
+faecal	(faecal)8-Hydroxyquinoline	serum	(serum)Lauroylcarnitine	0.000143396818602319	0.882663350106316	plus correlation
+faecal	(faecal)Oxypurinol	serum	(serum)Lauroylcarnitine	0.000143396818602319	0.882663350106316	plus correlation
+faecal	(faecal)Taurine	serum	(serum)Decanoylcarnitine	0.000152674064676699	-0.881118881118881	minus correlation
+faecal	(faecal)Indole	serum	(serum)8Z,11Z,14Z-Eicosatrienoic acid	0.000152674064676699	-0.881118881118881	minus correlation
+faecal	(faecal)Thymine	serum	(serum)α-Linolenic Acid	0.000152674064676699	-0.881118881118881	minus correlation
+faecal	(faecal)N-Acetyl-DL-aspartic acid	serum	(serum)Palmitoleic acid	0.000152674064676699	0.881118881118881	plus correlation
+metagenomic	Blautia wexlerae	faecal	(faecal)D-(+)-Proline	0.000152674064676699	-0.881118881118881	minus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)Taurine	0.000152674064676699	0.881118881118881	plus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)L(-)-Pipecolinic acid	0.000152674064676699	-0.881118881118881	minus correlation
+metagenomic	Alistipes shahii	faecal	(faecal)Lithocholic Acid	0.000152674064676699	0.881118881118881	plus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)D-(+)-Proline	0.000152674064676699	-0.881118881118881	minus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Pantothenic acid	0.00015522453975657	0.880707175807242	plus correlation
+metagenomic	Bacteroides finegoldii	serum	(serum)Calcitriol	0.000189297656477856	-0.875658085422933	minus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)D-(+)-Proline	0.000189297656477856	0.875658085422933	plus correlation
+faecal	(faecal)Biliverdin	serum	(serum)Gly-Val	0.000200713073324232	-0.874125874125874	minus correlation
+faecal	(faecal)L-Glutamic acid	serum	(serum)Decanoylcarnitine	0.000200713073324232	0.874125874125874	plus correlation
+faecal	(faecal)Ribose	serum	(serum)Threonine	0.000200713073324232	-0.874125874125874	minus correlation
+faecal	(faecal)PC(16:0/0:0)	serum	(serum)Decanoylcarnitine	0.000200713073324232	-0.874125874125874	minus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)Palmitoleic acid	0.000200713073324232	-0.874125874125874	minus correlation
+faecal	(faecal)5-Hydroxyindole-3-acetic acid	serum	(serum)Decanoylcarnitine	0.000200713073324232	0.874125874125874	plus correlation
+metagenomic	uncultured Solobacterium sp.	serum	(serum)Indoline	0.000200713073324232	-0.874125874125874	minus correlation
+metagenomic	Fusicatenibacter saccharivorans	faecal	(faecal)3-Dehydrocholic acid	0.000200713073324232	0.874125874125874	plus correlation
+metagenomic	Blautia wexlerae	faecal	(faecal)Ribose	0.000200713073324232	0.874125874125874	plus correlation
+metagenomic	uncultured Collinsella sp.	faecal	(faecal)Gly-Val	0.000200713073324232	-0.874125874125874	minus correlation
+metagenomic	Alistipes communis	faecal	(faecal)Xanthine	0.000200713073324232	0.874125874125874	plus correlation
+metagenomic	Odoribacter splanchnicus	faecal	(faecal)L(-)-Pipecolinic acid	0.000200713073324232	0.874125874125874	plus correlation
+metagenomic	Collinsella aerofaciens	faecal	(faecal)Deoxycholic Acid	0.000200713073324232	0.874125874125874	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)DL-Stachydrine	0.000259811849861481	-0.867132867132867	minus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Docosahexaenoic Acid	0.000259811849861481	0.867132867132867	plus correlation
+faecal	(faecal)Deoxycholic Acid	serum	(serum)Decanoylcarnitine	0.000259811849861481	-0.867132867132867	minus correlation
+faecal	(faecal)L-Tyrosine	serum	(serum)N-Formyl-DL-methionine	0.000259811849861481	0.867132867132867	plus correlation
+faecal	(faecal)α-Linolenic Acid	serum	(serum)Ursocholanic Acid	0.000259811849861481	-0.867132867132867	minus correlation
+faecal	(faecal)L-Glutamic acid	serum	(serum)Octanoyl-L-Carnitine	0.000259811849861481	0.867132867132867	plus correlation
+faecal	(faecal)D-Glucuronic Acid	serum	(serum)Oleic acid	0.000259811849861481	0.867132867132867	plus correlation
+faecal	(faecal)Ribose	serum	(serum)L-Pyroglutamic acid	0.000259811849861481	0.867132867132867	plus correlation
+faecal	(faecal)Ribose	serum	(serum)Decanoylcarnitine	0.000259811849861481	-0.867132867132867	minus correlation
+faecal	(faecal)citramalate	serum	(serum)Choline	0.000259811849861481	-0.867132867132867	minus correlation
+faecal	(faecal)L-Isoleucine	serum	(serum)L-Pyroglutamic acid	0.000259811849861481	-0.867132867132867	minus correlation
+faecal	(faecal)L-Isoleucine	serum	(serum)Palmitoleic acid	0.000259811849861481	-0.867132867132867	minus correlation
+faecal	(faecal)beta-Hydroxymyristic acid	serum	(serum)L-Pyroglutamic acid	0.000259811849861481	-0.867132867132867	minus correlation
+metagenomic	Dorea longicatena	serum	(serum)2-Amino-1,3,4-octadecanetriol	0.000259811849861481	0.867132867132867	plus correlation
+metagenomic	Bacteroides ovatus	faecal	(faecal)Biliverdin	0.000259811849861481	-0.867132867132867	minus correlation
+metagenomic	Collinsella aerofaciens	faecal	(faecal)Gly-Val	0.000259811849861481	-0.867132867132867	minus correlation
+faecal	(faecal)Υ-Aminobutyric acid (GABA)	serum	(serum)Gentisic acid	0.000278811844083925	0.865150188397858	plus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)Docosahexaenoic Acid	0.000278811844083925	-0.865150188397858	minus correlation
+metagenomic	Collinsella aerofaciens	faecal	(faecal)(-)-Riboflavin	0.000278811844083925	-0.865150188397858	minus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)Taurine	0.000278811844083925	-0.865150188397858	minus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)Pantothenic acid	0.000298921951242012	0.86316320816168	plus correlation
+faecal	(faecal)Indole	serum	(serum)Phosphocholine	0.000315007062527429	-0.861647556056166	minus correlation
+faecal	(faecal)Lithocholic Acid	serum	(serum)PC(16:0/0:0)	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)Gentisic acid	serum	(serum)Homogentisate	0.000331668339126921	0.86013986013986	plus correlation
+faecal	(faecal)Bilirubin	serum	(serum)N-Formyl-DL-methionine	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)Indole	serum	(serum)16-Hydroxyhexadecanoic acid	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)L-Glutamic acid	serum	(serum)L-Methionine sulfoxide	0.000331668339126921	0.86013986013986	plus correlation
+faecal	(faecal)Oleic acid	serum	(serum)N-Formyl-DL-methionine	0.000331668339126921	0.86013986013986	plus correlation
+faecal	(faecal)PC(16:0/0:0)	serum	(serum)Hexanoylcarnitine	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)2-Amino-1,3,4-octadecanetriol	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)Decanoylcarnitine	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)Hexanoylcarnitine	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)beta-Hydroxymyristic acid	serum	(serum)L-Valine	0.000331668339126921	0.86013986013986	plus correlation
+faecal	(faecal)3-Phenyllactic acid	serum	(serum)Gly-Val	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)Urocanic acid	serum	(serum)L-Methionine sulfoxide	0.000331668339126921	0.86013986013986	plus correlation
+faecal	(faecal)Urocanic acid	serum	(serum)Homogentisate	0.000331668339126921	-0.86013986013986	minus correlation
+faecal	(faecal)Urocanic acid	serum	(serum)Myristic Acid	0.000331668339126921	-0.86013986013986	minus correlation
+metagenomic	Blautia wexlerae	serum	(serum)L-Pyroglutamic acid	0.000331668339126921	0.86013986013986	plus correlation
+metagenomic	Ruminococcus sp. AM22-13	faecal	(faecal)3-Phenyllactic acid	0.000331668339126921	0.86013986013986	plus correlation
+metagenomic	Alistipes communis	faecal	(faecal)Oxypurinol	0.000331668339126921	0.86013986013986	plus correlation
+metagenomic	Blautia faecicola	faecal	(faecal)Biliverdin	0.000331668339126921	0.86013986013986	plus correlation
+faecal	(faecal)Lithocholic Acid	serum	(serum)Gentisic acid	0.000354759007349313	-0.858144923714474	minus correlation
+faecal	(faecal)Biliverdin	serum	(serum)Calcitriol	0.000354759007349313	0.858144923714474	plus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)L-Pyroglutamic acid	0.000354759007349313	-0.858144923714474	minus correlation
+metagenomic	Bifidobacterium ruminantium	faecal	(faecal)(-)-Riboflavin	0.000354759007349313	-0.858144923714474	minus correlation
+metagenomic	Bifidobacterium adolescentis	faecal	(faecal)(-)-Riboflavin	0.00039830756513666	-0.854642291372782	minus correlation
+metagenomic	Bacteroides sp. M10	faecal	(faecal)(-)-Riboflavin	0.00039830756513666	0.854642291372782	plus correlation
+faecal	(faecal)Taurine	serum	(serum)Octanoyl-L-Carnitine	0.000418117940414996	-0.853146853146853	minus correlation
+faecal	(faecal)Lithocholic Acid	serum	(serum)Choline	0.000418117940414996	0.853146853146853	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)L-Glutamic acid	0.000418117940414996	0.853146853146853	plus correlation
+faecal	(faecal)L-Norleucine	serum	(serum)Palmitoleic acid	0.000418117940414996	-0.853146853146853	minus correlation
+faecal	(faecal)L(+)-Ornithine	serum	(serum)Homogentisate	0.000418117940414996	-0.853146853146853	minus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)Threonine	0.000418117940414996	0.853146853146853	plus correlation
+faecal	(faecal)Urocanic acid	serum	(serum)Palmitoleic acid	0.000418117940414996	-0.853146853146853	minus correlation
+metagenomic	Coprococcus comes	serum	(serum)Gly-Val	0.000418117940414996	-0.853146853146853	minus correlation
+metagenomic	[Ruminococcus] lactaris	serum	(serum)Methyl indole-3-acetate	0.000418117940414996	-0.853146853146853	minus correlation
+metagenomic	Odoribacter splanchnicus	faecal	(faecal)Taurine	0.000418117940414996	-0.853146853146853	minus correlation
+faecal	(faecal)Deoxycholic Acid	serum	(serum)Gentisic acid	0.000445901287358501	0.851139659031091	plus correlation
+metagenomic	Bacteroides ovatus	faecal	(faecal)(-)-Riboflavin	0.000445901287358501	0.851139659031091	plus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)Lithocholic Acid	0.000445901287358501	0.851139659031091	plus correlation
+metagenomic	uncultured Collinsella sp.	faecal	(faecal)(-)-Riboflavin	0.000497797379436049	-0.847637026689399	minus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)N-Tigloylglycine	0.000497797379436049	0.847637026689399	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)8Z,11Z,14Z-Eicosatrienoic acid	0.000521133700481004	0.846153846153846	plus correlation
+faecal	(faecal)3-Dehydrocholic acid	serum	(serum)8Z,11Z,14Z-Eicosatrienoic acid	0.000521133700481004	0.846153846153846	plus correlation
+faecal	(faecal)Indole	serum	(serum)L-Glutamic acid	0.000521133700481004	-0.846153846153846	minus correlation
+faecal	(faecal)Deoxycholic Acid	serum	(serum)Octanoyl-L-Carnitine	0.000521133700481004	-0.846153846153846	minus correlation
+faecal	(faecal)L-Tyrosine	serum	(serum)Myristic Acid	0.000521133700481004	-0.846153846153846	minus correlation
+faecal	(faecal)D-(+)-Pyroglutamic Acid	serum	(serum)Hexanoylcarnitine	0.000521133700481004	0.846153846153846	plus correlation
+faecal	(faecal)L-Norleucine	serum	(serum)Myristic Acid	0.000521133700481004	-0.846153846153846	minus correlation
+faecal	(faecal)Creatine	serum	(serum)L-Methionine sulfoxide	0.000521133700481004	-0.846153846153846	minus correlation
+faecal	(faecal)Ribose	serum	(serum)Octanoyl-L-Carnitine	0.000521133700481004	-0.846153846153846	minus correlation
+faecal	(faecal)citramalate	serum	(serum)raspberry ketone	0.000521133700481004	-0.846153846153846	minus correlation
+faecal	(faecal)L-Isoleucine	serum	(serum)Myristic Acid	0.000521133700481004	-0.846153846153846	minus correlation
+faecal	(faecal)PC(16:0/0:0)	serum	(serum)Octanoyl-L-Carnitine	0.000521133700481004	-0.846153846153846	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	serum	(serum)2-Amino-1,3,4-octadecanetriol	0.000521133700481004	0.846153846153846	plus correlation
+metagenomic	Blautia wexlerae	faecal	(faecal)α-Muricholic Acid	0.000521133700481004	0.846153846153846	plus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)Biliverdin	0.000521133700481004	0.846153846153846	plus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)Thymine	0.000521133700481004	-0.846153846153846	minus correlation
+metagenomic	Alistipes shahii	faecal	(faecal)Υ-Aminobutyric acid (GABA)	0.000521133700481004	-0.846153846153846	minus correlation
+metagenomic	Alistipes shahii	faecal	(faecal)N-Acetyltryptophan	0.000521133700481004	-0.846153846153846	minus correlation
+metagenomic	Alistipes shahii	faecal	(faecal)N-Tigloylglycine	0.000521133700481004	0.846153846153846	plus correlation
+metagenomic	Blautia faecis	faecal	(faecal)Biliverdin	0.000521133700481004	0.846153846153846	plus correlation
+metagenomic	Firmicutes bacterium OM04-13BH	faecal	(faecal)3-Phenyllactic acid	0.000521133700481004	0.846153846153846	plus correlation
+metagenomic	uncultured Blautia sp.	faecal	(faecal)Biliverdin	0.000521133700481004	0.846153846153846	plus correlation
+metagenomic	[Ruminococcus] lactaris	faecal	(faecal)N-Acetyl-L-aspartic acid	0.000521133700481004	0.846153846153846	plus correlation
+faecal	(faecal)Υ-Aminobutyric acid (GABA)	serum	(serum)Pantothenic acid	0.000529749953209399	0.845619240516117	plus correlation
+faecal	(faecal)Oxypurinol	serum	(serum)Pantothenic acid	0.000529749953209399	-0.845619240516117	minus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)Ribose	0.000554261681934712	-0.844134394347707	minus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)PC(16:0/0:0)	0.000615568644065479	-0.840631762006015	minus correlation
+faecal	(faecal)Taurine	serum	(serum)2-Amino-1,3,4-octadecanetriol	0.000642825988627822	0.839160839160839	plus correlation
+faecal	(faecal)Lithocholic Acid	serum	(serum)Decanoylcarnitine	0.000642825988627822	0.839160839160839	plus correlation
+faecal	(faecal)D-(+)-Proline	serum	(serum)Myristic Acid	0.000642825988627822	-0.839160839160839	minus correlation
+faecal	(faecal)Deoxycholic Acid	serum	(serum)Hexanoylcarnitine	0.000642825988627822	-0.839160839160839	minus correlation
+faecal	(faecal)D-(+)-Pyroglutamic Acid	serum	(serum)Decanoylcarnitine	0.000642825988627822	0.839160839160839	plus correlation
+faecal	(faecal)D-(+)-Pyroglutamic Acid	serum	(serum)Myristic Acid	0.000642825988627822	-0.839160839160839	minus correlation
+faecal	(faecal)α-Linolenic Acid	serum	(serum)Glutamic acid	0.000642825988627822	-0.839160839160839	minus correlation
+faecal	(faecal)Ribose	serum	(serum)8Z,11Z,14Z-Eicosatrienoic acid	0.000642825988627822	0.839160839160839	plus correlation
+faecal	(faecal)Ribose	serum	(serum)Docosahexaenoic Acid	0.000642825988627822	0.839160839160839	plus correlation
+faecal	(faecal)L-(+)-Citrulline	serum	(serum)L-Glutamic acid	0.000642825988627822	-0.839160839160839	minus correlation
+faecal	(faecal)citramalate	serum	(serum)L-Methionine sulfoxide	0.000642825988627822	-0.839160839160839	minus correlation
+faecal	(faecal)Thymine	serum	(serum)raspberry ketone	0.000642825988627822	0.839160839160839	plus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)Myristic Acid	0.000642825988627822	-0.839160839160839	minus correlation
+faecal	(faecal)3-Phenyllactic acid	serum	(serum)Palmitoleic acid	0.000642825988627822	0.839160839160839	plus correlation
+metagenomic	Coprococcus comes	serum	(serum)N,N-Dimethylglycine	0.000642825988627822	-0.839160839160839	minus correlation
+metagenomic	Blautia faecis	serum	(serum)L-Histidine	0.000642825988627822	0.839160839160839	plus correlation
+metagenomic	Odoribacter splanchnicus	serum	(serum)L-Pyroglutamic acid	0.000642825988627822	-0.839160839160839	minus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)L-Isoleucine	0.000642825988627822	-0.839160839160839	minus correlation
+metagenomic	Ruminococcus sp. AM22-13	faecal	(faecal)Biliverdin	0.000642825988627822	0.839160839160839	plus correlation
+metagenomic	uncultured Solobacterium sp.	faecal	(faecal)3-Phenyllactic acid	0.000642825988627822	0.839160839160839	plus correlation
+metagenomic	Blautia luti	faecal	(faecal)Biliverdin	0.000642825988627822	0.839160839160839	plus correlation
+metagenomic	Collinsella aerofaciens	faecal	(faecal)α-Muricholic Acid	0.000642825988627822	0.839160839160839	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Lauroylcarnitine	0.000682001289681332	-0.837129129664324	minus correlation
+metagenomic	Slackia isoflavoniconvertens	faecal	(faecal)Biliverdin	0.000782581980381582	0.832297989791906	plus correlation
+faecal	(faecal)Taurine	serum	(serum)α-Linolenic Acid	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)Taurine	serum	(serum)Hexanoylcarnitine	0.000785441677853611	-0.832167832167832	minus correlation
+faecal	(faecal)Biliverdin	serum	(serum)Indoline	0.000785441677853611	-0.832167832167832	minus correlation
+faecal	(faecal)Cholic acid	serum	(serum)2-Hydroxyhippuric acid	0.000785441677853611	-0.832167832167832	minus correlation
+faecal	(faecal)Cholic acid	serum	(serum)2-Amino-1,3,4-octadecanetriol	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Ursocholanic Acid	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)Gentisic acid	serum	(serum)Palmitoleic acid	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)Choline	serum	(serum)Myristic Acid	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)L-Glutamic acid	serum	(serum)L-Glutamic acid	0.000785441677853611	-0.832167832167832	minus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Hexanoylcarnitine	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Palmitoleic acid	0.000785441677853611	-0.832167832167832	minus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Threonine	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)Ribose	serum	(serum)Hexanoylcarnitine	0.000785441677853611	-0.832167832167832	minus correlation
+faecal	(faecal)citramalate	serum	(serum)L-Glutamic acid	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)Octanoyl-L-Carnitine	0.000785441677853611	-0.832167832167832	minus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)PC(16:0/0:0)	0.000785441677853611	0.832167832167832	plus correlation
+faecal	(faecal)5-Hydroxyindole-3-acetic acid	serum	(serum)L-Glutamic acid	0.000785441677853611	-0.832167832167832	minus correlation
+metagenomic	Dorea longicatena	serum	(serum)Gly-Val	0.000785441677853611	-0.832167832167832	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	serum	(serum)Myristic Acid	0.000785441677853611	0.832167832167832	plus correlation
+metagenomic	uncultured Blautia sp.	serum	(serum)L-Pyroglutamic acid	0.000785441677853611	0.832167832167832	plus correlation
+metagenomic	Bifidobacterium adolescentis	faecal	(faecal)Gly-Val	0.000785441677853611	-0.832167832167832	minus correlation
+metagenomic	Alistipes shahii	faecal	(faecal)Xanthine	0.000785441677853611	0.832167832167832	plus correlation
+metagenomic	Odoribacter splanchnicus	faecal	(faecal)D-(+)-Proline	0.000785441677853611	0.832167832167832	plus correlation
+metagenomic	uncultured Solobacterium sp.	faecal	(faecal)Choline	0.000785441677853611	0.832167832167832	plus correlation
+metagenomic	uncultured Blautia sp.	faecal	(faecal)Taurine	0.000785441677853611	0.832167832167832	plus correlation
+metagenomic	uncultured Blautia sp.	faecal	(faecal)L(-)-Pipecolinic acid	0.000785441677853611	-0.832167832167832	minus correlation
+faecal	(faecal)Gentisic acid	serum	(serum)Oleoyl ethanolamide	0.000831418344902281	0.83012386498094	plus correlation
+faecal	(faecal)Indole	serum	(serum)Gentisic acid	0.000831418344902281	-0.83012386498094	minus correlation
+faecal	(faecal)8-Hydroxyquinoline	serum	(serum)Levothyroxine	0.000831418344902281	0.83012386498094	plus correlation
+faecal	(faecal)5-Hydroxyindole-3-acetic acid	serum	(serum)Levothyroxine	0.000831418344902281	0.83012386498094	plus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)D-(+)-Pyroglutamic Acid	0.000831418344902281	0.83012386498094	plus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)L(+)-Ornithine	0.000831418344902281	0.83012386498094	plus correlation
+faecal	(faecal)Ribose	serum	(serum)Pantothenic acid	0.00087955786999189	0.828075272870555	plus correlation
+faecal	(faecal)Taurine	serum	(serum)Gentisic acid	0.000915011267983694	0.826621232639249	plus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)Hexanoylcarnitine	0.000915011267983694	0.826621232639249	plus correlation
+faecal	(faecal)Taurine	serum	(serum)8Z,11Z,14Z-Eicosatrienoic acid	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Taurine	serum	(serum)Palmitoleic acid	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Taurine	serum	(serum)Threonine	0.000951362855555507	-0.825174825174825	minus correlation
+faecal	(faecal)Lithocholic Acid	serum	(serum)2-Amino-1,3,4-octadecanetriol	0.000951362855555507	-0.825174825174825	minus correlation
+faecal	(faecal)3-Dehydrocholic acid	serum	(serum)L-Glutamic acid	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)D-(+)-Pyroglutamic Acid	serum	(serum)L-Glutamic acid	0.000951362855555507	-0.825174825174825	minus correlation
+faecal	(faecal)L-Glutamic acid	serum	(serum)DL-Stachydrine	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Oleic acid	serum	(serum)L-Methionine sulfoxide	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Creatine	serum	(serum)Decanoylcarnitine	0.000951362855555507	-0.825174825174825	minus correlation
+faecal	(faecal)Ribose	serum	(serum)L-Glutamic acid	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Ribose	serum	(serum)Palmitoleic acid	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Ribose	serum	(serum)PC(16:0/0:0)	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)citramalate	serum	(serum)Indoline	0.000951362855555507	-0.825174825174825	minus correlation
+faecal	(faecal)L-Isoleucine	serum	(serum)Homogentisate	0.000951362855555507	-0.825174825174825	minus correlation
+faecal	(faecal)Thymine	serum	(serum)N-Formyl-DL-methionine	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)8Z,11Z,14Z-Eicosatrienoic acid	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Oxypurinol	serum	(serum)DL-Stachydrine	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Oxypurinol	serum	(serum)Octanoyl-L-Carnitine	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)N-Acetyl-L-aspartic acid	serum	(serum)Oleic acid	0.000951362855555507	0.825174825174825	plus correlation
+faecal	(faecal)Urocanic acid	serum	(serum)N-Formyl-DL-methionine	0.000951362855555507	0.825174825174825	plus correlation
+metagenomic	Blautia wexlerae	serum	(serum)Palmitoleic acid	0.000951362855555507	0.825174825174825	plus correlation
+metagenomic	Mediterraneibacter faecis	serum	(serum)Gly-Val	0.000951362855555507	-0.825174825174825	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	serum	(serum)Palmitoleic acid	0.000951362855555507	0.825174825174825	plus correlation
+metagenomic	Firmicutes bacterium OM04-13BH	serum	(serum)N,N-Dimethylglycine	0.000951362855555507	-0.825174825174825	minus correlation
+metagenomic	uncultured Solobacterium sp.	serum	(serum)Methyl indole-3-acetate	0.000951362855555507	-0.825174825174825	minus correlation
+metagenomic	uncultured Collinsella sp.	faecal	(faecal)Biliverdin	0.000951362855555507	0.825174825174825	plus correlation
+metagenomic	Bacteroides acidifaciens	faecal	(faecal)Biliverdin	0.000951362855555507	-0.825174825174825	minus correlation
+metagenomic	Bifidobacterium ruminantium	faecal	(faecal)Gly-Val	0.000951362855555507	-0.825174825174825	minus correlation
+faecal	(faecal)Uracil	serum	(serum)Pantothenic acid	0.000966980558712281	-0.824566479341442	minus correlation
+faecal	(faecal)Inosine	serum	(serum)Choline	0.00100494678387464	-0.823118600297557	minus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)Decanoylcarnitine	0.00100494678387464	0.823118600297557	plus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)Thymine	0.00100494678387464	0.823118600297557	plus correlation
+faecal	(faecal)Creatine	serum	(serum)Pantothenic acid	0.00106095857789533	0.82105768581233	plus correlation
+faecal	(faecal)Cholic acid	serum	(serum)Levothyroxine	0.00110155002966819	-0.819615967955865	minus correlation
+faecal	(faecal)Uracil	serum	(serum)Levothyroxine	0.00110155002966819	0.819615967955865	plus correlation
+faecal	(faecal)citramalate	serum	(serum)Gentisic acid	0.00110155002966819	0.819615967955865	plus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)Gentisic acid	0.00110155002966819	0.819615967955865	plus correlation
+faecal	(faecal)Gentisic acid	serum	(serum)L-Pyroglutamic acid	0.00114310508680406	0.818181818181818	plus correlation
+faecal	(faecal)Bilirubin	serum	(serum)Linoleic acid	0.00114310508680406	0.818181818181818	plus correlation
+faecal	(faecal)Indole	serum	(serum)Docosahexaenoic Acid	0.00114310508680406	-0.818181818181818	minus correlation
+faecal	(faecal)Choline	serum	(serum)Decanoylcarnitine	0.00114310508680406	-0.818181818181818	minus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Decanoylcarnitine	0.00114310508680406	0.818181818181818	plus correlation
+faecal	(faecal)Creatine	serum	(serum)Palmitoleic acid	0.00114310508680406	0.818181818181818	plus correlation
+faecal	(faecal)L-Isoleucine	serum	(serum)L-Methionine sulfoxide	0.00114310508680406	0.818181818181818	plus correlation
+faecal	(faecal)L-Isoleucine	serum	(serum)α-Linolenic Acid	0.00114310508680406	-0.818181818181818	minus correlation
+faecal	(faecal)PC(16:0/0:0)	serum	(serum)Myristic Acid	0.00114310508680406	0.818181818181818	plus correlation
+faecal	(faecal)α-Muricholic Acid	serum	(serum)Palmitoleic acid	0.00114310508680406	0.818181818181818	plus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)2-Hydroxyhippuric acid	0.00114310508680406	-0.818181818181818	minus correlation
+faecal	(faecal)Urocanic acid	serum	(serum)L-Pyroglutamic acid	0.00114310508680406	-0.818181818181818	minus correlation
+metagenomic	Ruminococcus sp. AM22-13	serum	(serum)Methyl indole-3-acetate	0.00114310508680406	-0.818181818181818	minus correlation
+metagenomic	Blautia faecis	serum	(serum)α-Aspartylphenylalanine	0.00114310508680406	-0.818181818181818	minus correlation
+metagenomic	uncultured Solobacterium sp.	serum	(serum)Gly-Val	0.00114310508680406	-0.818181818181818	minus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)Choline	0.00114310508680406	0.818181818181818	plus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)3-Phenyllactic acid	0.00114310508680406	0.818181818181818	plus correlation
+metagenomic	Alistipes shahii	faecal	(faecal)Cholic acid	0.00114310508680406	-0.818181818181818	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)Cholic acid	0.00114310508680406	0.818181818181818	plus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)L(+)-Ornithine	0.00114310508680406	-0.818181818181818	minus correlation
+metagenomic	Alistipes communis	faecal	(faecal)N-Acetyltryptophan	0.00114310508680406	-0.818181818181818	minus correlation
+metagenomic	Bifidobacterium ruminantium	faecal	(faecal)Deoxycholic Acid	0.00114310508680406	0.818181818181818	plus correlation
+faecal	(faecal)α-Muricholic Acid	serum	(serum)Gentisic acid	0.00120515436563213	0.816113335614173	plus correlation
+metagenomic	Bacteroides acidifaciens	faecal	(faecal)(-)-Riboflavin	0.00120515436563213	0.816113335614173	plus correlation
+metagenomic	Alistipes senegalensis	faecal	(faecal)Υ-Aminobutyric acid (GABA)	0.00120515436563213	-0.816113335614173	minus correlation
+faecal	(faecal)Ethyl myristate	serum	(serum)Pantothenic acid	0.00126991572992118	-0.814040098754105	minus correlation
+faecal	(faecal)Xanthine	serum	(serum)Lauroylcarnitine	0.00131610129371032	0.812610703272482	plus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)Lauroylcarnitine	0.00131610129371032	-0.812610703272482	minus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)Pantothenic acid	0.00133781304248677	-0.811952044799515	minus correlation
+faecal	(faecal)Cholic acid	serum	(serum)L-Pyroglutamic acid	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)3-Dehydrocholic acid	serum	(serum)N,N-Dimethylglycine	0.00136331525272719	-0.811188811188811	minus correlation
+faecal	(faecal)3-Dehydrocholic acid	serum	(serum)PC(16:0/0:0)	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)D-(+)-Proline	serum	(serum)Homogentisate	0.00136331525272719	-0.811188811188811	minus correlation
+faecal	(faecal)D-(+)-Pyroglutamic Acid	serum	(serum)DL-Stachydrine	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)D-(+)-Pyroglutamic Acid	serum	(serum)Octanoyl-L-Carnitine	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)L-Glutamic acid	serum	(serum)Myristic Acid	0.00136331525272719	-0.811188811188811	minus correlation
+faecal	(faecal)Xanthine	serum	(serum)DL-Stachydrine	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)Creatine	serum	(serum)Hexanoylcarnitine	0.00136331525272719	-0.811188811188811	minus correlation
+faecal	(faecal)L-(+)-Citrulline	serum	(serum)Indoline	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)L-Isoleucine	serum	(serum)N-Formyl-DL-methionine	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)Glucose	serum	(serum)Gly-Val	0.00136331525272719	-0.811188811188811	minus correlation
+faecal	(faecal)Thymine	serum	(serum)Homogentisate	0.00136331525272719	-0.811188811188811	minus correlation
+faecal	(faecal)8-Hydroxyquinoline	serum	(serum)Hypoxanthine	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)Oxypurinol	serum	(serum)L-Glutamic acid	0.00136331525272719	-0.811188811188811	minus correlation
+faecal	(faecal)Oxypurinol	serum	(serum)Hexanoylcarnitine	0.00136331525272719	0.811188811188811	plus correlation
+metagenomic	uncultured Solobacterium sp.	serum	(serum)Myristic Acid	0.00136331525272719	0.811188811188811	plus correlation
+metagenomic	Blautia faecicola	serum	(serum)Gly-Val	0.00136331525272719	-0.811188811188811	minus correlation
+metagenomic	Blautia wexlerae	faecal	(faecal)beta-Hydroxymyristic acid	0.00136331525272719	-0.811188811188811	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)α-Muricholic Acid	0.00136331525272719	0.811188811188811	plus correlation
+metagenomic	Odoribacter splanchnicus	faecal	(faecal)Ribose	0.00136331525272719	-0.811188811188811	minus correlation
+metagenomic	Firmicutes bacterium OM04-13BH	faecal	(faecal)N-Acetyl-DL-aspartic acid	0.00136331525272719	0.811188811188811	plus correlation
+metagenomic	uncultured Solobacterium sp.	faecal	(faecal)L-Norleucine	0.00136331525272719	-0.811188811188811	minus correlation
+metagenomic	uncultured Solobacterium sp.	faecal	(faecal)PC(16:0/0:0)	0.00136331525272719	0.811188811188811	plus correlation
+metagenomic	uncultured Solobacterium sp.	faecal	(faecal)Thymine	0.00136331525272719	-0.811188811188811	minus correlation
+metagenomic	uncultured Blautia sp.	faecal	(faecal)3-Phenyllactic acid	0.00136331525272719	0.811188811188811	plus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Pantothenic acid	0.00138558292215126	-0.810531305224992	minus correlation
+faecal	(faecal)Creatine	serum	(serum)Gentisic acid	0.00143474036993647	0.80910807093079	plus correlation
+metagenomic	Alistipes communis	serum	(serum)Lauroylcarnitine	0.00143474036993647	0.80910807093079	plus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)Threonine	0.00143474036993647	0.80910807093079	plus correlation
+metagenomic	Alistipes senegalensis	serum	(serum)Ursocholanic Acid	0.00143474036993647	-0.80910807093079	minus correlation
+metagenomic	uncultured Collinsella sp.	serum	(serum)Calcitriol	0.00156142911092929	0.805605438589098	plus correlation
+faecal	(faecal)Taurine	serum	(serum)Myristic Acid	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)Lithocholic Acid	serum	(serum)Hexanoylcarnitine	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)Gentisic acid	serum	(serum)Myristic Acid	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)Gentisic acid	serum	(serum)N-Formyl-DL-methionine	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)D-(+)-Proline	serum	(serum)Palmitoleic acid	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)Υ-Aminobutyric acid (GABA)	serum	(serum)Threonine	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)Υ-Aminobutyric acid (GABA)	serum	(serum)Ursocholanic Acid	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)Choline	serum	(serum)Octanoyl-L-Carnitine	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)L-Glutamic acid	serum	(serum)Indoline	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Diphenylsulfoxide	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Myristic Acid	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)Oleic acid	serum	(serum)Octanoyl-L-Carnitine	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)Xanthine	serum	(serum)L-Glutamic acid	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)Creatine	serum	(serum)Octanoyl-L-Carnitine	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)Ribose	serum	(serum)Myristic Acid	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)Ribose	serum	(serum)Ursocholanic Acid	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)L-(+)-Citrulline	serum	(serum)Hexanoylcarnitine	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)L-(+)-Citrulline	serum	(serum)α-Aspartylphenylalanine	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)L-Histidine	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)L-Methionine sulfoxide	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)Decanoylcarnitine	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)L(-)-Pipecolinic acid	serum	(serum)Docosahexaenoic Acid	0.00161476898606993	-0.804195804195804	minus correlation
+faecal	(faecal)2-Deoxyadenosine	serum	(serum)L-Histidine	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)2-Deoxyadenosine	serum	(serum)Myristic Acid	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)2-Amino-1,3,4-octadecanetriol	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)N-Acetyltryptophan	serum	(serum)Docosahexaenoic Acid	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)beta-Hydroxymyristic acid	serum	(serum)Tretinoin	0.00161476898606993	0.804195804195804	plus correlation
+faecal	(faecal)5-Hydroxyindole-3-acetic acid	serum	(serum)PC(16:0/0:0)	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	Dorea longicatena	serum	(serum)Indoline	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	Dorea longicatena	serum	(serum)L-Histidine	0.00161476898606993	0.804195804195804	plus correlation
+metagenomic	Bacteroides finegoldii	serum	(serum)Palmitoleic acid	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	Odoribacter splanchnicus	serum	(serum)Threonine	0.00161476898606993	0.804195804195804	plus correlation
+metagenomic	uncultured Solobacterium sp.	serum	(serum)N,N-Dimethylglycine	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)Ribose	0.00161476898606993	0.804195804195804	plus correlation
+metagenomic	Dorea longicatena	faecal	(faecal)PC(16:0/0:0)	0.00161476898606993	0.804195804195804	plus correlation
+metagenomic	Ruminococcus sp. AM22-13	faecal	(faecal)N-Acetyl-L-aspartic acid	0.00161476898606993	0.804195804195804	plus correlation
+metagenomic	Blautia faecis	faecal	(faecal)Ribose	0.00161476898606993	0.804195804195804	plus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)beta-Hydroxymyristic acid	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	Ruminococcus sp. AM40-10AC	faecal	(faecal)N-Tigloylglycine	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	Odoribacter splanchnicus	faecal	(faecal)α-Muricholic Acid	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	uncultured Solobacterium sp.	faecal	(faecal)L-Isoleucine	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	Bacteroides cutis	faecal	(faecal)D-Glucuronic Acid	0.00161476898606993	-0.804195804195804	minus correlation
+metagenomic	uncultured Blautia sp.	serum	(serum)Calcitriol	0.00169653289463572	0.802102806247406	plus correlation

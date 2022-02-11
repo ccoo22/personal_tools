@@ -1,0 +1,41 @@
+Taxon	genus
+[Ruminococcus] lactaris	Mediterraneibacter
+[Ruminococcus] torques	Mediterraneibacter
+Agathobaculum butyriciproducens	Agathobaculum
+Alistipes communis	Alistipes
+Alistipes ihumii	Alistipes
+Alistipes onderdonkii	Alistipes
+Alistipes senegalensis	Alistipes
+Alistipes shahii	Alistipes
+Bacteroides acidifaciens	Bacteroides
+Bacteroides caecimuris	Bacteroides
+Bacteroides cutis	Bacteroides
+Bacteroides finegoldii	Bacteroides
+Bacteroides ovatus	Bacteroides
+Bacteroides sp. M10	Bacteroides
+Barnesiella intestinihominis	Barnesiella
+Bifidobacterium adolescentis	Bifidobacterium
+Bifidobacterium ruminantium	Bifidobacterium
+Blautia faecicola	Blautia
+Blautia faecis	Blautia
+Blautia luti	Blautia
+Blautia obeum	Blautia
+Blautia wexlerae	Blautia
+Clostridiales bacterium	Unassigned
+Collinsella aerofaciens	Collinsella
+Coprococcus comes	Coprococcus
+Dorea longicatena	Dorea
+Firmicutes bacterium OM04-13BH	Unassigned
+Fusicatenibacter saccharivorans	Fusicatenibacter
+Lachnospiraceae bacterium	Unassigned
+Mediterraneibacter faecis	Mediterraneibacter
+Odoribacter splanchnicus	Odoribacter
+Ruminococcus bicirculans	Ruminococcus
+Ruminococcus sp. AM22-13	Ruminococcus
+Ruminococcus sp. AM40-10AC	Ruminococcus
+Slackia isoflavoniconvertens	Slackia
+uncultured Blautia sp.	Blautia
+uncultured Collinsella sp.	Collinsella
+uncultured Eubacterium sp.	Eubacterium
+uncultured Roseburia sp.	Roseburia
+uncultured Solobacterium sp.	Solobacterium

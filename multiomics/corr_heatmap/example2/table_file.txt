@@ -1,0 +1,4 @@
+name	exp_txt	legend_txt
+metagenomic	/home/genesky/pipeline/tools_script/multiomics/corr_heatmap/example2/data/input_species.txt	/home/genesky/pipeline/tools_script/multiomics/corr_heatmap/example2/data/species_legend.txt
+faecal	/home/genesky/pipeline/tools_script/multiomics/corr_heatmap/example2/data/input_faecal.txt	
+serum	/home/genesky/pipeline/tools_script/multiomics/corr_heatmap/example2/data/input_serum.txt	

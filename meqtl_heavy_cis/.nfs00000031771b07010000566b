@@ -1,0 +1,585 @@
+use strict;
+use warnings;
+use File::Spec;
+use Getopt::Long;
+use Encode;
+use Excel::Writer::XLSX;
+
+# 定义 -> 常量
+use constant SCRIPTDIR => (File::Spec->splitpath(File::Spec->rel2abs($0)))[1];
+use constant PWD => $ENV{"PWD"};
+
+# 检测 -> 脚本输入
+my ($snv_infile, $allele_infile, $probe_infile, $cis_p, $cisdist, $output_dir, $if_help);
+GetOptions(
+    "snv_infile|snv=s"           => \$snv_infile,
+    "allele_infile|al=s"         => \$allele_infile,
+    "probe_infile|pb=s"          => \$probe_infile,
+    "cis_p|cp=s"                 => \$cis_p,
+    "cisdist|d=s"                => \$cisdist,
+    "output_dir|o=s"             => \$output_dir,
+    "help|h"                     => \$if_help,
+);
+die help() if(defined $if_help or (not defined $snv_infile or not defined $probe_infile or not defined $output_dir));
+
+# 定义 -> 核心变量
+my $Rscript = "/home/genesky/software/r/3.5.1/bin/Rscript";
+my $cis_rscript_dir = (File::Spec->splitpath(File::Spec->rel2abs($0)))[1];
+
+die "Error : cis rscript NOT exist!\n"            if (not -e "$cis_rscript_dir/MatrixEQTL_CIS.r");
+die "Error : readme NOT exist!\n"                 if (not -e "$cis_rscript_dir/readme.txt");
+die "Error : manhattan plot rscript NOT exist!\n" if (not -e "$cis_rscript_dir/plot_manhattan.r");
+die "Error : scatter plot rscript NOT exist!\n"   if (not -e "$cis_rscript_dir/plot_scatter.r");
+###################################################################### 主程序
+my $tmp_dir    = "$output_dir/tmp";
+my $report_dir = "$output_dir/report";
+
+system qq{mkdir -p $tmp_dir} if not -d $tmp_dir;
+system qq{mkdir -p $report_dir} if not -d $report_dir;
+
+# 检查输入文件样本名
+print "sample name checking... ";
+my $sample_list = check_sampleid($snv_infile, $probe_infile);
+print "ok\n";
+
+# snv突变信息根据等位基因信息转为0,1,2格式
+my $snv_formatted = "$tmp_dir/snv_formatted.xls";
+snv_format1($snv_infile, $allele_infile, $snv_formatted) if defined $allele_infile;
+snv_format2($snv_infile, $snv_formatted) if not defined $allele_infile;
+
+# 生成cis分析所需文件
+my $snv_type = "$tmp_dir/snv_type.xls";
+my $snv_loc  = "$tmp_dir/snv_loc.xls";
+my $probe_profile = "$tmp_dir/probe_profile.xls";
+my $probe_loc     = "$tmp_dir/probe_loc.xls";
+
+print "cis analysising... \n";
+extract_snv_file($snv_formatted, $sample_list, $snv_type, $snv_loc);
+extract_probe_file($probe_infile, $sample_list, $probe_profile, $probe_loc);
+
+# 进行cis分析
+my $cis_res = "$tmp_dir/cis_res.txt";
+my $tra_res = "$tmp_dir/tra_res.txt"; # 不输出
+   $cis_p   = "0.05" if not defined $cis_p;
+   $cisdist = "1e6"  if not defined $cisdist;
+system qq{$Rscript $cis_rscript_dir/MatrixEQTL_CIS.r -o $cis_res -r $tra_res -m $probe_profile -n $probe_loc -s $snv_type -t $snv_loc -w $cisdist -x $cis_p};
+print "ok\n";
+
+# 添加基因、位置等信息
+my $cis_final_result_xls  = "$tmp_dir/cis_final_result.xls";
+my $cis_final_result_xlsx = "$report_dir/cis_final_result.xlsx";
+
+output_final_res($cis_res, $snv_infile, $probe_infile, $cis_final_result_xls);
+txt2xlsx($cis_final_result_xls, $cis_rscript_dir, $cis_final_result_xlsx);
+print "Cis analysis completed!\n";
+
+# 绘图
+my $snp4plot_manhattan = "$tmp_dir/snp4plot_manhattan.xls";
+my $cg4plot_manhattan  = "$tmp_dir/cg4plot_manhattan.xls";
+my $info4plot_scatter  = "$tmp_dir/info4plot_scatter.xls";
+
+# 绘制曼哈顿图
+print "ploting... \n";
+extract_snvsig4plot_manhattan($cis_final_result_xls, $snp4plot_manhattan);
+system qq{$Rscript $cis_rscript_dir/plot_manhattan.r -i $snp4plot_manhattan -o $report_dir/snv_manhattan.png};
+
+extract_cgsig4plot_manhattan($cis_final_result_xls, $cg4plot_manhattan);
+system qq{$Rscript $cis_rscript_dir/plot_manhattan.r -i $cg4plot_manhattan -o $report_dir/cg_manhattan.png};
+
+# 绘制散点图
+extract_info4plot_scatter($cis_final_result_xls, $info4plot_scatter);
+system qq{$Rscript $cis_rscript_dir/plot_scatter.r -i $info4plot_scatter --pdf $report_dir/scatter.pdf --yname "-log10(p)"}; # y轴指定名称
+print "All analysis completed!\n";
+
+###################################################################### 子函数
+sub help
+{
+    my $info = "
+Program: 大数据量的QTL分析，例如850K数据 + snp芯片数据
+Version: 2020-02-24
+Contact: 272 李鸿杰
+
+Usage: perl ".(File::Spec->splitpath(File::Spec->rel2abs($0)))[2]." [options]
+
+Options:
+        
+        --snv_infile/-snv         snp分型信息 (包含表头, 最少5列。 前几列为snp位点ID, 位点基因信息, 位点染色体信息, 位点位置信息。
+                                     后续列为样本, 值为突变等位基因, 格式示例：A/T, 如果缺失, 空着即可)
+                                     流程自动计算maf, 生成0、1、2矩阵
+
+        --allele_infile/-al       snp位点等位基因信息。 【可选】。 如果输入, 流程放弃计算maf, 根据该文件转化snv_infile数据为0、1、2矩阵。(包含表头, 3列。 snp位点ID, A1, A2)
+                                     流程把A1作为alt, A2作为ref, 转化snv_infile
+
+        --probe_infile/-pb        甲基化信息 (包含表头, 最少5列。 前几列为cg位点ID, 位点基因信息, 位点染色体信息, 位点位置信息。 后续列为样本, 缺失值为空)
+
+        --cis_p/-cp               meqtl中cis分析的p值 (默认 0.05)
+
+        --cisdist/-d              meqtl中cis分析的cisdist值 (默认 1e6)
+
+        --output_dir/-o           结果输出目录
+
+        --help/-h                 查看帮助文档
+        注：snv_infile, probe_infile 两个表格里样本数量、名称必须一致, 顺序可以不同
+    \n";
+    return $info;
+}
+
+sub check_sampleid{
+	my $snv_infile   = shift @_;
+	my $probe_infile = shift @_;
+	my $snv_head     = `cat $snv_infile| head -n1`;
+	   $snv_head     =~ s/[\r\n]//g;
+	my $probe_head = `cat $probe_infile| head -n1`;
+	   $probe_head =~ s/[\r\n]//g;
+	my @snv_heads   = split /\t/, $snv_head, 5;
+	my @snv_samples = split /\t/, $snv_heads[-1];
+	my @probe_heads   = split /\t/, $probe_head, 5;
+	my @probe_samples = split /\t/, $probe_heads[-1];
+
+	my @need_warnings_snv_samples = grep{ not $_ ~~ @probe_samples } @snv_samples;
+    my @need_warnings_cg_samples = grep{ not $_ ~~ @snv_samples } @probe_samples;
+    my $need_warnings_snv_list = join ",", @need_warnings_snv_samples if scalar @need_warnings_snv_samples != 0;
+    my $need_warnings_cg_list = join ",", @need_warnings_cg_samples if scalar @need_warnings_cg_samples != 0;
+	die "Error : $need_warnings_snv_list in snv_infile not exist in probe_infile!\n" if scalar @need_warnings_snv_samples != 0;
+    die "Error : $need_warnings_cg_list in probe_infile not exist in snv_infile!\n" if scalar @need_warnings_cg_samples != 0;
+
+    my $sample_list = join ",", @snv_samples;
+    return $sample_list;
+}
+
+sub snv_format1{
+    my $snv_infile = shift @_;
+    my $allele_infile = shift @_;
+    my $format_outfile = shift @_;
+
+    my %hashSNPfreq = ();
+    open MAF, "$allele_infile" or die;
+    my $head = <MAF>;
+    while(<MAF>){
+        $_ =~ s/[\r\n]//g;
+        my ($snp, $a1, $a2) = split /\t/, $_;
+        $hashSNPfreq{$snp}{"$a1/$a1"} = 2;
+        $hashSNPfreq{$snp}{"$a2/$a1"} = 1;
+        $hashSNPfreq{$snp}{"$a1/$a2"} = 1;
+        $hashSNPfreq{$snp}{"$a2/$a2"} = 0;
+        # 高频碱基纯合设为0,杂合型设为1,低频碱基纯合设为2,缺失值为空
+    }
+    close MAF;
+
+    open OUT, ">$format_outfile" or die;
+    open IN, "$snv_infile" or die;
+    my $titles = <IN>;
+       $titles =~ s/[\r\n]//g;
+    print OUT "$titles\n";
+    my ($id, $gene, $chr, $pos, $sample) = split /\t/, $titles, 5;
+    my @samples = split /\t/, $sample;
+
+    while(<IN>){
+        my @data = split /\t/, $_;
+        $data[-1] =~ s/[\r\n]//g;
+        print OUT "$data[0]\t$data[1]\t$data[2]\t$data[3]\t";
+
+        my @values = ();
+        foreach my $i(0..$#samples) {
+            my $geno = $data[$i+4];
+            my $vals = "";
+               $vals = $hashSNPfreq{$data[0]}{$geno} if (exists $hashSNPfreq{$data[0]}{$geno});
+            push @values, $vals;
+        }
+        my $val = join "\t", @values;
+        print OUT "$val\n";
+    }
+    close IN;
+    close OUT;
+}
+
+sub snv_format2{
+    my $snv_infile = shift @_;
+    my $format_outfile = shift @_;
+
+    open OUT, ">$format_outfile" or die;
+    open IN, "$snv_infile" or die;
+    my $titles = <IN>;
+       $titles =~ s/[\r\n]//g;
+    print OUT "$titles\n";
+    my ($id, $gene, $chr, $pos, $sample) = split /\t/, $titles, 5;
+    my @samples = split /\t/, $sample;
+
+    while(<IN>){
+        my @data = split /\t/, $_;
+        $data[-1] =~ s/[\r\n]//g;
+
+        my $seq = join "/", @data[4..$#data]; #数组切片
+        my %hashBase = ();
+        map { $hashBase{$_}++ if ($_ =~ /\w/) } split /\//, $seq; #考虑空值
+
+        my ($min_allele, $max_allele) = sort {$hashBase{$a}<=>$hashBase{$b}} keys %hashBase;
+        next if not defined $max_allele;  # 只存在一种等位基因位点，跳过
+
+        my %hashSNPfreq = ();
+        $hashSNPfreq{"$min_allele/$min_allele"} = 2;
+        $hashSNPfreq{"$max_allele/$min_allele"} = 1;
+        $hashSNPfreq{"$min_allele/$max_allele"} = 1;
+        $hashSNPfreq{"$max_allele/$max_allele"} = 0;
+        # 高频碱基纯合设为0,杂合型设为1,低频碱基纯合设为2,缺失值为空
+
+        print OUT "$data[0]\t$data[1]\t$data[2]\t$data[3]\t";
+
+        my @values = ();
+        foreach my $i(0..$#samples) {
+            my $geno = $data[$i+4];
+            my $vals = "";
+               $vals = $hashSNPfreq{$geno} if (exists $hashSNPfreq{$geno});
+               push @values, $vals;
+        }
+        my $val = join "\t", @values;
+        print OUT "$val\n";
+    }
+    close IN;
+    close OUT;
+}
+
+sub extract_snv_file{
+	my $infile = shift @_;
+    my $sample = shift @_;
+	my $outfile = shift @_;
+	my $outlocfile = shift @_;
+
+    my @samples = split /,/, $sample;
+    open OUT, ">$outfile" or die;
+    open OUTLOC, ">$outlocfile" or die;
+    print OUTLOC "Id\tChr\tPos\n";
+    open IN, "$infile" or die;
+    my $head = <IN>;
+       $head =~ s/[\r\n]//g;
+    my @heads = split /\t/, $head;
+    print OUT "Id\t" . (join "\t", @samples) . "\n";
+    while(<IN>){
+        my @data = split /\t/, $_;
+        $data[-1] =~ s/[\r\n]//g;
+        $data[2] =~ s/chr//g;
+        print OUTLOC "$data[0]\t$data[2]\t$data[3]\n";
+
+        my %hashTmp = ();
+        foreach my $col(0..$#heads){
+            my $value = exists $data[$col] ? $data[$col] : "";
+            $hashTmp{$heads[$col]} = $value;
+        }
+
+        my @genos = map { $hashTmp{$_} } @samples; # 按样本顺序提取对应值
+        unshift @genos, $data[0]; # 加上第一列id
+        my $geno = join "\t", @genos;
+        print OUT "$geno\n";
+    }
+    close IN;
+    close OUTLOC;
+    close OUT;
+}
+
+sub extract_probe_file{
+	my $infile = shift @_;
+    my $sample = shift @_;
+	my $outfile = shift @_;
+	my $outlocfile = shift @_;
+
+    my @samples = split /,/, $sample;
+    open OUT, ">$outfile" or die;
+    open OUTLOC, ">$outlocfile" or die;
+    print OUTLOC "Id\tchr\ts1\ts2\n";
+    open IN, "$infile" or die;
+    my $head = <IN>;
+       $head =~ s/[\r\n]//g;
+    my @heads = split /\t/, $head;
+    print OUT "Id\t" . (join "\t", @samples) . "\n";
+    while(<IN>){
+        my @data = split /\t/, $_;
+        $data[-1] =~ s/[\r\n]//g;
+        $data[2] =~ s/chr//g;
+        print OUTLOC "$data[0]\t$data[2]\t$data[3]\t$data[3]\n";
+
+        my %hashTmp = ();
+        foreach my $col(0..$#heads){
+            my $value = exists $data[$col] ? $data[$col] : "";
+            $hashTmp{$heads[$col]} = $value;
+        }
+
+        my @probes = map { $hashTmp{$_} } @samples; # 按样本顺序提取对应值
+        unshift @probes, $data[0]; # 加上第一列id
+        my $quantify = join "\t", @probes;
+        print OUT "$quantify\n";
+    }
+    close IN;
+    close OUTLOC;
+    close OUT;
+}
+
+sub output_final_res{
+	my $cis_infile = shift @_;
+	my $snv_info   = shift @_;
+	my $cg_info    = shift @_;
+	my $out        = shift @_;
+
+	my %hashSNP = ();
+	open SNV, "$snv_info" or die;
+	while(<SNV>){
+		$_ =~ s/[\r\n]//g;
+		next if /[G|g]ene/;
+		my ($snp, $gene, $chr, $pos, $tmp) = split /\t/, $_, 5;
+		$hashSNP{$snp}{'Gene'} = $gene;
+		$hashSNP{$snp}{'Chr'}  = $chr;
+		$hashSNP{$snp}{'Pos'}  = $pos;
+	}
+	close SNV;
+
+	my %hashCG = ();
+	open CG, "$cg_info" or die;
+	while(<CG>){
+		$_ =~ s/[\r\n]//g;
+		next if /[G|g]ene/;
+		my ($probe, $gene, $chr, $pos, $tmp) = split /\t/, $_, 5;
+		$hashCG{$probe}{'Gene'} = $gene;
+		$hashCG{$probe}{'Chr'}  = $chr;
+		$hashCG{$probe}{'Pos'}  = $pos;
+	}
+	close CG;
+
+	# 信息合并
+    open OUT, ">$out" or die;
+	print OUT "SNV ID\tSNV Gene\tSNV Chr\tSNV Pos\tProbe ID\tProbe Annovar Gene\tProbe Chr\tProbe Pos\tbeta\tt-stat\tp-value\tFDR\tDistance\n";
+
+	open CIS, "$cis_infile" or die;
+	while(<CIS>){
+		$_ =~ s/[\r\n]//g;
+		next if /FDR/;
+		my ($snp, $cg, $beta, $tstat, $pval, $fdr) = split /\t/, $_;
+
+		my $snp_chr_info  = exists $hashSNP{$snp} ? $hashSNP{$snp}{'Chr'} : "";
+		my $snp_pos_info  = exists $hashSNP{$snp} ? $hashSNP{$snp}{'Pos'} : "";
+		my $snp_gene_info = exists $hashSNP{$snp} ? $hashSNP{$snp}{'Gene'} : "";
+
+		my $cg_chr_info  = exists $hashCG{$cg} ? $hashCG{$cg}{'Chr'} : "";
+		my $cg_pos_info  = exists $hashCG{$cg} ? $hashCG{$cg}{'Pos'} : "";
+		my $cg_gene_info = exists $hashCG{$cg} ? $hashCG{$cg}{'Gene'} : "";
+
+		my $distance = $cg_pos_info - $snp_pos_info;
+		print OUT "$snp\t$snp_gene_info\t$snp_chr_info\t$snp_pos_info\t$cg\t$cg_gene_info\t$cg_chr_info\t$cg_pos_info\t$beta\t$tstat\t$pval\t$fdr\t$distance\n";
+	}
+	close CIS;
+	close OUT;
+}
+
+sub extract_snvsig4plot_manhattan{
+	my $cis_res = shift @_;
+	my $out     = shift @_;
+
+	my %hash = ();
+	open CIS, "$cis_res" or die;
+	my $title = <CIS>;
+	while (<CIS>) {
+        $_ =~ s/[\r\n]//g;
+        my ($snv, $snv_gene, $snv_chr, $snv_pos, $probe, $probe_gene, $probe_chr, $probe_pos, $beta, $t, $pval, $fdr, $dis) = split /\t/, $_;
+        $hash{$snv}{'chr'} = $snv_chr;
+        $hash{$snv}{'pos'} = $snv_pos;
+        $hash{$snv}{'pval'} .= $pval . ",";
+	}
+	close CIS;
+
+	open OUT, ">$out" or die;
+	print OUT "Chr\tSNP\tPos\tPval\n";
+	foreach my $snp(keys %hash){
+        $hash{$snp}{'pval'} =~ s/,$//;
+        my @pvals = split /,/, $hash{$snp}{'pval'};
+        my $need_p = min (@pvals);  # 相同snp, p值取最显著绘图
+        print OUT "$hash{$snp}{'chr'}\t$snp\t$hash{$snp}{'pos'}\t$need_p\n";
+	}
+	close OUT;
+}
+
+sub extract_cgsig4plot_manhattan{
+	my $cis_res = shift @_;
+	my $out     = shift @_;
+
+	my %hash = ();
+	open CIS, "$cis_res" or die;
+	my $title = <CIS>;
+	while (<CIS>) {
+        $_ =~ s/[\r\n]//g;
+        my ($snv, $snv_gene, $snv_chr, $snv_pos, $probe, $probe_gene, $probe_chr, $probe_pos, $beta, $t, $pval, $fdr, $dis) = split /\t/, $_;
+        $hash{$probe}{'chr'} = $probe_chr;
+        $hash{$probe}{'pos'} = $probe_pos;
+        $hash{$probe}{'pval'} .= $pval . ",";
+	}
+	close CIS;
+
+	open OUT, ">$out" or die;
+	print OUT "Chr\tProbe\tPos\tPval\n";
+	foreach my $cg(keys %hash){
+        $hash{$cg}{'pval'} =~ s/,$//;
+        my @pvals = split /,/, $hash{$cg}{'pval'};
+        my $need_p = min (@pvals); # 相同cg, p值取最显著绘图
+        print OUT "$hash{$cg}{'chr'}\t$cg\t$hash{$cg}{'pos'}\t$need_p\n";
+	}
+	close OUT;
+}
+
+sub min{
+    my $min = shift @_;
+    foreach (@_) {
+        if ($_ < $min){
+        	$min = $_;
+        }
+    }
+    return $min;
+}
+
+sub extract_info4plot_scatter{
+	my $cis_res = shift @_;
+	my $out     = shift @_;
+
+	open OUT, ">$out" or die;
+	print OUT "Distance\tFinalpval\n";
+	open CIS, "$cis_res" or die;
+	my $title = <CIS>;
+	while (<CIS>) {
+        $_ =~ s/[\r\n]//g;
+        my ($snv, $snv_gene, $snv_chr, $snv_pos, $probe, $probe_gene, $probe_chr, $probe_pos, $beta, $t, $pval, $fdr, $dis) = split /\t/, $_;
+        my $lgp = 0 - (log($pval)/log(10)); # -log10(p)
+        print OUT "$dis\t$lgp\n";
+	}
+	close CIS;
+	close OUT;
+}
+
+sub txt2xlsx{
+	my $txt     = shift @_;
+	my $read_me = shift @_;
+	my $xlsx    = shift @_;
+
+	print "###Start Generating $xlsx...";
+    my $workbook = Excel::Writer::XLSX->new($xlsx);
+    my %format   = format_run($workbook);
+    my $sheet    = $workbook->add_worksheet("meQTL");
+    my $row      = 0;
+    my @titles   = ();
+    open TXT, $txt;
+    while(<TXT>){
+        $_=~s/[\r\n]//g;
+        my @datas = split/\t/, $_;
+
+        if ($row==0) {
+            @titles = @datas;
+            foreach my $col(0..$#datas) {
+                $sheet->write($row, $col ,$datas[$col], $format{'title'});
+            }
+            $row++;
+            next;
+        }
+
+        foreach my $col(0..$#datas) {
+            my $color = "normal";
+               $color = "orange" if($titles[$col] eq "p-value" and $datas[$col] < 0.01);
+            $sheet->write($row, $col ,$datas[$col], $format{$color});
+        }
+        $row++;
+    }
+    close TXT;
+    ReadMe($workbook, \%format, "$read_me/readme.txt");
+    print "OK\n";
+}
+
+sub ReadMe{
+    my ($workbook,$format,$file) = @_;
+    my $sheet = $workbook->add_worksheet("Read Me");
+    $sheet->set_row(0, 65);
+    $sheet->set_column('A:A', 35);
+    $sheet->set_column('B:B', 25);
+    $sheet->set_column('C:C', 110);
+    my $row=0;
+
+    open FILE,$file;
+    while(<FILE>){
+        $_=~ s/\^/\n/g;
+        my @split_line=split /\t/,$_;
+        my $col=0;
+        foreach (@split_line) {
+            my $text = decode("UTF-8",$_);
+            if($row==0 and $col==0){$sheet->write($row,$col,$text,$format->{'readme1'});}
+            if($row==0 and $col==1){$sheet->write($row,$col,$text,$format->{'readme2'});}
+            if($row==0 and $col==2){$sheet->write($row,$col,$text,$format->{'readme2tmp'});}
+            if($row>0 and $col==0){$sheet->write($row,$col,$text,$format->{'readme3'});}
+            if($row>0 and $col==1){$sheet->write($row,$col,$text,$format->{'readme4'});}
+            if($row>0 and $col==2){$sheet->write($row,$col,$text,$format->{'readme5'});}
+            $col++;
+        }
+        $row++;
+    }
+    close FILE;
+}
+
+sub format_run{
+	my ($workbook)=@_;
+    my %format=();
+    $format{'title'} = $workbook->add_format();
+    $format{'title'} ->set_align('center');
+    $format{'title'} ->set_align('vcenter');
+    $format{'title'} ->set_size(12);
+    $format{'title'} ->set_font("Times New Roman");
+    $format{'title'} ->set_border();
+    $format{'title'} ->set_bg_color("yellow");
+    $format{'title'} ->set_color("black");
+
+    $format{'normal'} = $workbook->add_format();
+    $format{'normal'} ->set_align('center');
+    $format{'normal'} ->set_align('vcenter');
+    $format{'normal'} ->set_size(12);
+    $format{'normal'} ->set_font("Times New Roman");
+    $format{'normal'} ->set_border();
+
+    $format{'orange'} = $workbook->add_format();
+    $format{'orange'} ->set_align('vcenter');
+    $format{'orange'} ->set_size(12);
+    $format{'orange'} ->set_font("Times New Roman");
+    $format{'orange'} ->set_bg_color("#fac090");
+    $format{'orange'} ->set_border();
+
+    $format{'readme1'} = $workbook->add_format();
+    $format{'readme1'}->set_align('center');
+    $format{'readme1'}->set_align('vcenter');
+    $format{'readme1'}->set_bold();
+    $format{'readme1'}->set_size(14);
+    $format{'readme1'}->set_font("Times New Roman");
+    $format{'readme1'}->set_border();
+
+    $format{'readme2'} = $workbook->add_format();
+    $format{'readme2'}->set_align('vcenter');
+    $format{'readme2'}->set_bold();
+    $format{'readme2'}->set_size(14);
+    $format{'readme2'}->set_font("Times New Roman");
+
+    $format{'readme2tmp'} = $workbook->add_format();
+    $format{'readme2tmp'}->set_right();
+
+    $format{'readme3'} = $workbook->add_format();
+    $format{'readme3'}->set_align('center');
+    $format{'readme3'}->set_align('vcenter');
+    $format{'readme3'}->set_bold();
+    $format{'readme3'}->set_size(11);
+    $format{'readme3'}->set_font("Times New Roman");
+    $format{'readme3'}->set_border();
+
+    $format{'readme4'} = $workbook->add_format();
+    $format{'readme4'}->set_align('vcenter');
+    $format{'readme4'}->set_bold();
+    $format{'readme4'}->set_size(11);
+    $format{'readme4'}->set_font("Times New Roman");
+    $format{'readme4'}->set_border();
+
+    $format{'readme5'} = $workbook->add_format();
+    $format{'readme5'}->set_align('vcenter');
+    $format{'readme5'}->set_size(11);
+    $format{'readme5'}->set_font("Times New Roman");
+    $format{'readme5'}->set_border();
+    $format{'readme5'}->set_text_wrap();
+
+    return %format;
+}

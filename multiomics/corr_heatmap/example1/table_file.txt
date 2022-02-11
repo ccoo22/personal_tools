@@ -1,0 +1,4 @@
+name	exp_txt	legend_txt
+metagenomic	/home/dongxj/work/research/plot/heatmap/test/input_species.txt	/home/dongxj/work/research/plot/heatmap/test/species_legend.txt
+faecal	/home/dongxj/work/research/plot/heatmap/test/input_faecal.txt	/home/dongxj/work/research/plot/heatmap/test/faecal_legend.txt
+serum	/home/dongxj/work/research/plot/heatmap/test/input_serum.txt	/home/dongxj/work/research/plot/heatmap/test/serum_legend.txt

@@ -50,6 +50,7 @@ foreach my $target(sort {$hashPrimer{$a}{"SortOrder"} <=> $hashPrimer{$b}{"SortO
     my $pos2 = $hashPrimer{$target}{'pos2'};
     my $pos3 = $hashPrimer{$target}{'pos3'};
     my $pos4 = $hashPrimer{$target}{'pos4'};
+    die "[error]参考基因组文件没有发现染色体编号 $chr，请确认引物文件是否写错了，或者选错参考基因组了!\n " if(not exists($hashGenome{$chr}));    
 
     my $start = $pos2;
     my $end   = $pos3;
@@ -112,6 +113,7 @@ sub read_primer{
     while(<PRIMER>)
     {
         $_=~s/[\r\n]//g;
+        next if($_!~/\w/);
         my @datas = split /\t/, $_;
         my $title = $datas[0];
         foreach my $col(0..$#heads)
@@ -119,6 +121,13 @@ sub read_primer{
             my $value = $datas[$col];
             $value = "chr$value"  if($heads[$col] eq 'chr' and $genome=~/hg38_modify.fa$/ and $value!~/^chr/);  # hg38 添加chr符号
             $hashPrimer{$title}{$heads[$col]} = $value;
+        }
+        my @positions = map{$hashPrimer{$title}{$_}} ('pos1', 'pos2', 'pos3', 'pos4');
+        my @positions_sort = sort {$a<=>$b} @positions;
+
+        foreach my $col(0..$#positions)
+        {
+        die "[Error] $title 信息异常。输入的引物信息文件中，pos1/pos2/pos3/pos4  四列信息必须按照从小到大排列！\n" if($positions[$col] != $positions_sort[$col])
         }
     }
     close PRIMER;
@@ -164,7 +173,8 @@ Usage:   perl ".(File::Spec->splitpath(File::Spec->rel2abs($0)))[2]." [options]
 
 Options:
 
-         --primer/-p               [必填] 引物文件
+         --primer/-p               [必填] 引物文件。使用在线引物匹配工具primer_position_PCR获取。 
+                                          该文件第一行是表头，第一列必须是序列名称，其他列的顺序随意，但必须含有以下5列信息：chr pos1 pos2 pos3 pos4
          --genome/-ge              [必填] 样本物种对应的genome的绝对路径  
                                           示例：/home/genesky/database/ucsc/hg19_modify/genome/hg19_modify.fa 
                                                /home/genesky/database_new/self_build_database/ucsc/hg38_rm_alt_genome/hg38_modify.fa
@@ -177,3 +187,4 @@ Options:
     \n";
     return $info;
 }
+ 

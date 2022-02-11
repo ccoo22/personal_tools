@@ -1,0 +1,4 @@
+name	exp_txt
+metagenomic	/home/genesky/pipeline/tools_script/multiomics/corr_network/example/data/input_species.txt
+faecal	/home/genesky/pipeline/tools_script/multiomics/corr_network/example/data/input_faecal.txt
+serum	/home/genesky/pipeline/tools_script/multiomics/corr_network/example/data/input_serum.txt

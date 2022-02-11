@@ -75,13 +75,18 @@ if(is.null(exposure_dat)){
     message("暴露因素没有提取到任何位点，请适当降低 p1/r2 过滤阈值， 当前使用的阈值为： p1 = ", p1, "; r2 = ", r2)
     q()
 }else{
-    message('SNP count in exposure data： ', nrow(exposure_dat))
+    message('暴露因素找到的snp位点数目为： ', nrow(exposure_dat))
+    message('    snp id :', paste0(exposure_dat$SNP, collapse=','))
 }
 
 # 结局数据
 outcome_dat <- extract_outcome_data(snps = exposure_dat$SNP, outcomes = outcome )
 outcome_dat <- outcome_dat[!duplicated(outcome_dat$SNP), ]  # 去掉重复，发现在部分数据库里会找到重复的数据
- 
+if(is.null(outcome_dat)){
+    message("结局因素没有提取到任何位点，请适当降低 p1/r2 过滤阈值， 当前使用的阈值为： p1 = ", p1, "; r2 = ", r2)
+    q()
+}
+
 ### （2）数据整合清洗
 message('\n[process 2] harmonise_data')
 harmonise_dat <- harmonise_data(

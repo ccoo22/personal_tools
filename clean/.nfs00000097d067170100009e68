@@ -1,0 +1,40 @@
+#!/home/genesky/software/python/3.9.4/bin/python3
+import os
+import sys
+import re
+import argparse
+import time
+import logging
+logging.basicConfig(
+    format='[%(asctime)s %(levelname)s] %(message)s',
+    stream=sys.stdout)
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+
+
+def set_and_parse_args():
+    """参数解析"""
+    parser = argparse.ArgumentParser(
+        description="wes 数据清理", formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument('--input_dir', '-i', type=str, default='/home/pub/output/WES',
+                        help="输入路径. [/home/pub/output/WES]")
+
+    parser.add_argument('--project', '-p', type=str, required=True,
+                        help="需要清理的项目名称，多个项目用逗号分隔， 例如： 21B0206A_WES,21AATI003_WES")
+
+    parser.add_argument('--mode', '-m', type=str, default='check',
+                        help="运行模式。 check 模式： 仅检测目标，并列出详细信息。 clean 模式： 清理[check]")
+
+    args = parser.parse_args()
+
+    return args
+
+if __name__ == '__main__':
+    args = set_and_parse_args()
+    time_log = f"./log/wes.{time.strftime('%Y_%m_%d_%H_%M_%S')}.log"
+
+    for project in args.project.split(','):
+        print(project)
+
+

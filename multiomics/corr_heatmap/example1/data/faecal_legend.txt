@@ -1,0 +1,16 @@
+MS2 name	superpathway	other
+3-Dehydrocholic acid	Unknown	a
+Bilirubin	Metabolism of cofactors and vitamins	Biliru
+Biliverdin	Metabolism of cofactors and vitamins	Biliver
+Cholic acid	Lipid metabolism	a
+Choline	Lipid metabolism	Chol
+D-(+)-Proline	Unknown	Prol
+Deoxycholic Acid	Unknown	A
+Gentisic acid	Amino acid metabolism	a
+Gly-Val	Unknown	a
+Indole	Amino acid metabolism	Ind
+Inosine	Nucleotide metabolism	Inos
+Lithocholic Acid	Unknown	A
+L-Tyrosine	Amino acid metabolism	Tyros
+Taurine	Energy metabolism	Taur
+Υ-Aminobutyric acid (GABA)	Unknown	Taur

@@ -59,7 +59,7 @@ if(! is.null(cov))
 }
 
 # 保留模型值
-result <- matrix(ncol = 13 + 2 * length(cov_names), nrow = length(genes))
+result <- matrix(ncol = 14 + 2 * length(cov_names), nrow = length(genes))
 col_names = c('Var', 'NMISS case', 'NMISS control', "Estimate", "Pvalue", "Pvalue_FDR", "Estimate(Intercept)", "Pvalue(Intercept)")  # 必要结果
 for(cov_name in cov_names)  # 协变量结果
 {

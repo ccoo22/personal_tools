@@ -1,0 +1,13 @@
+sample	groups
+MC_1	post
+MC_5	post
+MC_6	post
+MC_7	post
+MC_9	post
+MC_10	post
+PTMC_2	baseline
+PTMC_3	baseline
+PTMC_4	baseline
+PTMC_6	baseline
+PTMC_7	baseline
+PTMC_10	baseline

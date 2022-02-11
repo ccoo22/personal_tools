@@ -1,0 +1,3 @@
+Models and risk groups	Patient, n	Median OS Time	1 year OS rates	3 year OS rates	5 year OS rates	8 year OS rates	HR(95%CI)	P value
+Low	70(50%)	822	72.7%	47.2%	36.7%	NA	-	
+High	70(50%)	303	38.7%	15.8%	5.9%	NA	2.527(1.626-3.926)	3.73000469451769e-05

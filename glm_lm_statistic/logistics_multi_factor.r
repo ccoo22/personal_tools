@@ -93,11 +93,14 @@ f <- as.formula(paste('y ~', paste(vars, collapse = ' + ') ) )
 glm_fit <- glm(f, data = data_tmp, family = binomial, control=list(maxit=maxit))
 fit_summary <- summary(glm_fit)
 glm_result  <- fit_summary$coefficients
+predict_value = predict(glm_fit, type='response')
+predict_value = predict_value[rownames(data_tmp)]  # 保证顺序一致
 
+result_predict = data.frame(sample = rownames(data_tmp), group= data_tmp$y, predicted = predict_value)  # 预测值用于输出
 
 # ROC参数计算
 message("ROC plot")
-modelroc = roc(data_tmp$y, predict(glm_fit, type='response'), transpose = FALSE, quiet = TRUE)
+modelroc = roc(data_tmp$y, predict_value, transpose = FALSE, quiet = TRUE)
 best = coords(modelroc, "best", ret = c("threshold", "specificity", "sensitivity", "accuracy"))
 best = as.matrix(best)
 AUC  = round(modelroc$auc[[1]], 4)
@@ -137,12 +140,15 @@ colnames(result_best) = c('NMISS case', 'NMISS control', "AUC", "AUC_CI95", 'thr
 
 file_model    = paste0(prefix, '.model.txt')
 file_best     = paste0(prefix, '.best.txt')
+file_predict  = paste0(prefix, '.predict.txt')
  
 write.table(result_model, file_model, quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 write.table(result_best, file_best, quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
+write.table(result_predict, file_predict, quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 
 
 message("ROC:              ", pdf_file)
 message("logistic model:   ", file_model)
 message("logistic best:    ", file_best)
+message("logistic predict: ", file_predict)
 

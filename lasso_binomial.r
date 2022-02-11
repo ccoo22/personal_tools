@@ -2,13 +2,14 @@
 
 library(docopt)
 
-"Usage: lasso.r -i <file> -o <dir> --prefix <string>  --sample_group <file>  --case_group_name <string> --control_group_name <string> [--lambda <string> --lambda_value <numeric> --score_data <file> --rlib <dir>]
+"Usage: lasso.r -i <file> -o <dir> --prefix <string>  --sample_group <file>  --case_group_name <string> --control_group_name <string> [--gene_file <file> --lambda <string> --lambda_value <numeric> --score_data <file> --rlib <dir>]
 
 Options:
     -i, --input <file>              lasso分析表达量文件矩阵，每一行对应一个特征，每一列对应一个样本，第一行是样本名，第一列是特征名称。不允许缺失。如果有缺失，会自动排除包含缺失的样本。
     --sample_group <file>           样本分组文件，两列数据，第一列样本名，第二列样本分组，有表头。
     --case_group_name <string>      分组文件中，case分组名称
     --control_group_name <string>   分组文件中，control分组名称
+    --gene_file <file>              指定要分析的基因，而不是input中的所有基因。一列信息，没有表头。[default: NA]
     -o, --output_dir <dir>          输出目录
     -p, --prefix <string>           输出文件前缀    
                                     输出的文件有：
@@ -30,6 +31,7 @@ input               <- opts$input
 sample_group        <- opts$sample_group
 case_group_name     <- opts$case_group_name
 control_group_name  <- opts$control_group_name
+gene_file           <- opts$gene_file
 output_dir          <- opts$output_dir
 prefix              <- opts$prefix
 
@@ -41,8 +43,8 @@ rlib                <- opts$rlib
 
 # 导入 -> package
 library(glmnet)
-# library(ROCR)
-# library(pROC)
+library(ROCR)
+library(pROC)
 set.seed(91)
 
 ###################################################################### 主程序
@@ -53,7 +55,22 @@ data_input = t(data_input)
 message("read group")
 sampleinfo <- read.table(sample_group, header = TRUE, sep = "\t", colClasses = 'character') # 读取分组信息
 colnames(sampleinfo) <- c("sample", "group")  
-rownames(sampleinfo) <- sampleinfo[, 1] 
+rownames(sampleinfo) <- sampleinfo[, 1]
+
+# 选择指定基因
+if(gene_file != 'NA')
+{   
+    message("read gene_file")
+    choose_genes = read.table(gene_file, header = F, check.names = F, sep = "\t", stringsAsFactors=F)[, 1]
+    if(sum(choose_genes %in% colnames(data_input)) != length(choose_genes))
+    {   
+        lost = choose_genes[!choose_genes %in% colnames(data_input)]
+        lost = paste(lost, collapse=',')
+        message("[Error] 你输入的gene_file 中，部分基因在input中丢失。\n",lost)
+        q()
+    }
+    data_input = data_input[, choose_genes, drop=FALSE]
+}
 
 # 错误检测
 message("sample/group check")
@@ -67,6 +84,9 @@ if(!control_group_name %in% sampleinfo$group)
     message("[Error] 你输入的control分组名称不在 sample_group中")
     q()
 }
+
+sampleinfo = sampleinfo[sampleinfo$group == case_group_name | sampleinfo$group == control_group_name, ]
+
 if(sum(!sampleinfo$sample %in% rownames(data_input)) > 0)
 {
     losts = sampleinfo$sample[!sampleinfo$sample %in% rownames(data_input)]
@@ -125,7 +145,7 @@ lasso_lambda_file = paste0(output_dir, "/", prefix, '.lambda.', lambda, ".txt")
 write.table(lasso_lambda_value, lasso_lambda_file, quote = FALSE, row.names = FALSE, col.names=F, sep = '\t')
 write.table(lasso_coef_rename, lasso_coef_file, quote = FALSE, row.names = FALSE, sep = '\t')
 
-if(sum(lasso_coef[,1] != 0) == 0)
+if(sum(lasso_coef[-1,1, drop = FALSE] != 0) == 0)
 {
     message("[Warings]  当前lambda值下，没有筛选出任何变量, 请更换lambda值\n")
 }
@@ -170,6 +190,42 @@ if(!is.null(score_data))
     score = data_input_score %*% lasso_coef[2:nrow(lasso_coef),] + lasso_coef[1,1]  #  
     score_final = data.frame(sample=rownames(score), score=score[,1])
     write.table(score_final, lasso_sample_score_file, quote = FALSE, row.names = FALSE, sep = '\t')
-
-
 }
+
+
+
+# 逻辑回归
+coef_tmp = lasso_coef[-1, ,drop=FALSE] # 去掉第一行常数项
+choose_gene = rownames(coef_tmp[ coef_tmp[, 1] != 0, 1, drop=FALSE]) # 要分析的基因
+if(length(choose_gene) == 0)
+{
+    message("[Warings]  当前lambda值下，没有筛选出任何变量, 无法分析逻辑回归\n")
+    q()
+}
+table = data.frame(y=y_clean, x_clean[, choose_gene, drop=FALSE])
+f <- as.formula(paste('y ~',paste(choose_gene , collapse = ' + ') ) )
+glm_fit = glm(f, data = table, family = binomial)
+
+glm_summary_file = paste0(output_dir, "/", prefix, '.logistic.txt')
+fit_summary = summary(glm_fit)
+glm_result  = fit_summary$coefficients
+glm_result = cbind(Gene = c('(Intercept)',feature_names_input[choose_gene]), glm_result)
+write.table(glm_result, glm_summary_file, quote = FALSE, row.names = FALSE, sep = '\t')
+
+# ROC
+roc_pdf = paste0(output_dir, "/", prefix, '.logistic.ROC.pdf')
+pdf(roc_pdf, family="GB1")
+prob <- predict(glm_fit, newdata = table, type = "response")
+modelroc = roc(table$y, predict(glm_fit, type='response'))
+best = coords(modelroc, "best", ret = c("threshold", "specificity", "sensitivity", "accuracy"), transpose=TRUE)
+best = as.matrix(best)
+AUC  = round(modelroc$auc[[1]], 4)
+spe  = round(best["specificity",1], 4)
+sen  = round(best["sensitivity",1], 4)
+acc  = round(best["accuracy",1], 4)
+
+pred <- prediction(prob, table$y)
+plot(performance(pred, "tpr", "fpr") , lwd = 3, main = "ROC Curves")
+abline(a = 0, b = 1, lty = 2, lwd = 3, col = "black")
+legend("bottomright", legend = c(paste("AUC =", AUC), paste("specificity =", spe), paste("sensitivity =", sen), paste("accuracy =", acc) ) ) 
+dev.off()

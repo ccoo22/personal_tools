@@ -34,7 +34,7 @@ foreach my $count(0..$#file_lists)
 
     my $sheet = $workbook->add_worksheet($name);
     $sheet->set_row(0, 60);
-    
+    $sheet->freeze_panes( 1, 0 );
     open INPUT, $file;
     my $line1 = <INPUT>;
        $line1 =~ s/[\r\n]//g;

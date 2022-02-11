@@ -7,6 +7,16 @@ library(docopt)
 Options:
     -s, --snp_file <file>     暴露因素SNP文件，按照官方格式要求，自己准备的SNP文件, tab分隔
                               建议包含的表头： SNP	eaf	pval	effect_allele	other_allele	Phenotype	n	beta	se	id
+                              SNP: snp id
+                              eaf: 突变等位基因频率
+                              pval： gwas pvalue
+                              effect_allele: 突变等位基因
+                              other_allele： 另一个等位基因
+                              Phenotype： 表型名称
+                              n: gwas分析样本数量
+                              beta： gwas分析逻辑回归系数
+                              se: gwas分析逻辑回归标准误
+                              id: project id
     -o, --outcome <gwasid>    结局因素id， gwasid, 例如： ebi-a-GCST005647
                               具体数据库请在 https://gwas.mrcieu.ac.uk/ 搜索
     -r, --result_dir <dir>    结果输出目录, 例如: ./

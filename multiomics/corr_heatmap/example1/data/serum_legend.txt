@@ -1,0 +1,16 @@
+MS2 name	Superpathway
+L-Histidine	Amino acid metabolism
+Hypoxanthine	Nucleotide metabolism
+Gly-Val	Unknown
+Indoline	Unknown
+L-Methionine sulfoxide	Unknown
+Uric acid	Nucleotide metabolism
+L-Pyroglutamic acid	Metabolism of other amino acids
+Linoleic acid	Lipid metabolism
+Glutamic acid	Carbohydrate metabolism
+α-linolenic acid	Lipid metabolism
+Pantothenic acid	Metabolism of other amino acids
+L-Glutamic acid	Carbohydrate metabolism
+Deoxycholic Acid	Unknown
+Gentisic acid	Amino acid metabolism
+

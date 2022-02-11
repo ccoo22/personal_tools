@@ -74,7 +74,7 @@ data_matrix <- as.matrix(data_matrix)
 # log2处理
 if(do_log2)
 {
-    data_matrix = log2(data_matrix)
+    data_matrix = log2(data_matrix + 1)
     data_matrix[data_matrix == -Inf] = NA
 }
 
@@ -102,28 +102,29 @@ tT <- topTable(fit2, adjust="fdr", sort.by="p", n=Inf, p.value=pvalue_cutoff)  #
 # (5) 差异分析结果整理输出
 ##################
 message("[process] write diff result")
-
+str(data_matrix)
 result <- data.frame(probe = rownames(tT),
                  data_matrix[rownames(tT), ],
-                 caseExpr = apply(data_matrix[rownames(tT), case_samples], 1, function(x){mean(x, na.rm =T)}),
-                 controlExpr = apply(data_matrix[rownames(tT), control_samples], 1, function(x){mean(x, na.rm =T)}),
+                 caseExpr = apply(data_matrix[rownames(tT), case_samples, drop =F], 1, function(x){mean(x, na.rm =T)}),
+                 controlExpr = apply(data_matrix[rownames(tT), control_samples, drop =F], 1, function(x){mean(x, na.rm =T)}),
                  averageExpr = tT$AveExpr,
                  log2FC = tT$logFC,
                  pvalue = tT$P.Value,
-                 fdr = tT$adj.P.Val
+                 fdr = tT$adj.P.Val,
+                 check.names=F
                  )
 result$type <- "Not DEG"
 result$type[result$pvalue < 0.05 & result$log2FC >= 1 ] <- "Up"
 result$type[result$pvalue < 0.05 & result$log2FC <= -1] <- "Down"
 result$type <- factor(result$type, levels = c("Up", "Down", "Not DEG"))
-
+str(result)
  
 # 追加指定注释
 if(!is.null(append_anno_col))
 { 
     need_col <- as.integer(unlist(strsplit(append_anno_col, ','))) - 1  # 输入文件的第一列用作行名了，故前移一位
     append_info <- data_input[rownames(tT), need_col, drop = F]
-    result <- data.frame(result[, ], append_info[, ])
+    result <- data.frame(result[, ], append_info[, ],check.names=F)
  
 }
  
@@ -153,7 +154,7 @@ dev.off()
 volcano_file <- paste(output_prefix, ".volcano.pdf", sep="")
 message("[process] plot volcano : ", volcano_file)
 pdf(volcano_file)
-volcano_title = paste0("genes: ", case_group_name, control_group_name)
+volcano_title = paste0("group: ", case_group_name,' / ', control_group_name)
 ggplot(result, aes(x = log2FC, y = -log10(result$pvalue), color =type)) + 
   geom_point() +
   theme_bw() +
