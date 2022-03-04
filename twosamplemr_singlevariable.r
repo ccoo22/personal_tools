@@ -2,23 +2,28 @@
 
 library(docopt)
 
-"Usage: twosamplemr_singlevariable.r -e <gwasid> -o <gwasid> -r <dir> -p <string> [--p1 <pvalue_cutoff> --r2 <r2_cutoff>  --rlib <dir> --no_check_id --html ]
+"Usage: twosamplemr_singlevariable.r -e <gwasid> -o <gwasid> -r <dir> -p <string> [--p1 <pvalue_cutoff> --r2 <r2_cutoff>  --sample_size_exposure <int>  --f_filter <numeric> --rlib <dir> --no_check_id --html ]
 
 Options:
-    -e, --exposure <gwasid>   暴露因素id， gwasid, 例如： ukb-b-5443 与免疫相关的gwas数据库 
-    -o, --outcome <gwasid>    结局因素id， gwasid, 例如： ebi-a-GCST005647 与Amyotrophic lateral sclerosis肌萎缩性脊髓侧索硬化症 相关的gwas数据库 
-                              具体数据库请在 https://gwas.mrcieu.ac.uk/ 搜索
-    -r, --result_dir <dir>    结果输出目录, 例如: ./
-    -p, --prefix <string>     输出目录下，所有文件添加前缀, 例如： e_o
+    -e, --exposure <gwasid>       暴露因素id， gwasid, 例如： ukb-b-5443 与免疫相关的gwas数据库 
+    -o, --outcome <gwasid>        结局因素id， gwasid, 例如： ebi-a-GCST005647 与Amyotrophic lateral sclerosis肌萎缩性脊髓侧索硬化症 相关的gwas数据库 
+                                  具体数据库请在 https://gwas.mrcieu.ac.uk/ 搜索
+    -r, --result_dir <dir>        结果输出目录, 例如: ./
+    -p, --prefix <string>         输出目录下，所有文件添加前缀, 例如： e_o
 
-    --p1 <pvalue_cutoff>      exposure突变位点提取时的pvalue限制 [default: 5e-08]
-                              比较严格，但是有时候也会导致没有任何SNP位点满足条件，此时请适当降低阈值，但也不要太低，否则提取的SNP过多
-    --r2 <r2_cutoff>          exposure突变位点提取时的r2限制 [default: 0.001]
-    --no_check_id             不检查exposure outcome id编号是否正确，因为要联网下载数据库，有点慢。可以取消掉。
-    --html                    制作html版本。注意：如果选择了这个，所有的分析内容会被做两遍，第二遍是为了整合出html。
-    --rlib <dir>              R包路径 [default: /home/genesky/software/r/3.6.1/lib64/R/library]
+    --p1 <pvalue_cutoff>          exposure突变位点提取时的pvalue限制 [default: 5e-08]
+                                  比较严格，但是有时候也会导致没有任何SNP位点满足条件，此时请适当降低阈值，但也不要太低，否则提取的SNP过多
+    --r2 <r2_cutoff>              exposure突变位点提取时的r2限制 [default: 0.001]
+    --sample_size_exposure <int>  暴露因素中的样本个数 [default: 0]
+                                  计算F统计量时，要用到它。0 表示使用官方下载的表格中的 samplesize进行计算
+                                  但，有时候，官方表格的 samplesize.exposure 是 NA，此时，可以自己声明这个数值（去https://gwas.mrcieu.ac.uk/搜索暴露因素的id，能找到Sample size信息）
+    --f_filter <numeric>          根据F统计值过滤。 0 表示不过滤 [default: 0]
+                                  通常认为，F统计值大于10的点比较可信。
+    --no_check_id                 不检查exposure outcome id编号是否正确，因为要联网下载数据库，有点慢。可以取消掉。
+    --html                        制作html版本。注意：如果选择了这个，所有的分析内容会被做两遍，第二遍是为了整合出html。
+    --rlib <dir>                  R包路径 [default: /home/genesky/software/r/3.6.1/lib64/R/library]
 
-                              注意：需要联网获取数据，请保持网络畅通，偶尔官方网站也会宕机，请耐心等待，重试。
+                                  注意：需要联网获取数据，请保持网络畅通，偶尔官方网站也会宕机，请耐心等待，重试。
     
     " -> doc
 # 以SNP为中介，检测暴露因素 与 结局因素 是否存在因果关系
@@ -29,6 +34,8 @@ result_dir  <- opts$result_dir
 prefix      <- opts$prefix
 p1          <- as.numeric(opts$p1)
 r2          <- as.numeric(opts$r2)
+f_filter    <- as.numeric(opts$f_filter)
+sample_size_exposure <- as.integer(opts$sample_size_exposure)
 no_check_id <- opts$no_check_id
 html        <- opts$html
 rlib        <- opts$rlib
@@ -94,6 +101,22 @@ harmonise_dat <- harmonise_data(
     outcome_dat = outcome_dat
 )
 last_snp_count = sum(harmonise_dat$mr_keep)  # 最终SNP数量
+
+if(sample_size_exposure > 0)
+{
+    harmonise_dat$samplesize.exposure = sample_size_exposure
+}
+
+# 补充暴露因素F统计量
+harmonise_dat$r2.exposure = harmonise_dat$eaf.exposure * (1 - harmonise_dat$eaf.exposure) * harmonise_dat$beta.exposure * harmonise_dat$beta.exposure
+harmonise_dat$fstatistic.exposure = (harmonise_dat$samplesize.exposure - 2) * harmonise_dat$r2.exposure / (1 - harmonise_dat$r2.exposure)
+
+if(f_filter > 0)
+{
+    message("根据F值过滤： ", f_filter)
+    harmonise_dat = harmonise_dat[harmonise_dat$fstatistic.exposure >= f_filter, ]
+}
+
 write.table(harmonise_dat[harmonise_dat$mr_keep, ], file=paste0(result_dir, "/", prefix, ".harmonise_dat.txt"), row.names =F, quote=F, sep='\t')
 
 message("SNP left: ", last_snp_count)
@@ -102,11 +125,32 @@ if(last_snp_count == 0){
     q()
 }
 
+## 稳健调整轮廓评分 Robust adjusted profile score
+## 如果选择的SNPs是弱的工具变量，则mr函数会无法运行。此时，可以用 mr.raps 方法运行。它是MR的一个备选。
+# TwoSampleMR函数mr_raps更新不及时，无法运行，自己根据需要重新写一遍
+parameters = default_parameters()
+mr_raps_result = mr.raps::mr.raps(b_exp = harmonise_dat$beta.exposure,
+        b_out=harmonise_dat$beta.outcome,
+        se_exp=harmonise_dat$se.exposure,
+        se_out=harmonise_dat$se.outcome,
+        over.dispersion=parameters$over.dispersion,
+        loss.function=parameters$loss.function,
+        diagnosis=FALSE,
+        )
+mr_raps_result = data.frame(mr_raps_result, nsnp=nrow(harmonise_dat))
+mr_raps_result$or = exp(mr_raps_result$beta.hat)
+mr_raps_result$L95 = exp(mr_raps_result$beta.hat - 1.96 * mr_raps_result$beta.se)
+mr_raps_result$U95 = exp(mr_raps_result$beta.hat + 1.96 * mr_raps_result$beta.se)
+write.table(mr_raps_result, file=paste0(result_dir, "/", prefix, ".mr_RAPS.txt"), row.names =F, quote=F, sep='\t', col.names=T)
+
 ### （3）MR分析
 message('\n[process 3] Perform MR')
 # 综合考虑所有SNP
 message('    mr')
 res <- mr(harmonise_dat)
+res$or = exp(res$b)
+res$L95 = exp(res$b - 1.96 * res$se)
+res$U95 = exp(res$b + 1.96 * res$se)
 write.table(res, file=paste0(result_dir, "/", prefix, ".mr.txt"), row.names =F, quote=F, sep='\t')
 
 # 每个SNP单独考虑
@@ -151,8 +195,10 @@ write.table(res_intercept, file=paste0(result_dir, "/", prefix, ".mr_pleiotropy_
 message('    mr_presso')
 res_presso <- mr_presso(data = harmonise_dat[harmonise_dat$mr_keep, ], BetaOutcome = "beta.outcome", BetaExposure = "beta.exposure", SdOutcome = "se.outcome", SdExposure = "se.exposure", OUTLIERtest = TRUE, DISTORTIONtest = TRUE, NbDistribution = 1000,  SignifThreshold = 0.05)
 presso_pvalue <- res_presso[['MR-PRESSO results']][['Global Test']]$Pvalue
-presso_pvalue = c('Pvalue', presso_pvalue)
-write.table(presso_pvalue, file=paste0(result_dir, "/", prefix, ".mr_presso.txt"), row.names =F, quote=F, sep='\t', col.names=F)
+presso_rssobs <- res_presso[['MR-PRESSO results']][['Global Test']]$RSSobs
+presso_result = data.frame(pvalue=presso_pvalue, RSSobs=presso_rssobs)
+write.table(presso_result, file=paste0(result_dir, "/", prefix, ".mr_presso.MR-PRESSON-results.txt"), row.names =F, quote=F, sep='\t', col.names=T)
+write.table(res_presso[['Main MR results']], file=paste0(result_dir, "/", prefix, ".mr_presso.Main-MR-results.txt"), row.names =F, quote=F, sep='\t', col.names=T)
 
 
 ### （5） plot
@@ -186,3 +232,4 @@ if(html)
     file.remove(paste0(result_dir, "/mr_report.md"))  # 删除不要
     system(paste0(result_dir, "/figure"))  # 删除不要
 }
+                                                                                                                                                                                                                     

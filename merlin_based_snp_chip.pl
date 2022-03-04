@@ -22,14 +22,20 @@ my $DEFAULT_HOMR_PENETRANCE          = 0.0001;
 my $DEFAULT_HET_PENETRANCE           = 1;
 my $DEFAULT_HOMA_PENETRANCE          = 1;
 my $DEFAULT_STEP                     = 1;
+my $DEFAULT_CM_SPECIES               = 'hg19';
 
 my $DEFAULT_SOFT_PLINK   = "/home/genesky/software/plink/1.07/plink";
+my $DEFAULT_SOFT_PLINK19 = "/home/genesky/software/plink/1.90_beta/plink";
 my $DEFAULT_SOFT_MAPTHIN = "/home/genesky/software/mapthin/v1.11/mapthin";
 my $DEFAULT_SOFT_MERLIN  = "/home/genesky/software/merlin/1.1.2/executables";
+my %hashCMDB = ('hg19' => "/home/genesky/database/self_build_database/gwas/genetic_map/hg19/text/chr@.b37.gmap", 
+                'hg38' => "/home/genesky/database/self_build_database/gwas/genetic_map/hg38/text/chr@.b38.gmap", 
+    );
+
 
 # 参数输入
 my $ARGV_INFO = join " ", @ARGV;
-my ($input_plink, $sample_relation, $output_dir, $callrate, $maf, $nsnp, $update_pedigree_only, $disease_allele_frequency, $homr_penetrance, $het_penetrance, $homa_penetrance, $step, $SOFT_PLINK, $SOFT_MAPTHIN, $SOFT_MERLIN, $if_help);
+my ($input_plink, $sample_relation, $output_dir, $callrate, $maf, $nsnp, $update_pedigree_only, $update_cm, $cm_species, $disease_allele_frequency, $homr_penetrance, $het_penetrance, $homa_penetrance, $step, $SOFT_PLINK, $SOFT_MAPTHIN, $SOFT_MERLIN, $if_help);
 GetOptions(
 	"input_plink|i=s"     => \$input_plink,
 	"sample_relation|s=s" => \$sample_relation,
@@ -42,11 +48,16 @@ GetOptions(
 	"update_pedigree_only!" => \$update_pedigree_only,
 
 
+
+
 	"disease_allele_frequency=s" => \$disease_allele_frequency,
 	"homr_penetrance=s"          => \$homr_penetrance,
 	"het_penetrance=s"           => \$het_penetrance,
 	"homa_penetrance=s"          => \$homa_penetrance,
 	"step=s"                     => \$step,
+
+	"update_cm!" => \$update_cm,
+	"cm_species=s" => \$cm_species,
 
 	"plink=s"             => \$SOFT_PLINK,
 	"mapthin=s"           => \$SOFT_MAPTHIN,
@@ -57,7 +68,8 @@ die "
 Options: 必填
 
         --input_plink/-i                原始plink格式数据输入前缀， 例如sample.ped, sample.map文件， 则输入 -i sample
-        --sample_relation/-s            ped格式样本关系矩阵, 含有表头，前6列与plink的ped文件格式一致，第7列表示当前样本在input_plink中的样本编号（因为，有可能输入文件中的样本名不合适，或者需要更换样本名）
+                                        注意： .map文件的第三列一定要有cm数据，否则位点都mapthin软件被过滤了。如果没有，也可以通过本软件的参数 --update_cm  --cm_species 做填充
+        --sample_relation/-s            ped格式样本关系矩阵, 含有表头，前6列与plink的ped文件格式一致，第7列表示当前样本在input_plink中的样本编号（因为: 有可能input_plink文件中的样本名不合适，或者需要更换样本名.如果样本在input_plink中没有，第7列空白即可）
         --output_dir/-o                 结果输出路径
 
 Options: 可选
@@ -65,14 +77,16 @@ Options: 可选
                                        如果是删除了部分样本，建议重新运行整个流程。
                                        注意：不要更新样本的ID
         --disease_allele_frequency     merlin分析 致病率        (default: $DEFAULT_DISEASE_ALLELE_FREQUENCY)
-        --homr_penetrance              merlin分析 野生型治病率   (default: $DEFAULT_HOMR_PENETRANCE)
-        --het_penetrance               merlin分析 杂合突变治病率 (default: $DEFAULT_HET_PENETRANCE)
-        --homa_penetrance              merlin分析 纯合突变治病率 (default: $DEFAULT_HOMA_PENETRANCE)
+        --homr_penetrance              merlin分析 野生型致病率   (default: $DEFAULT_HOMR_PENETRANCE)
+        --het_penetrance               merlin分析 杂合突变致病率 (default: $DEFAULT_HET_PENETRANCE)
+        --homa_penetrance              merlin分析 纯合突变致病率 (default: $DEFAULT_HOMA_PENETRANCE)
         --step                         merlin分析 步长密度, 值越大，运行越慢   (default: $DEFAULT_STEP)
 
         --callrate                 位点callrate过滤, 保留 > callrate 的位点 (default: $DEFAULT_CALLRATE)
         --maf                      位点maf过滤, 保留 > maf 的位点 (default: $DEFAULT_MAF)
         --nsnp                     1cm取n个snp (default: $DEFAULT_NSNP)
+        --update_cm                如果原始map文件的第三列 genetic distances 为0，则需要添加该参数进行填充。否则，--nsnp 参数过滤后就没有snp了。
+        --cm_species               如果声明参数  --update_cm ，则需要指定物种版本，目前支持 hg19  hg38 两种  (default: '$DEFAULT_CM_SPECIES')
         --plink                    更改软件 plink 版本 (default: '$DEFAULT_SOFT_PLINK')
         --mapthin                  更改软件 mapthin 版本 (default: '$DEFAULT_SOFT_MAPTHIN')
         --merlin                   更改软件 merlin 版本 (default: '$DEFAULT_SOFT_MERLIN')
@@ -88,6 +102,7 @@ $step                       = $DEFAULT_STEP if (not defined $step);
 $callrate   = $DEFAULT_CALLRATE if (not defined $callrate);
 $maf        = $DEFAULT_MAF if (not defined $maf);
 $nsnp       = $DEFAULT_NSNP if (not defined $nsnp);
+$cm_species = $DEFAULT_CM_SPECIES if (not defined $cm_species);
 
 $SOFT_PLINK   = $DEFAULT_SOFT_PLINK if (not defined $SOFT_PLINK);
 $SOFT_MAPTHIN = $DEFAULT_SOFT_MAPTHIN if (not defined $SOFT_MAPTHIN);
@@ -256,10 +271,18 @@ if(is_file_ok("$select_1cm_nsnp.ped", "$select_1cm_nsnp.map") == 1 and  defined 
     print "[warning] 数据已经存在，跳过\n"
 }else
 {   
+    my $this_input = $select_mendel;
     chdir $output_dir;
-    system("$SOFT_MAPTHIN -t $nsnp $select_mendel.map $select_1cm_nsnp.map.mapthin");
+    # 更新 cm 信息
+    if(defined $update_cm)
+    {   
+        print "更新cm信息\n";
+        system("$DEFAULT_SOFT_PLINK19 --file $this_input --cm-map $hashCMDB{$cm_species} --recode --out $select_1cm_nsnp.with_cms");
+        $this_input = "$select_1cm_nsnp.with_cms";
+    }
+    system("$SOFT_MAPTHIN -t $nsnp $this_input.map $select_1cm_nsnp.map.mapthin");
     system("cut -f2 $select_1cm_nsnp.map.mapthin > $select_1cm_nsnp.map.mapthin.snplist");
-    system("$SOFT_PLINK --file $select_mendel --extract $select_1cm_nsnp.map.mapthin.snplist  --recode --out $select_1cm_nsnp --noweb");
+    system("$SOFT_PLINK --file $this_input --extract $select_1cm_nsnp.map.mapthin.snplist  --recode --out $select_1cm_nsnp --noweb");
     chdir PWD;
 }
 

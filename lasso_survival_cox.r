@@ -2,13 +2,13 @@
 
 library(docopt)
 
-"Usage: lasso_survival_cox.r --surv <file> --exp <file> -o <dir> --prefix <string>  [--lambda <string> --lambda_value <numeric> --score_data <file> --rlib <dir>]
+"Usage: lasso_survival_cox.r --surv <file> --exp <file> -o <dir> --prefix <string>  [--gene_file <file>  --lambda <string> --lambda_value <numeric> --score_data <file> --rlib <dir>]
 
 Options:
     -s, --surv <file>               lasso生存信息矩阵，第一列样本名，第二列time, 第三列 status（0 alive, 1 dead）， 有表头
     --exp <file>                    lasso分析表达量文件矩阵，每一行对应一个特征，每一列对应一个样本，第一行是样本名，第一列是特征名称。不允许缺失。如果有缺失，会自动排除包含缺失的样本。
                                     注意：流程只会分析--surv文件中包含的样本
-
+    --gene_file <file>              指定分析的基因，一列数据，一行一个基因,没有表头。如果不指定，默认用 exp 的所有基因
     -o, --output_dir <dir>          输出目录
     -p, --prefix <string>           输出文件前缀    
                                     输出的文件有：
@@ -30,6 +30,7 @@ surv                <- opts$surv
 exp                 <- opts$exp
 output_dir          <- opts$output_dir
 prefix              <- opts$prefix
+gene_file           <- opts$gene_file
 
 lambda              <- opts$lambda
 lambda_value        <- opts$lambda_value
@@ -57,6 +58,22 @@ if(sum(!samples %in% rownames(data_exp)) > 0)
     message("[Error] surv 中的样本在 exp 文件中缺失:", losts)
     q()
 }
+
+# 基因选择
+if(! is.null(gene_file))
+{
+    gene_file_data <- read.table(gene_file, sep='\t', header = FALSE, check.names=FALSE, stringsAsFactors = F) 
+    genes = gene_file_data[,1]
+    lost_genes = genes[!genes %in% colnames(data_exp)]
+    if(length(lost_genes) > 0)
+    {
+        message("指定的基因不存在：", paste(lost_genes, collapse=','))
+        q()
+    }
+    data_exp = data_exp[, genes , drop=F] 
+    message("指定分析 ", length(genes), " 个基因")
+}
+
 
 # lasso分析准备
 message("prepare lasso input")

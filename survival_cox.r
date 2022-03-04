@@ -1,4 +1,4 @@
-#!/home/genesky/software/r/3.5.1/bin/Rscript
+#!/home/genesky/software/r/4.0.3/bin/Rscript
 library(docopt)
 "Usage: survival_cox.r --surv <file> --exp <file> -o <file> -p <pdf> [--pvalue_cutoff <numeric>  --gene_file <file> --exp_format <string> -m <string> --pdf_width <numeric> --pdf_height <numeric> --sort_by_hazard_ratio]
 Options:
@@ -121,6 +121,8 @@ if(model == 'univariate')
 }
 
 colnames(result) = c('feature', 'coef', 'exp(coef)', 'pvalue', 'lower .95', 'upper .95')
+result = data.frame(result, check.names=F)
+result[,'pvalue'] = as.numeric(result[,'pvalue'])
 write.table(result, output, row.names = F, quote = F, sep = '\t')
 
 sig_gene = result[,'feature'][result[, 'pvalue'] < pvalue_cutoff]

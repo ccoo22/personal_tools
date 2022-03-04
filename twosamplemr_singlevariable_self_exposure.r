@@ -6,7 +6,7 @@ library(docopt)
 
 Options:
     -s, --snp_file <file>     暴露因素SNP文件，按照官方格式要求，自己准备的SNP文件, tab分隔
-                              建议包含的表头： SNP	eaf	pval	effect_allele	other_allele	Phenotype	n	beta	se	id
+                              建议包含的表头： SNP	eaf	pval	effect_allele	other_allele	Phenotype	n	beta	se	id	samplesize
                               SNP: snp id
                               eaf: 突变等位基因频率
                               pval： gwas pvalue
@@ -17,6 +17,7 @@ Options:
                               beta： gwas分析逻辑回归系数
                               se: gwas分析逻辑回归标准误
                               id: project id
+                              samplesize: 样本数量
     -o, --outcome <gwasid>    结局因素id， gwasid, 例如： ebi-a-GCST005647
                               具体数据库请在 https://gwas.mrcieu.ac.uk/ 搜索
     -r, --result_dir <dir>    结果输出目录, 例如: ./
@@ -83,6 +84,10 @@ harmonise_dat <- harmonise_data(
     outcome_dat = outcome_dat
 )
 last_snp_count = sum(harmonise_dat$mr_keep)  # 最终SNP数量
+# 补充暴露因素F统计量
+harmonise_dat$r2.exposure = harmonise_dat$eaf.exposure * (1 - harmonise_dat$eaf.exposure) * harmonise_dat$beta.exposure * harmonise_dat$beta.exposure
+harmonise_dat$fstatistic.exposure = (harmonise_dat$samplesize.exposure - 2) * harmonise_dat$r2.exposure / (1 - harmonise_dat$r2.exposure)
+
 write.table(harmonise_dat[harmonise_dat$mr_keep, ], file=paste0(result_dir, "/", prefix, ".harmonise_dat.txt"), row.names =F, quote=F, sep='\t')
 
 message("SNP left: ", last_snp_count)
@@ -91,11 +96,32 @@ if(last_snp_count == 0){
     q()
 }
 
+## 稳健调整轮廓评分 Robust adjusted profile score
+## 如果选择的SNPs是弱的工具变量，则mr函数会无法运行。此时，可以用 mr.raps 方法运行。它是MR的一个备选。
+# TwoSampleMR函数mr_raps更新不及时，无法运行，自己根据需要重新写一遍
+parameters = default_parameters()
+mr_raps_result = mr.raps::mr.raps(b_exp = harmonise_dat$beta.exposure,
+        b_out=harmonise_dat$beta.outcome,
+        se_exp=harmonise_dat$se.exposure,
+        se_out=harmonise_dat$se.outcome,
+        over.dispersion=parameters$over.dispersion,
+        loss.function=parameters$loss.function,
+        diagnosis=FALSE,
+        )
+mr_raps_result = data.frame(mr_raps_result, nsnp=nrow(harmonise_dat))
+mr_raps_result$or = exp(mr_raps_result$beta.hat)
+mr_raps_result$L95 = exp(mr_raps_result$beta.hat - 1.96 * mr_raps_result$beta.se)
+mr_raps_result$U95 = exp(mr_raps_result$beta.hat + 1.96 * mr_raps_result$beta.se)
+write.table(mr_raps_result, file=paste0(result_dir, "/", prefix, ".mr_RAPS.txt"), row.names =F, quote=F, sep='\t', col.names=T)
+
 ### （3）MR分析
 message('\n[process 3] Perform MR')
 # 综合考虑所有SNP
 message('    mr')
 res <- mr(harmonise_dat)
+res$or = exp(res$b)
+res$L95 = exp(res$b - 1.96 * res$se)
+res$U95 = exp(res$b + 1.96 * res$se)
 write.table(res, file=paste0(result_dir, "/", prefix, ".mr.txt"), row.names =F, quote=F, sep='\t')
 
 # 每个SNP单独考虑
@@ -140,8 +166,10 @@ write.table(res_intercept, file=paste0(result_dir, "/", prefix, ".mr_pleiotropy_
 message('    mr_presso')
 res_presso <- mr_presso(data = harmonise_dat[harmonise_dat$mr_keep, ], BetaOutcome = "beta.outcome", BetaExposure = "beta.exposure", SdOutcome = "se.outcome", SdExposure = "se.exposure", OUTLIERtest = TRUE, DISTORTIONtest = TRUE, NbDistribution = 1000,  SignifThreshold = 0.05)
 presso_pvalue <- res_presso[['MR-PRESSO results']][['Global Test']]$Pvalue
-presso_pvalue = c('Pvalue', presso_pvalue)
-write.table(presso_pvalue, file=paste0(result_dir, "/", prefix, ".mr_presso.txt"), row.names =F, quote=F, sep='\t', col.names=F)
+presso_rssobs <- res_presso[['MR-PRESSO results']][['Global Test']]$RSSobs
+presso_result = data.frame(pvalue=presso_pvalue, RSSobs=presso_rssobs)
+write.table(presso_result, file=paste0(result_dir, "/", prefix, ".mr_presso.MR-PRESSON-results.txt"), row.names =F, quote=F, sep='\t', col.names=T)
+write.table(res_presso[['Main MR results']], file=paste0(result_dir, "/", prefix, ".mr_presso.Main-MR-results.txt"), row.names =F, quote=F, sep='\t', col.names=T)
 
 
 ### （5） plot

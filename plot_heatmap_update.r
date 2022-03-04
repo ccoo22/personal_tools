@@ -59,7 +59,7 @@ library(RColorBrewer)
 
 # 读入数据
 message('读入数据')
-data       <- read.table(input, sep='\t', header = TRUE, row.names = 1, check.names=FALSE) # 读取数据，行为样本
+data       <- read.table(input, sep='\t', header = TRUE, row.names = 1, check.names=FALSE, quote = "", comment.char = "") # 读取数据，行为样本
 # 读入分组
 data_group <- read.table(sample_group, sep='\t', header = TRUE, row.names = 1, check.names=FALSE, colClasses = 'character')  # 读入分组
 sample_names = rownames(data_group)
