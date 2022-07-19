@@ -49,7 +49,7 @@ set.seed(91)
 
 ###################################################################### 主程序
 message("read input")
-data_input = read.table(input, head = T, row.names = 1, check.names = F, sep = "\t")
+data_input = read.table(input, header = T, sep = "\t" , row.names = 1, check.name = F, stringsAsFactors = F, quote = "", comment.char = "")
 data_input = t(data_input)
 # 读取分组信息
 message("read group")

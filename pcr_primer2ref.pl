@@ -119,6 +119,8 @@ sub read_primer{
         foreach my $col(0..$#heads)
         {   
             my $value = $datas[$col];
+            $value=~s/^\s+//;
+            $value=~s/\s+$//;
             $value = "chr$value"  if($heads[$col] eq 'chr' and $genome=~/hg38_modify.fa$/ and $value!~/^chr/);  # hg38 添加chr符号
             $hashPrimer{$title}{$heads[$col]} = $value;
         }

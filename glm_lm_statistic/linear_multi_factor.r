@@ -29,35 +29,49 @@ set.seed(91)
 
 
 # 读入
-data_input = read.table(input, head = T, row.names = 1, check.names = F, sep="\t")
-colnames(data_input)[1] <- 'y'
+data_input = read.table(input, header = T, sep = "\t" , row.names = 1, check.name = F, stringsAsFactors = F, quote = "", comment.char = "")
+genes_replace = data.frame(from=colnames(data_input)[2:ncol(data_input)], newname=paste('gene', 2:ncol(data_input), sep=''), stringsAsFactors=F)  # 基因名字替换，方式有特殊字符而无法分析
+rownames(genes_replace) = genes_replace[, 'newname']
+colnames(data_input) <- c('y', genes_replace[,'newname'])
 
-if(is.null(gene)) genes <- colnames(data_input)[2:ncol(data_input)]
 
-if(sum(grepl(" ", colnames(data_input))) > 0 |  sum(grepl("-", colnames(data_input))))
+if(is.null(gene)) 
 {
-    message("[Error]  输入的input文件表头包含空格或者-\n")
-    q()
+    genes <- colnames(data_input)[2:ncol(data_input)]
+}else{
+    # 使用指定的基因名
+    tmp = genes_replace
+    rownames(tmp) = tmp[, 'from']
+    genes = tmp[genes, 'newname']
 }
+
+ 
 
 # 读入cov
 data_cov = NULL
 cov_names = c()
+cov_names_replace = data.frame()
 if(! is.null(cov))
 {
-    data_cov = read.table(cov, head = T, row.names = 1, check.names = F, sep="\t")
-    if(sum(grepl(" ", colnames(data_cov))) > 0 |  sum(grepl("-", colnames(data_cov))))
-    {
-        message("[Error]  输入的cov文件表头包含空格或者-\n")
-        q()
-    }
+    data_cov = read.table(cov, header = T, sep = "\t" , row.names = 1, check.name = F, stringsAsFactors = F, quote = "", comment.char = "")
+    cov_names_replace = data.frame(from=colnames(data_cov), newname=paste('cov', 1:ncol(data_cov), sep=''), stringsAsFactors=F)   
+    rownames(cov_names_replace) = cov_names_replace[,'newname']
+    colnames(data_cov) <- cov_names_replace[,'newname']
+    cov_names = colnames(data_cov)
+
     if(sum(row.names(data_input) %in% row.names(data_cov)) != nrow(data_input) )
     {
         message("[Error]  输入的cov文件没有包含所有的input样本\n")
         q()  
     }
-    cov_names = colnames(data_cov)
 }
+
+# 命名汇总
+intercept = data.frame(from='(Intercept)', newname='(Intercept)')
+rownames(intercept) = '(Intercept)'
+names_replace = rbind(genes_replace, cov_names_replace, intercept)
+
+
 
 
 
@@ -93,7 +107,7 @@ fit_y = fitted(lm_fit)
 r_squared = round(fit_summary$r.squared, 2)
 
 # 系数结果输出
-result_model = data.frame(Var = rownames(lm_result), lm_result, check.names = F)
+result_model = data.frame(Var = names_replace[rownames(lm_result), 'from'], lm_result, check.names = F)
 write.table(result_model, paste0(output, '.txt'), quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 
 # 拟合值、实际值输出
