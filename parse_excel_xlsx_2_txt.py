@@ -1,6 +1,7 @@
 #!/home/genesky/software/python/3.8.12/bin/python3
 import argparse
 import xlrd
+import os
 
 def set_and_parse_args():
     """参数解析"""
@@ -29,7 +30,8 @@ if __name__ == "__main__":
             sheet_names = args.sheet_name
         else:
             print("[error] 你要求的sheet_name 不存在，请确认是否写错了！")
-    
+    if(not os.path.exists(args.output_dir)):
+        os.makedirs(args.output_dir)
     for sheet_name in sheet_names:
         output_file = f"{args.output_dir}/{sheet_name}.txt"
         print(f'[process] {sheet_name} -> {output_file}')

@@ -10,7 +10,7 @@ use constant PWD => $ENV{"PWD"};
 
 # 定义 -> 核心变量
 # my $gatk4      = "/home/genesky/software/gatk/4.1.0.0/gatk-package-4.1.0.0-local.jar";
-my $gatk4      = "/home/genesky/software/gatk/4.1.2.0/gatk-package-4.1.2.0-local.jar";
+my $gatk4      = "/home/genesky/software/gatk/4.1.8.1/gatk-package-4.1.8.1-local.jar";
 my $java       = "/home/pub/software/jdk1.8.0_172/bin/java";
 my $genome     = "/home/pub/database/Human/hg19/genome/hg19.fa";
 my $tmp_dir    = "/home/tmp";

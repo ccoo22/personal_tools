@@ -24,6 +24,8 @@ GetOptions(
 );
 die help() if(defined $if_help or (not defined $input_sra_code or not defined $output_dir));
 ###################################################################### 主程序
+set_ncbi_config();
+
 
 # (1) 下载
 print "Download sra file \n";
@@ -62,6 +64,28 @@ $pm->wait_all_children;
 
 
 ###################################################################### 子函数
+sub set_ncbi_config{
+    my $user = $ENV{'USER'};
+    my $ncbi_dir = "/home/$user/.ncbi";
+    my $ncbi_set = "$ncbi_dir/user-settings.mkfg";
+    return if(-e $ncbi_set);
+
+    mkdir $ncbi_dir if(not -e $ncbi_dir);
+
+    open SET, ">$ncbi_set";
+    print SET "## auto-generated configuration file - DO NOT EDIT ##\n\n";
+    print SET "/LIBS/GUID = \"2449952d-ecd1-44bc-9fbc-f68e8e62fb29\"\n";
+    print SET "/config/default = \"false\"\n";
+    print SET "/repository/user/ad/public/apps/file/volumes/flatAd = \".\"\n";
+    print SET "/repository/user/ad/public/apps/refseq/volumes/refseqAd = \".\"\n";
+    print SET "/repository/user/ad/public/apps/sra/volumes/sraAd = \".\"\n";
+    print SET "/repository/user/ad/public/apps/sraPileup/volumes/ad = \".\"\n";
+    print SET "/repository/user/ad/public/apps/sraRealign/volumes/ad = \".\"\n";
+    print SET "/repository/user/ad/public/root = \".\"\n";
+    print SET "/repository/user/default-path = \"/home/$user/ncbi\"\n";
+    close SET;
+}
+
 # 进度条， 根据输入向量计算
 sub process_bar_array{
     my $process_name   = shift @_; # 需要分析的对象
