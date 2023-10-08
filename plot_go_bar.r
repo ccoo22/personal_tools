@@ -80,7 +80,9 @@ par(mar = c(5,0, 1, 0))
 p = log10(GO$pvalue)
 p_bar = barplot(p,horiz=T,col="PaleGreen3",border = NA, xaxt= "n")
 max = format(max(GO$pvalue),scientific=TRUE,digit=2)
-axis(side = 1, line = -1, at = c(0, unique(c(0,ceiling(min(p))))), labels = T)
+min_ceiling = ceiling(min(p))
+if(min_ceiling == 0){min_ceiling = trunc(min(p) * 100) / 100}
+axis(side = 1, line = -1, at = c(0, unique(c(0,min_ceiling))), labels = T)
 title(xlab = "log10(pvalue)",line = 0.91, cex.lab = 1)
 
 par(mar = c(5,3, 1, 1))

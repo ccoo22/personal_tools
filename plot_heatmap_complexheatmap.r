@@ -16,7 +16,7 @@ Options:
     --gene_list <string>            绘制的基因列表，用“逗号”分隔，默认全部绘制 [default: NA]
     --col_temp <string>             热图颜色模版, 目前只提供了 2个配色模版，支持： navy_white_red / navy_white_firbrick3 [default: navy_white_firbrick3]
     --col_temp_defined <string>     自定义热图颜色模版, 只接收16进制颜色类型，多个颜色之间用逗号分隔， 例如 #0047ab,#e9967a,#648c11 [default: NA]
-                                    当定义了该参数，--col_type 参数会被忽略
+                                    当定义了该参数，--col_temp 参数会被忽略
     --legend_breaks <string>        控制热图数值与颜色的对应关系（限制数值显示范围），至少填写三个数值，且从小到大，逗号分隔。 例如： '-1,0,1' [default: NA]
     --legend_name <string>          热图legend的名称 [default: none]
     --scale <string>                归一化方式，none/row/column [default: none]

@@ -2,35 +2,37 @@
 
 library(docopt)
 
-"Usage: linear_single_factor.r  -i <file> -o <file> [ -c <file> --rlib <dir>]
+"Usage: linear_single_factor.r  -i <file> -o <dir> [ -c <file> --rlib <dir> --if_dotplot <logic>]
 
 Options:
     -i, --input <file>      输入文件，第一列为样本名，第二列为因变量，往后为基因列。该软件对每一个基因单独做 线性回归 分析。 列名不能包含空格、“-”等特殊字符
     -c, --cov <file>        协变量输入文件，用于矫正。第一列样本名，后面所有列都是协变量。样本顺序没有要求。默认不用输入。 务必保证cov中包含input的所有样本，cov文件中的所有列都用于矫正。列名不能包含空格、“-”等特殊字符
-    -o, --output <file>     输出文件。 ./output.txt
+    -o, --output <file>     结果输出目录
+    --if_dotplot <logic>    是否绘制散点图 TRUE/FALSE [default: FALSE]
     --rlib <dir>            R包路径 [default: /home/genesky/software/r/3.5.1/lib64/R/library]" -> doc
 
 opts   <- docopt(doc, version='甘斌，单因素线性回归 \n')
 input       <- opts$input
 cov         <- opts$cov
 output      <- opts$output
+if_dotplot  <- opts$if_dotplot
 rlib        <- opts$rlib
 
 if(!is.null(rlib)) .libPaths(rlib)
 
- 
-set.seed(91)
+if(!file.exists(output)){
+    dir.create(output)
+}
 
+set.seed(91)
 
 # 读入 input
 data_input = read.table(input, header = T, sep = "\t" , row.names = 1, check.name = F, stringsAsFactors = F, quote = "", comment.char = "")
 genes_replace = data.frame(gene=colnames(data_input)[2:ncol(data_input)], newname=paste('gene', 2:ncol(data_input), sep=''), stringsAsFactors=F)  # 基因名字替换，方式有特殊字符而无法分析
+y_name = colnames(data_input)[1]
 rownames(genes_replace) = genes_replace[, 'newname']
 colnames(data_input) <- c('y', genes_replace[,'newname'])
 genes <- colnames(data_input)[2:ncol(data_input)]
-
-
- 
 
 # 读入cov
 data_cov = NULL
@@ -63,7 +65,8 @@ for(cov_name in cov_names)  # 协变量结果
 
 colnames(result) = col_names
 
- 
+if(if_dotplot == "TRUE") cairo_pdf(paste0(output,'/dotplot.pdf'), onefile=T)
+
 for( col in 1:length(genes))
 {   
     gene = genes[col]
@@ -97,6 +100,22 @@ for( col in 1:length(genes))
     fit_summary <- summary(lm_fit)
     lm_result  <- fit_summary$coefficients
 
+    if(if_dotplot == "TRUE"){
+        data_plot = data.frame(x = data_tmp[, gene], y = data_tmp[, "y"], fitted_y = fitted(lm_fit)[rownames(data_tmp)])
+        data_plot = data_plot[order(data_plot[, "x"]), , drop = F]  # 按x值从小到大排序，避免系数为负值曲线重叠
+        x = data_plot[, "x"]
+        y = data_plot[, "y"]
+        plot(x = x, y = y, xlab = genes_replace[gene, 'gene'], ylab = y_name , pch = 16, main = paste0(genes_replace[gene, 'gene'], " ", y_name) ) # 黑色散点
+        lines(x, data_plot$fitted_y, col="red") # 拟合曲线
+        
+        text_formula <- paste("y = ", format(lm_fit$coefficients[gene], scientific=TRUE, digit=4), "x + ", format(lm_fit$coefficients['(Intercept)'], scientific=TRUE, digit=4) , sep="")
+        if(! is.null(cov)){
+            text_formula = paste0(text_formula, " + ...")
+        }
+        text_rsquared <- paste("R-squared = ", round(fit_summary$r.squared, 3), sep = "")
+        legend("topright", legend = c(text_formula, text_rsquared))
+    }
+
     # 结果记录
     result_value = c(genes_replace[gene, 'gene'], nmiss, lm_result[gene, 'Estimate'], lm_result[gene, 'Pr(>|t|)'], NA ,lm_result['(Intercept)', 'Estimate'], lm_result['(Intercept)', 'Pr(>|t|)'])
     for(cov_name in cov_names)  # 协变量结果
@@ -106,10 +125,9 @@ for( col in 1:length(genes))
     
     result[col, ] <- result_value
 }
+if(if_dotplot == "TRUE") dev.off()
+
 result[,'Pvalue_FDR'] =  p.adjust(result[,'Pvalue'], method = "fdr", n=nrow(result))
 # 结果输出
-write.table(result, output, quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
-
-
- 
+write.table(result, paste0(output, '/linear_single_factor_result.txt'), quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 

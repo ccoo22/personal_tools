@@ -164,7 +164,7 @@ if(! is.null(args$test)){
     nmiss_control = sum(data_clean_test$group == 0)
 
     data_clean_test_rf = data_clean_test
-    data_clean_test_rf$y = factor(as.character(data_clean_rf$y), levels=c('0', '1'))
+    data_clean_test_rf$y = factor(as.character(data_clean_test_rf$y), levels=c('0', '1'))
 
     pred_value_test = predict(modelRF, data_clean_test_rf, type='response')
     pred_value_test = as.numeric(as.character(pred_value_test[rownames(data_clean_test_rf)]))

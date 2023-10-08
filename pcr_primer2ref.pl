@@ -110,12 +110,17 @@ sub read_primer{
     my $line1 = <PRIMER>;
        $line1 =~ s/[\r\n]//g;
     my @heads = split /\t/, $line1;
+
+    my @lost_heads = grep{ not $_ ~~ @heads } ('chr', 'pos1', 'pos2', 'pos3', 'pos4');
+    die "[Error] primer 文件缺失表头： @lost_heads\n" if (scalar(@lost_heads) > 0);
+
     while(<PRIMER>)
     {
         $_=~s/[\r\n]//g;
         next if($_!~/\w/);
         my @datas = split /\t/, $_;
         my $title = $datas[0];
+        die "[Error] duplicate $title\n" if(exists $hashPrimer{$title});
         foreach my $col(0..$#heads)
         {   
             my $value = $datas[$col];

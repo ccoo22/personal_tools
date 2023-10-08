@@ -83,6 +83,7 @@ library(randomForest)
 library(rfPermute)
 library(pROC)
 library(Hmisc)
+library(A3)
 
 set.seed(666)
 
@@ -133,6 +134,13 @@ pred_value = predict(modelRF, data_clean, type='response')
 pred_value = pred_value[rownames(data_clean)]
 result_predict = data.frame(Sample=rownames(data_clean), Class=data_clean$y, PredictedClass=pred_value[rownames(data_clean)])
 mse_train = sum((data_clean$y - pred_value)^2) / length(pred_value)
+rsq_train = 1- (mse_train/ var(data_clean$y))
+
+# A3 包补充分析
+
+message("    基于A3包，计算R2/pvalue")
+a3_result = a3(f, data_clean, randomForest, p.acc = 0.1,  n.folds = 10, features=FALSE)
+
 
 if(! is.null(args$test)){
     message("3.1 基于训练模型，对测试集做分类")
@@ -156,7 +164,8 @@ if(! is.null(args$test)){
 
     result = data.frame(Sample=rownames(data_clean_test), Value=data_clean_test$y, PredictValue=pred_value_test)
     mse = sum((data_clean_test$y - pred_value_test)^2) / length(pred_value_test)
-    result_statistic = data.frame(MSE=mse)
+    rsq = 1- (mse/ var(data_clean_test$y))
+    result_statistic = data.frame(MSE=mse, RSQ=rsq)
     # 预测结果输出 评价
     write.table( result, file.path(args$output_dir, paste0(args$prefix, '.test_set.predict.txt')), quote=F, row.names=F, col.names=T, sep='\t')
     write.table( result_statistic, file.path(args$output_dir, paste0(args$prefix, '.test_set.statistic.txt')), quote=F, row.names=F, col.names=T, sep='\t')
@@ -171,7 +180,7 @@ file_predict  = file.path(args$output_dir, paste0(args$prefix, '.train_set.predi
 write.table(result_predict, file_predict, quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 
 file_statistic = file.path(args$output_dir, paste0(args$prefix, '.train_set.statistic.txt'))  
-result_statistic = data.frame(MSE=mse_train)
+result_statistic = data.frame(MSE=mse_train, RSQ=rsq_train, model.R2=a3_result$model.R2, model.p=a3_result$model.p)
 write.table(result_statistic, file_statistic, quote = FALSE, row.names = FALSE, sep = '\t', col.names = T )
 
 # 特征重要性输出
@@ -193,6 +202,6 @@ plotImportance(modelRFP)
 dev.off()
 
 message("randomForest predict:    ", file_predict)
-message("randomForest mse:        ", result_statistic)
+message("randomForest mse:        ", file_statistic)
 message("randomForest importance:    ", file_importance)
 message("randomForest importance:    ", pdf_file_importance)
